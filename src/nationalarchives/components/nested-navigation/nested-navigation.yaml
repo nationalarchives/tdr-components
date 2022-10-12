@@ -1,0 +1,16 @@
+params:
+  - name: items
+    type: object
+    required: true
+    description: The inputs to describe the file structure
+
+examples:
+  - name: default
+    data:
+      items:
+        - text: Test
+          items:
+            - text: Test3
+        - text: Test2
+
+

@@ -1,0 +1,20 @@
+{% macro menuItem(item) %}
+    <li class="list-item">
+        <input type="checkbox" name="{{ item.text }}">
+        <label for="{{ item.text }}">{{ item.text }}</label>
+        {% if item.items %}
+            <ul class="parent-element">
+                {% for item in item.items %}
+                    {{ menuItem(item) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
+
+<ul>
+    {% for item in params.items %}
+        {{ menuItem(item) }}
+    {% endfor %}
+</ul>
+
