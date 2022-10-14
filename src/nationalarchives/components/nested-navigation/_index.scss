@@ -1,0 +1,292 @@
+// Override the default GOV.UK Frontend font stack
+$govuk-font-family: "Arial", "Helvetica", sans-serif;
+
+// global styles for <a> and <p> tags
+$govuk-global-styles: true;
+
+// We can't mount GOV.UK Frontend's assets at root as it's done automatically by the extensions framework.
+$govuk-assets-path: '/govuk/assets/';
+
+
+// Patterns that aren't in Frontend
+@import "../../patterns/step-by-step-header";
+@import "../../patterns/step-by-step-nav";
+@import "../../patterns/step-by-step-related";
+@import "../../patterns/task-list";
+@import "../../patterns/related-items";
+
+// Add extra styles here, or re-organise the Sass files in whichever way makes most sense to you
+@import '../../patterns/_breadcrumbs';
+@import '../../patterns/_tree-view-navigation';
+
+// Accessible autocomplete field
+// https://github.com/alphagov/accessible-autocomplete
+//@import "node_modules/accessible-autocomplete/src/autocomplete";
+
+// menu button in header (now 'Sign out' button)
+.govuk-header__menu-button::after {
+  display: none;
+}
+
+.govuk-header__tna-logo {
+  float:left;
+  width:220px
+}
+.govuk-header__tna-logo-image {
+  width:220px
+}
+/*.govuk-header__tna-content {
+  margin:0 auto;
+  position:relative
+}*/
+/*.tna-header {
+  display:flex
+}*/
+.govuk-header__tna_link {
+  text-decoration:none
+}
+.govuk-header__tna_link:link,
+.govuk-header__tna_link:visited {
+  color:#fff
+}
+.govuk-header__tna_link:focus {
+  outline:3px solid transparent;
+  color:#0b0c0c;
+  background-color:#fd0;
+  box-shadow:0 -2px #fd0,0 4px #0b0c0c;
+  text-decoration:none
+}
+.govuk-header__tna_link--homepage {
+  font-family:Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-weight:700;
+  display:inline-block;
+  font-size:30px;
+  line-height:1
+}
+@media print {
+  .govuk-header__tna_link--homepage {
+    font-family:sans-serif
+  }
+}
+.govuk-header__tna_link--homepage:link,
+.govuk-header__tna_link--homepage:visited {
+  text-decoration:none
+}
+
+
+//upload.html
+.drag-and-drop__success {
+  color:#00703c;
+  font-weight:700
+}
+.green-tick-mark {
+  fill:currentColor;
+  float:left;
+  height:25px;
+  margin-right:10px;
+  width:25px
+}
+
+.drag-and-drop {
+  margin-bottom:40px
+}
+.drag-and-drop__button {
+  margin-bottom:32px;
+  margin-top:65px;
+  padding-left:15px;
+  position:static;
+  width:auto
+}
+.drag-and-drop__button::before {
+  position:static
+}
+.drag-and-drop__button--highlight {
+  background-color:#fd0;
+  box-shadow:0 -2px #fd0,0 4px #0b0c0c;
+  color:#0b0c0c;
+  outline:0
+}
+.drag-and-drop__dropzone {
+  display:flex;
+  margin-bottom:20px;
+  outline:3px dashed #0b0c0c;
+  padding-bottom:30px;
+  padding-top:0;
+  text-align:center;
+  transition:outline-offset .1s ease-in-out,background-color .1s linear
+}
+.drag-and-drop__dropzone--dragover {
+  background:#b1b4b6;
+  outline-color:#505a5f
+}
+.drag-and-drop__failure {
+  align-items:flex-end;
+  color:#d4351c;
+  display:flex;
+  flex-direction:row;
+  font-weight:700
+}
+.drag-and-drop__hint-text {
+  margin-bottom:0;
+  margin-right:10px;
+  padding-left:15px;
+  padding-top:70px
+}
+.drag-and-drop__input {
+  height:0;
+  opacity:0;
+  padding-top:0;
+  position:absolute;
+  width:0
+}
+.drag-and-drop__success {
+  color:#00703c;
+  font-weight:700
+}
+
+//file-checks-results.html
+.govuk-success-summary {
+  @include govuk-text-colour;
+  @include govuk-responsive-padding(4);
+  @include govuk-responsive-margin(8, "bottom");
+
+  border: $govuk-border-width solid #00703c;
+
+  &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+  }
+}
+
+.govuk-success-summary__title {
+  @include govuk-font($size: 24, $weight: bold);
+
+  margin-top: 0;
+  @include govuk-responsive-margin(4, "bottom");
+}
+
+.govuk-success-summary__body {
+  @include govuk-font($size: 19);
+
+  p {
+    margin-top: 0;
+    @include govuk-responsive-margin(4, "bottom");
+  }
+}
+
+// progress-uploading.html
+.progress-bar-container {
+  position: relative;
+  appearance: none;
+  border: solid 1px #b1b4b6;
+  height: 20px;
+  margin: 0.1px;
+  width: 100%;
+}
+
+.progress-bar-container span {
+  display: block;
+  height: 100%;
+}
+
+.progress {
+  background-color: #505a5f;
+  animation: progressBar 10s ease-in-out;
+  animation-fill-mode:both;
+}
+
+@keyframes progressBar {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+.showBanner {
+  animation: showBlock 0s 10s forwards;
+  visibility: hidden;
+  height:0;
+}
+
+@keyframes showBlock {
+  to {
+    visibility: visible;
+    height: 100%;
+  }
+}
+
+.icon svg {
+  fill: white;
+  line-height: 1;
+  height: 1em;
+  width: 1em;
+}
+
+.icon {
+  display: inline-flex;
+  height: 24px;
+  background: green;
+  border-radius: 50%;
+  padding: 3px;
+  margin: 0 0 0 15px;
+}
+
+.govuk-checkboxes__label--withicon {
+  display: flex;
+}
+
+.govuk-form-group--tight{
+  @include govuk-responsive-margin(1, "bottom");
+}
+
+.govuk-form-group .govuk-form-group--tight:last-of-type {
+  @include govuk-responsive-margin(2, "bottom");
+}
+
+.govuk-tdr-download-csv-row {
+  display: flex;
+  gap: 20px;
+  @include govuk-responsive-margin(3, "bottom");
+}
+
+.govuk-tdr-download-csv-row a {
+  flex-basis: content;
+}
+
+.govuk-tdr-download-csv-row img {
+  max-width: 100%;
+  display: inline-block;
+}
+
+.gem-c-attachment__thumbnail-image {
+  display: block;
+  width: auto;
+  max-width: 99px;
+  height: 100px;
+  border: rgba(11,12,12,0.1);
+  outline: 5px solid rgba(11,12,12,0.1);
+  background: #fff;
+  box-shadow: 0 2px 2px rgba(11,12,12,0.4);
+  fill: #b1b4b6;
+  stroke: #b1b4b6;
+}
+
+.govuk-date-input__multi-date-container {
+  display: flex;
+  gap: 15px;
+  @include govuk-responsive-margin(3, "bottom");
+}
+
+.govuk-date-input__multi-date-label {
+  align-self: flex-end;
+  margin-bottom: 0;
+}
+
+.govuk-fieldset--horizontal-align {
+  display: flex;
+  gap: 15px;
+}
+
+.govuk-fieldset--horizontal-align .govuk-fieldset__legend {
+  align-self: flex-end;
+  margin: 0;
+}

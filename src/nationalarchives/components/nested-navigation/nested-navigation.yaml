@@ -8,9 +8,12 @@ examples:
   - name: default
     data:
       items:
-        - text: Test
-          items:
-            - text: Test3
-        - text: Test2
+        - name: folder1
+          type: node
+          children:
+            - name: file1
+              type: item
+            - name: file2
+              type: item
 
 

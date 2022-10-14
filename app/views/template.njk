@@ -1,0 +1,10 @@
+<link rel="stylesheet" media="screen" href="/public/main.css">
+{% block skipLink %}{% endblock %}
+{% block bodyStart %} {% endblock %}
+{% block header %}{% endblock %}
+
+{% block content %}
+    <div class="app-whitespace-highlight">
+        {{ componentView | safe }}
+    </div>
+{% endblock %}

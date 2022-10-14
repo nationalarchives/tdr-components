@@ -10,7 +10,7 @@ describe('Nested navigation', () => {
     await page.keyboard.press('Space')
     console.log(await page.content())
     const isChecked = await page.evaluate(() => {
-      const el: HTMLInputElement = document.querySelector("input[name=Test]")
+      const el: HTMLInputElement = document.querySelector(".govuk-checkboxes__input")
       return el.checked
     })
     await expect(isChecked).toBeTruthy()

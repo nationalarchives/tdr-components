@@ -1,16 +1,31 @@
-import type {Config} from 'jest';
-
-const config: Config = {
-  displayName: 'JavaScript component tests',
-  preset: "jest-puppeteer",
-  globals: {page: true},
-  testMatch: [
-    '**/components/*/*.test.ts',
+const config = {
+  preset: "",
+  projects: [
+    {
+      displayName: 'JavaScript component tests',
+      testMatch: [
+        '**/components/*/template.test.ts'
+      ],
+      transform: {
+        "^.+\\.ts?$": "ts-jest"
+      },
+      testEnvironment: "jsdom"
+    },
+    {
+      displayName: 'JavaScript component tests',
+      setupFilesAfterEnv: [require.resolve('expect-puppeteer')],
+      testMatch: [
+        '**/components/*/*.test.ts',
+        '!**/(*.)?template.test.ts',
+      ],
+      preset: "jest-puppeteer",
+      transform: {
+        "^.+\\.ts?$": "ts-jest"
+      },
+      testTimeout: 15000
+    }
   ],
-  testTimeout: 15000,
-  transform: {
-    "^.+\\.ts?$": "ts-jest"
-  }
+
 }
 
 export default config
