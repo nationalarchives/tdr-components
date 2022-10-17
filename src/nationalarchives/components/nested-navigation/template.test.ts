@@ -19,8 +19,15 @@ describe('Nested Navigation', () => {
 
     it("should render with the expected options", async () => {
       const $ = render('nested-navigation', JSON.stringify(examples.default))
-      const $labels = $(".govuk-checkboxes__label")
-      console.log($labels)
+      const $labels = $(".govuk-checkboxes__input")
+      const renderedLabelsText = []
+      for(let i=0; i<$labels.length; i++) {
+        const id = $labels[i].attribs["id"]
+        const label = $(`label[for='${id}']`)[0]
+        const labelText = label.children[0] as unknown as Text
+        renderedLabelsText.push(labelText.data.trim())
+      }
+      expect(renderedLabelsText.sort()).toEqual(["file1", "file2", "folder1"])
     })
   })
 })

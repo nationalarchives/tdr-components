@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "target": "ES6",
+    "skipLibCheck": true,
+    "outDir": "out-tsc",
+    "lib": ["dom", "es2017"]
+  },
+  "files": [
+    "src/nationalarchives/components/all.ts"
+  ]
 }
