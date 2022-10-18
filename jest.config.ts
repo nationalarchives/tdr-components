@@ -1,4 +1,5 @@
 const config = {
+  verbose: true,
   projects: [
     {
       displayName: 'JavaScript component tests',
@@ -12,7 +13,7 @@ const config = {
       testEnvironment: "jsdom"
     },
     {
-      displayName: 'JavaScript component tests',
+      displayName: 'JavaScript puppeteer tests',
       setupFilesAfterEnv: [require.resolve('expect-puppeteer')],
       testMatch: [
         '**/components/*/*.test.ts',
