@@ -1,13 +1,14 @@
-{% macro navigationItem(item) %}
+{% macro navigationItem(item, level, size, pos) %}
     {% if item.type == 'item' or item.children.length == 0 %}
         <li
                 class="govuk-tna-tree__item"
                 role="treeitem"
+                id="{{level}}-{{pos}}"
                 aria-selected="false"
         >
             <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="{{item.ino}}" type="checkbox"/>
-                <label class="govuk-label govuk-checkboxes__label" for="{{item.ino}}">
+                <input class="govuk-checkboxes__input" id="{{level}}-{{pos}}" type="checkbox"/>
+                <label class="govuk-label govuk-checkboxes__label" for="{{level}}-{{pos}}">
                     {{item.name}}
                     {% if item.name == "Baking powder.docx" and data['closure']['baking-powder'][0] === 'true' %}
                         <span class="icon" aria-label="Has existing metadata">
@@ -22,6 +23,7 @@
         <li
                 class="govuk-tna-tree__node-item"
                 role="treeitem"
+                id="{{level}}-{{pos}}"
                 aria-expanded="true"
                 aria-selected="false"
         >
@@ -29,17 +31,18 @@
                 <button
                         class="govuk-tna-tree__expander"
                         tabindex="-1"
-                        id="expander-{{item.ino}}"
+                        id="expander-{{level}}-{{pos}}"
                 >
                     <span class="govuk-visually-hidden">Expand</span>
                 </button>
                 <div class="govuk-checkboxes__item">
                     <input
                             class="govuk-checkboxes__input"
-                            id="{{item.ino}}"
+                            id="checkbox-{{level}}-{{pos}}"
+                            tabindex="-1"
                             type="checkbox"
                     />
-                    <label class="govuk-label govuk-checkboxes__label" for="{{item.ino}}">
+                    <label class="govuk-label govuk-checkboxes__label" for="{{level}}-{{pos}}">
                         {{item.name}}
                         {% if item.name == "Baking powder.docx" and data['closure']['baking-powder'][0] === 'true' %}
                             <span class="icon" aria-label="Has existing metadata">
@@ -49,9 +52,10 @@
                     </label>
                 </div>
             </div>
-            <ul class="govuk-tna-tree__nested-item-list" role="group" id="node-group-{{item.ino}}">
+            <ul tabindex="0" class="govuk-tna-tree__nested-item-list" role="group" id="node-group-{{level}}-{{pos}}">
+                {% set nextLevel = level + 1 %}
                 {% for child in item.children %}
-                    {{ navigationItem(child) }}
+                    {{ navigationItem(child, nextLevel, loop.length, loop.index) }}
                 {% endfor %}
             </ul>
         </li>
@@ -61,7 +65,7 @@
 <div class="govuk-tna-tree">
     <ul class="govuk-tna-tree__nested-item-list" role="tree" aria-multiselectable="true">
         {% for node in params.items %}
-            {{ navigationItem(node) }}
+            {{ navigationItem(node, 1, loop.length, loop.index) }}
         {% endfor %}
     </ul>
 </div>

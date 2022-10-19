@@ -10,13 +10,8 @@ examples:
       items:
         - name: folder1
           type: node
-          ino: 7de2ca74-fd38-424d-a295-2002c88524a0
           children:
             - name: file1
               type: item
-              ino: 022b9405-663e-4a2f-9773-03af9be86b4f
             - name: file2
               type: item
-              ino: 2dd9a8bd-1548-463b-ae0c-bdb3ae9aca40
-
-

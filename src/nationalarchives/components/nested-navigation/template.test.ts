@@ -19,11 +19,12 @@ describe('Nested Navigation', () => {
 
     it('should render with the expected options', async () => {
       const $ = render('nested-navigation', JSON.stringify(examples.default))
-      const $labels = $('.govuk-checkboxes__input')
+      const $labels: cheerio.Cheerio = $('.govuk-checkboxes__input')
       const renderedLabelsText: string[] = []
       for (let i = 0; i < $labels.length; i++) {
-        const id: string = $labels[i].attribs.id
-        const label = $(`label[for='${id}']`)[0]
+        const labelTag = $labels[i] as cheerio.TagElement
+        const id: string = labelTag.attribs.id
+        const label = $(`label[for='${id}']`)[0] as cheerio.TagElement
         const labelText = label.children[0] as unknown as Text
         renderedLabelsText.push(labelText.data.trim())
       }

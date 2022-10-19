@@ -10,5 +10,5 @@
   "files": [
     "src/nationalarchives/components/all.ts"
   ],
-  "include": ["src/nationalarchives/components/**/*.test.ts"]
+  "include": ["src/nationalarchives/components/**/*.test.ts", "app/*.ts"]
 }

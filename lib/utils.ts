@@ -1,12 +1,12 @@
-import util from "util";
-import fs from "fs";
-import {join} from "path";
-import {readFile} from "fs/promises";
-import yaml from "js-yaml"
-import {paths} from "../app/config";
-import nunjucks from "nunjucks"
+import util from 'util'
+import fs from 'fs'
+import { join } from 'path'
+import { readFile } from 'fs/promises'
+import yaml from 'js-yaml'
+import { paths } from '../app/config'
+import nunjucks from 'nunjucks'
 
-const kebabCaseToPascalCase: (value: string) => string =  (value) => {
+const kebabCaseToPascalCase: (value: string) => string = (value) => {
   return value
     .toLowerCase()
     .split('-')
@@ -14,20 +14,19 @@ const kebabCaseToPascalCase: (value: string) => string =  (value) => {
     .join('')
 }
 
-export const getDirectories: (componentPath: string) => Promise<string[]> = (componentPath) => {
-  return util.promisify(fs.readdir)(componentPath, {withFileTypes: true})
+export const getDirectories: (componentPath: string) => Promise<string[]> = async (componentPath) => {
+  return await util.promisify(fs.readdir)(componentPath, { withFileTypes: true })
     .then(items => items.filter(item => item.isDirectory()).map(item => item.name))
-
 }
 
-export const getExamples: (componentName: string) => Promise<{[key:string]: any}> = async (componentName) => {
+export const getExamples: (componentName: string) => Promise<{ [key: string]: any }> = async (componentName) => {
   const componentData = await getComponentData(componentName)
-  return componentData.examples.map(example => ({[example.name]: example.data}))
+  return componentData.examples.map(example => ({ [example.name]: example.data }))
 }
 
 export const getComponentsData: () => Promise<ComponentData[]> = async () => {
   const directories = await getDirectories(paths.componentPath)
-  return Promise.all(directories.map(getComponentData))
+  return await Promise.all(directories.map(getComponentData))
 }
 
 export const renderHtml: (componentName: string, options: string) => string = (componentName, options) => {
@@ -56,7 +55,7 @@ interface ComponentData {
 
 const getComponentData: (componentName: string) => Promise<ComponentData> = async (componentName) => {
   const yamlPath = join(paths.componentPath, componentName, `${componentName}.yaml`)
-  const componentData = yaml.load(await readFile(yamlPath, 'utf8'), { json: true })
+  const componentData: any = yaml.load(await readFile(yamlPath, 'utf8'), { json: true })
   return {
     name: componentName,
     ...componentData
