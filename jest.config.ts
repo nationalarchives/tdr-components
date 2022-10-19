@@ -1,5 +1,5 @@
 const config = {
-  verbose: true,
+  verbose: false,
   projects: [
     {
       displayName: 'JavaScript component tests',

@@ -4,9 +4,11 @@
     "target": "ES6",
     "skipLibCheck": true,
     "outDir": "out-tsc",
-    "lib": ["dom", "es2017"]
+    "lib": ["dom", "es2017"],
+    "strictNullChecks": true
   },
   "files": [
     "src/nationalarchives/components/all.ts"
-  ]
+  ],
+  "include": ["src/nationalarchives/components/**/*.test.ts"]
 }
