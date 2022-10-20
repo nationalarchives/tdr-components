@@ -1,8 +1,6 @@
-// Based on https://github.com/alphagov/govuk_publishing_components/blob/v22.0.0/app/assets/stylesheets/govuk_publishing_components/components/_step-by-step-nav-header.scss
-// Note - this code for prototype purposes only. It is not production code.
-
 .app-step-nav-header {
   @include govuk-text-colour;
+
   position: relative;
   padding: 10px;
   background: govuk-colour("light-grey", $legacy: "grey-4");
@@ -20,7 +18,7 @@
   @include govuk-font(16, $weight: bold);
 
   display: block;
-  padding-bottom: .2em;
+  padding-bottom: 0.2em;
 }
 
 .app-step-nav-header__title {

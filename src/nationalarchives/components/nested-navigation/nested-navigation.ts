@@ -3,7 +3,7 @@ export class NestedNavigation {
   private readonly treeItems: HTMLUListElement[]
   private currentFocus: HTMLLIElement
 
-  constructor(tree: HTMLUListElement, treeItems: HTMLUListElement[]) {
+  constructor (tree: HTMLUListElement, treeItems: HTMLUListElement[]) {
     this.tree = tree
     this.treeItems = treeItems
   }
@@ -39,75 +39,73 @@ export class NestedNavigation {
     })
 
     document
-      .querySelectorAll("[role=treeitem]")
+      .querySelectorAll('[role=treeitem]')
       .forEach((treeItem, _, __) => {
-        treeItem.addEventListener("click", (ev) => {
+        treeItem.addEventListener('click', (ev) => {
           if (ev.currentTarget instanceof HTMLLIElement) {
-            this.setSelected(ev.currentTarget);
-            this.setFocusToItem(ev.currentTarget);
+            this.setSelected(ev.currentTarget)
+            this.setFocusToItem(ev.currentTarget)
           }
-          ev.stopImmediatePropagation();
-        });
-      });
+          ev.stopImmediatePropagation()
+        })
+      })
 
     document
-      .querySelectorAll("[role=tree] .govuk-checkboxes__item")
+      .querySelectorAll('[role=tree] .govuk-checkboxes__item')
       .forEach((checkbox: HTMLElement) => {
-        const input: HTMLInputElement | null = checkbox.querySelector("input");
-        const label: HTMLLabelElement | null = checkbox.querySelector("label");
-        if(input && label) {
+        const input: HTMLInputElement | null = checkbox.querySelector('input')
+        const label: HTMLLabelElement | null = checkbox.querySelector('label')
+        if ((input != null) && (label != null)) {
           this.replaceCheckboxWithSpan(input, label)
         }
-      });
+      })
 
-    this.tree.addEventListener("focus", () => {
+    this.tree.addEventListener('focus', () => {
       const firstSelected: HTMLLIElement | null = document.querySelector(
-        "[role=treeitem][aria-selected=true]"
-      );
-      if(firstSelected) {
-        this.updateFocus(firstSelected)
-      }
-    });
+        '[role=treeitem][aria-selected=true]'
+      )
+      this.updateFocus(firstSelected)
+    })
   }
 
   replaceCheckboxWithSpan: (input: HTMLInputElement, label: HTMLLabelElement) => void = (input, label) => {
-    const spanInput = document.createElement("span");
+    const spanInput = document.createElement('span')
     for (const name of input.getAttributeNames()) {
-      if (!["type"].includes(name)) {
+      if (!['type'].includes(name)) {
         const inputAttribute = input.getAttribute(name)
-        if(inputAttribute) {
-          spanInput.setAttribute(name, inputAttribute);
+        if (inputAttribute != null) {
+          spanInput.setAttribute(name, inputAttribute)
         }
       }
-      spanInput.setAttribute("aria-hidden", "true");
+      spanInput.setAttribute('aria-hidden', 'true')
     }
 
-    input.parentElement?.appendChild(spanInput);
-    input.remove();
+    input.parentElement?.appendChild(spanInput)
+    input.remove()
 
-    const spanLabel = document.createElement("span");
+    const spanLabel = document.createElement('span')
     for (const name of label.getAttributeNames()) {
-      if (!["for"].includes(name)) {
+      if (!['for'].includes(name)) {
         const labelAttribute = label.getAttribute(name)
-        if(labelAttribute) {
-          spanLabel.setAttribute(name, labelAttribute);
+        if (labelAttribute != null) {
+          spanLabel.setAttribute(name, labelAttribute)
         }
       }
     }
-    if(label.textContent) {
-      spanLabel.appendChild(document.createTextNode(label.textContent));
+    if (label.textContent != null) {
+      spanLabel.appendChild(document.createTextNode(label.textContent))
     }
-    if(label.parentElement) {
-      label.parentElement.appendChild(spanLabel);
-      label.remove();
+    if (label.parentElement != null) {
+      label.parentElement.appendChild(spanLabel)
+      label.remove()
     }
   }
 
-  updateFocus: (element: HTMLLIElement) => void = element => {
-    if (element) {
-      this.setFocusToItem(element);
+  updateFocus: (element?: HTMLLIElement | null) => void = element => {
+    if (element != null) {
+      this.setFocusToItem(element)
     } else {
-      this.setFocusToItem(this.tree.firstElementChild as HTMLLIElement);
+      this.setFocusToItem(this.tree.firstElementChild as HTMLLIElement)
     }
   }
 
@@ -137,22 +135,22 @@ export class NestedNavigation {
     ul: HTMLUListElement,
     elements: HTMLLIElement[]
   ) => HTMLLIElement[] = (ul, elements) => {
-    for (let i = ul.children.length - 1; i >= 0; i--) {
-      const item: HTMLLIElement | null = ul.children.item(
-        i
-      ) as HTMLLIElement | null
-      if (item !== null) {
-        if (item.nodeName == "LI") {
-          elements.push(item);
+      for (let i = ul.children.length - 1; i >= 0; i--) {
+        const item: HTMLLIElement | null = ul.children.item(
+          i
+        ) as HTMLLIElement | null
+        if (item !== null) {
+          if (item.nodeName === 'LI') {
+            elements.push(item)
+          }
+          // If children includes a UL/role=group then get children
+          Array.from(item.children)
+            .filter((el) => el.nodeName === 'UL')
+            .forEach((el) => this.allChildren(el as HTMLUListElement, elements))
         }
-        // If children includes a UL/role=group then get children
-        Array.from(item.children)
-          .filter((el) => el.nodeName === 'UL')
-          .forEach((el) => this.allChildren(el as HTMLUListElement, elements))
       }
+      return elements
     }
-    return elements
-  }
 
   toggleNode: (li: HTMLLIElement, id: string) => void = (li, id) => {
     const expanded = this.getExpanded()
@@ -166,29 +164,29 @@ export class NestedNavigation {
       li.setAttribute('aria-expanded', 'false')
       expanded.splice(expanded.indexOf(id))
     }
-    localStorage.setItem('state', JSON.stringify({expanded}))
+    localStorage.setItem('state', JSON.stringify({ expanded }))
   }
 
   setSelected: (li: HTMLLIElement) => void = (li) => {
-    const isSelected: Boolean = li.getAttribute("aria-selected") == "true";
-    li.setAttribute("aria-selected", !isSelected ? "true" : "false");
-    li.setAttribute("aria-checked", !isSelected ? "true" : "false");
+    const isSelected: boolean = li.getAttribute('aria-selected') === 'true'
+    li.setAttribute('aria-selected', !isSelected ? 'true' : 'false')
+    li.setAttribute('aria-checked', !isSelected ? 'true' : 'false')
     // If this is a node, traverse down
-    if (li.hasAttribute("aria-expanded")) {
+    if (li.hasAttribute('aria-expanded')) {
       const childrenGroup: HTMLUListElement | null = document.querySelector(
         `#node-group-${li.id}`
-      );
-      if (childrenGroup) {
-        const children = this.allChildren(childrenGroup, []);
-        for (let child of children) {
+      )
+      if (childrenGroup != null) {
+        const children = this.allChildren(childrenGroup, [])
+        for (const child of children) {
           child.setAttribute(
-            "aria-selected",
-            !isSelected ? "true" : "false"
-          );
+            'aria-selected',
+            !isSelected ? 'true' : 'false'
+          )
           child.setAttribute(
-            "aria-checked",
-            !isSelected ? "true" : "false"
-          );
+            'aria-checked',
+            !isSelected ? 'true' : 'false'
+          )
         }
       }
     }
@@ -202,23 +200,23 @@ export class NestedNavigation {
     if (ul !== null) {
       const all = this.allChildren(ul, [])
       const countChecked = all.filter(
-        (a) => a.getAttribute("aria-selected") == "true"
+        (a) => a.getAttribute('aria-selected') === 'true'
       ).length
       const parentLI: HTMLLIElement | undefined | null = ul.parentNode as HTMLLIElement
       if (parentLI !== null) {
-        if (ul.getAttribute("role") != "tree") {
+        if (ul.getAttribute('role') !== 'tree') {
           if (countChecked > 0 && countChecked < all.length) {
-            parentLI.setAttribute("aria-checked", "mixed");
+            parentLI.setAttribute('aria-checked', 'mixed')
           }
           // All children checked
-          if (countChecked == all.length) {
-            parentLI.setAttribute("aria-checked", "true");
-            parentLI.setAttribute("aria-selected", "true");
+          if (countChecked === all.length) {
+            parentLI.setAttribute('aria-checked', 'true')
+            parentLI.setAttribute('aria-selected', 'true')
           }
           // None checked
-          if (countChecked == 0) {
-            parentLI.setAttribute("aria-selected", "false");
-            parentLI.setAttribute("aria-checked", "false");
+          if (countChecked === 0) {
+            parentLI.setAttribute('aria-selected', 'false')
+            parentLI.setAttribute('aria-checked', 'false')
           }
           const nextEl: HTMLUListElement | null | undefined =
             ul.parentElement?.closest('[role=group]')
@@ -232,13 +230,11 @@ export class NestedNavigation {
 
   setFocusToItem: (element: HTMLLIElement) => void = (element) => {
     Array.from(this.treeItems).forEach((item) => {
-      (item as HTMLElement).tabIndex = -1;
-    });
-    if (element) {
-      element.tabIndex = 0;
-      element.focus();
-      this.currentFocus = element;
-    }
+      (item as HTMLElement).tabIndex = -1
+    })
+    element.tabIndex = 0
+    element.focus()
+    this.currentFocus = element
   }
 
   setFocusToPreviousItem: (input: HTMLLIElement) => void = (input) => {
@@ -292,67 +288,67 @@ export class NestedNavigation {
       case 'Enter':
       case ' ':
         // Check or uncheck checkbox
-        this.setSelected(this.currentFocus);
-        ev.preventDefault();
+        this.setSelected(this.currentFocus)
+        ev.preventDefault()
         break
 
       case 'ArrowUp':
         // Moves focus to the previous node that is focusable without opening or closing a node.
-        this.setFocusToPreviousItem(this.currentFocus);
-        ev.preventDefault();
+        this.setFocusToPreviousItem(this.currentFocus)
+        ev.preventDefault()
         break
 
       case 'ArrowDown':
         // Moves focus to the next node that is focusable without opening or closing a node.
-        this.setFocusToNextItem(this.currentFocus);
-        ev.preventDefault();
+        this.setFocusToNextItem(this.currentFocus)
+        ev.preventDefault()
         break
 
       case 'ArrowRight':
-        if (this.currentFocus.getAttribute("aria-expanded") == "false") {
+        if (this.currentFocus.getAttribute('aria-expanded') === 'false') {
           // When focus is on a closed node, opens the node; focus does not move.
-          this.toggleNode(this.currentFocus, this.currentFocus.id);
-        } else if (this.currentFocus.getAttribute("aria-expanded") == "true") {
+          this.toggleNode(this.currentFocus, this.currentFocus.id)
+        } else if (this.currentFocus.getAttribute('aria-expanded') === 'true') {
           // When focus is on an open node, moves focus to the first child node.
-          this.setFocusToNextItem(this.currentFocus);
+          this.setFocusToNextItem(this.currentFocus)
         }
         // When focus is on an end node (a tree item with no children), does nothing.
-        ev.preventDefault();
+        ev.preventDefault()
         // When focus is on an end node (a tree item with no children), does nothing.
         break
 
       case 'ArrowLeft':
-        if (this.currentFocus.getAttribute("aria-expanded") == "true") {
+        if (this.currentFocus.getAttribute('aria-expanded') === 'true') {
           // When focus is on an open node, closes the node.
-          this.toggleNode(this.currentFocus, this.currentFocus.id);
-        } else if (this.currentFocus.getAttribute("role") != "tree") {
+          this.toggleNode(this.currentFocus, this.currentFocus.id)
+        } else if (this.currentFocus.getAttribute('role') !== 'tree') {
           // When focus is on a child node that is also either an end node or a closed node, moves focus to its parent node.
           const parent = this.currentFocus.parentElement
-          if(parent) {
+          if (parent != null) {
             this.setFocusToItem(
-              parent.closest("li") as HTMLLIElement
+              parent.closest('li') as HTMLLIElement
             )
           }
         }
         // When focus is on a closed `tree`, does nothing.
-        ev.preventDefault();
+        ev.preventDefault()
         // When focus is on a closed `tree`, does nothing.
         break
 
       case 'Home':
         // Moves focus to the first node in the tree without opening or closing a node.
-        this.setFocusToItem(this.tree.firstElementChild as HTMLLIElement);
-        ev.preventDefault();
+        this.setFocusToItem(this.tree.firstElementChild as HTMLLIElement)
+        ev.preventDefault()
         break
 
       case 'End': {
         // Moves focus to the last node in the tree that is focusable without opening the node.
-        let lastLi: HTMLLIElement = this.tree.lastElementChild as HTMLLIElement;
-        while (lastLi && lastLi.getAttribute("aria-expanded") == "true") {
-          lastLi = lastLi.lastElementChild?.lastElementChild as HTMLLIElement;
+        let lastLi: HTMLLIElement | null = this.tree.lastElementChild as HTMLLIElement
+        while (lastLi?.getAttribute('aria-expanded') === 'true') {
+          lastLi = lastLi.lastElementChild?.lastElementChild as HTMLLIElement
         }
-        this.setFocusToItem(lastLi);
-        ev.preventDefault();
+        this.setFocusToItem(lastLi)
+        ev.preventDefault()
         break
       }
       default:
@@ -366,10 +362,10 @@ export class NestedNavigation {
       `#${newId}`
     )
     if (nodeGroup !== null) {
-      const parent: HTMLLIElement = nodeGroup.parentNode as HTMLLIElement
-      if(parent) {
+      const parent: HTMLLIElement | null = nodeGroup.parentNode as HTMLLIElement
+      if (parent != null) {
         this.toggleNode(
-          parent as HTMLLIElement,
+          parent,
           target.id.replace('expander-', '')
         )
         this.setFocusToItem(parent)

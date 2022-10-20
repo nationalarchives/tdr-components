@@ -1,0 +1,8 @@
+{
+  "extends": "stylelint-config-standard-scss",
+  "rules": {
+    "max-line-length": 170,
+    "selector-class-pattern": null,
+    "no-descending-specificity": null
+  }
+}

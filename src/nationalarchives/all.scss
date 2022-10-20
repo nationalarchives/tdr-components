@@ -1,7 +1,3 @@
-body {
-  font-family: Arial, sans-serif;
-}
-
-$govuk-font-family: Arial, sans-serif;
-@import '../../node_modules/govuk-frontend/govuk/all';
+@import "overrides";
+@import "../../node_modules/govuk-frontend/govuk/all";
 @import "components/all";
