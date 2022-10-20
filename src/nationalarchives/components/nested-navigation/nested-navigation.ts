@@ -79,7 +79,6 @@ export class NestedNavigation {
       }
       spanInput.setAttribute('aria-hidden', 'true')
     }
-
     input.parentElement?.appendChild(spanInput)
     input.remove()
 
