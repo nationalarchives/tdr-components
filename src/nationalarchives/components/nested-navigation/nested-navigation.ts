@@ -30,6 +30,7 @@ export class NestedNavigation {
       expander.addEventListener('click', (ev) => {
         this.handleExpanders(ev.target as HTMLElement)
         ev.preventDefault()
+        ev.stopPropagation()
       })
     })
 
@@ -227,13 +228,15 @@ export class NestedNavigation {
     }
   }
 
-  setFocusToItem: (element: HTMLLIElement) => void = (element) => {
+  setFocusToItem: (element?: HTMLLIElement | null) => void = (element) => {
     Array.from(this.treeItems).forEach((item) => {
       (item as HTMLElement).tabIndex = -1
     })
-    element.tabIndex = 0
-    element.focus()
-    this.currentFocus = element
+    if(element) {
+      element.tabIndex = 0
+      element.focus()
+      this.currentFocus = element
+    }
   }
 
   setFocusToPreviousItem: (input: HTMLLIElement) => void = (input) => {

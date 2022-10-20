@@ -4,10 +4,13 @@
                 class="govuk-tna-tree__item"
                 role="treeitem"
                 id="{{ item.id }}"
+                aria-level="{{level}}"
+                aria-setsize="{{size}}"
+                aria-posinset="{{pos}}"
                 aria-selected="false"
         >
             <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="checkbox-{{ item.id }}" type="checkbox"/>
+                <input class="govuk-checkboxes__input" tabindex="-1" id="checkbox-{{ item.id }}" type="checkbox"/>
                 <label class="govuk-label govuk-checkboxes__label" for="checkbox-{{ item.id }}">
                     {{item.name}}
                     {% if item.name == "Baking powder.docx" and data['closure']['baking-powder'][0] === 'true' %}
@@ -26,6 +29,9 @@
                 id="{{ item.id }}"
                 aria-expanded="true"
                 aria-selected="false"
+                aria-level="{{level}}"
+                aria-setsize="{{size}}"
+                aria-posinset="{{pos}}"
         >
             <div class="govuk-tna-tree__node-item__container">
                 <button
@@ -47,7 +53,7 @@
                     </label>
                 </div>
             </div>
-            <ul tabindex="0" class="govuk-tna-tree__nested-item-list" role="group" id="node-group-{{ item.id }}">
+            <ul class="govuk-tna-tree__nested-item-list" role="group" id="node-group-{{ item.id }}">
                 {% set nextLevel = level + 1 %}
                 {% for child in item.children %}
                     {{ navigationItem(child, nextLevel, loop.length, loop.index) }}
@@ -58,7 +64,7 @@
 {% endmacro %}
 
 <div class="govuk-tna-tree">
-    <ul class="govuk-tna-tree__nested-item-list" role="tree" aria-multiselectable="true">
+    <ul tabindex="0" class="govuk-tna-tree__nested-item-list" role="tree" aria-multiselectable="true">
         {% for node in params.items %}
             {{ navigationItem(node, 1, loop.length, loop.index) }}
         {% endfor %}
