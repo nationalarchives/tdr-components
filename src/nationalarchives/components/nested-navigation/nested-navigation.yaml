@@ -10,11 +10,11 @@ examples:
       items:
         - name: folder1
           type: node
-          id: 991803ac-3108-4c2d-af73-7dd2dfa3cbf9
+          id: folderid1
           children:
             - name: file1
               type: item
-              id: ba2a89f0-ac1c-4e1e-ac97-48e01c81c15b
+              id: fileid1
             - name: file2
               type: item
-              id: 98674e50-9957-4028-b105-3cad7aef7941
+              id: fileid2

@@ -9,7 +9,7 @@
     "compile": "tsc && rollup -c",
     "build": "npm-run-all compile sass-compile",
     "start": "ts-node app/start.ts",
-    "lint": "eslint src app lib --fix",
+    "lint": "eslint src app lib",
     "stylelint": "stylelint **/*.scss",
     "checks": "npm-run-all test lint stylelint"
   },

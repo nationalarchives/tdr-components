@@ -232,7 +232,7 @@ export class NestedNavigation {
     Array.from(this.treeItems).forEach((item) => {
       (item as HTMLElement).tabIndex = -1
     })
-    if(element) {
+    if (element != null) {
       element.tabIndex = 0
       element.focus()
       this.currentFocus = element
