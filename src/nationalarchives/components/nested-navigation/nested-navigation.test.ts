@@ -1,8 +1,8 @@
 import { goToComponent } from '../../../../lib/puppeteer-helpers'
 import { ElementHandle } from 'puppeteer'
-import type { KeyInput } from 'puppeteer'
+
 import { getExamples } from '../../../../lib/utils'
-jest.setTimeout(10000000)
+
 const getPropertyValue: (item: ElementHandle | null, name: string) => Promise<string> = async (item, name) => {
   if (item != null) {
     const property = await item.getProperty(name)
@@ -67,9 +67,17 @@ describe('Nested navigation', () => {
     expect(expanded).toEqual('false')
   })
 
-  it.each(['Enter', 'Space'])('should select the first checkbox', async (key: KeyInput) => {
+  it('should select the first checkbox when enter is pressed', async () => {
     await page.keyboard.press('Tab')
-    await page.keyboard.press(key)
+    await page.keyboard.press("Enter")
+    const nodeItem = await page.$(`#${data.id}`)
+    const checked = await getPropertyValue(nodeItem, 'ariaChecked')
+    await expect(checked).toEqual('true')
+  })
+
+  it('should select the first checkbox when space is pressed', async () => {
+    await page.keyboard.press('Tab')
+    await page.keyboard.press("Space")
     const nodeItem = await page.$(`#${data.id}`)
     const checked = await getPropertyValue(nodeItem, 'ariaChecked')
     await expect(checked).toEqual('true')
