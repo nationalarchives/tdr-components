@@ -69,7 +69,7 @@ describe('Nested navigation', () => {
 
   it('should select the first checkbox when enter is pressed', async () => {
     await page.keyboard.press('Tab')
-    await page.keyboard.press("Enter")
+    await page.keyboard.press('Enter')
     const nodeItem = await page.$(`#${data.id}`)
     const checked = await getPropertyValue(nodeItem, 'ariaChecked')
     await expect(checked).toEqual('true')
@@ -77,7 +77,7 @@ describe('Nested navigation', () => {
 
   it('should select the first checkbox when space is pressed', async () => {
     await page.keyboard.press('Tab')
-    await page.keyboard.press("Space")
+    await page.keyboard.press('Space')
     const nodeItem = await page.$(`#${data.id}`)
     const checked = await getPropertyValue(nodeItem, 'ariaChecked')
     await expect(checked).toEqual('true')

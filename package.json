@@ -1,5 +1,5 @@
 {
-  "name": "tna-navigation",
+  "name": "@nationalarchives/tna-components",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -46,6 +46,7 @@
     "nunjucks": "^3.2.3",
     "puppeteer": "^18.2.1",
     "rollup": "^3.2.2",
+    "rollup-plugin-copy": "^3.4.0",
     "sass": "^1.55.0",
     "stylelint": "^14.14.0",
     "stylelint-config-standard": "^29.0.0",

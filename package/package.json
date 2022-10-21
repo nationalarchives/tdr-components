@@ -1,0 +1,30 @@
+{
+  "name": "@nationalarchives/tdr-components",
+  "description": "National Archives components based on the GovUK frontend",
+  "version": "1.0.0",
+  "main": "nationalarchives/all.js",
+  "assets": ["govuk-frontend/govuk/all.scss"],
+  "exports": {
+    ".": {
+      "sass": ["./nationalarchives/all.scss", "./node_modules/govuk-frontend/govuk/all.scss"],
+      "require": "./nationalarchives/all.js"
+    },
+    "./nationalarchives/": "./nationalarchives/"
+  },
+  "sass": "nationalarchives/all.scss",
+  "engines": {
+    "node": ">= 4.2.0"
+  },
+  "author": {
+    "name": "Transfer Digital Records",
+    "email": "tdr@nationalarchives.gov.uk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nationalarchives/tdr-components.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "govuk-frontend": "^4.3.1"
+  }
+}
