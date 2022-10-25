@@ -1,9 +1,6 @@
 name: TDR Deploy Generated Graphql
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - add-navigation-component
 
 env:
   BRANCH_NAME: version-bump-${{ github.run_id }}${{ github.run_attempt }}
