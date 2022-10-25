@@ -4,7 +4,7 @@ npm ci
 npm run build
 cd package
 npm version patch
-git add package.json package-lock.json
+git add package.json
 git commit -m 'Update npm version'
 npm publish --access public
 cd ..
