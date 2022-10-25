@@ -1,4 +1,4 @@
-name: TDR Deploy Generated Graphql
+name: TDR Deploy Components
 on:
   workflow_dispatch:
 
