@@ -1,0 +1,28 @@
+name: TDR Deploy Generated Graphql
+on:
+  workflow_dispatch:
+env:
+  RUN_NUMBER: ${{ github.run_id }}${{ github.run_attempt }}
+  BRANCH_NAME: version-bump-${{ github.run_id }}${{ github.run_attempt }}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          ./.github/scripts/deploy_npm.sh ${{ secrets.NPM_TOKEN }}
+        id: deploy-npm
+      - name: Create Pull Request
+        run: | 
+          git config --global user.email digitalpreservation@nationalarchives.gov.uk
+          git config --global user.name tna-digital-archiving-jenkins
+          git checkout -b $BRANCH_NAME
+          git push -u origin $BRANCH_NAME
+          gh pr create --fill --label 'Version bump'
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+      - name: Send success message
+        uses: nationalarchives/tdr-github-actions/.github/actions/slack-send@main
+        with:
+          message: ":white_check_mark: Generated graphql ${{ steps.deploy-npm.outputs.set-npm-version }} has been published to npm"
+          slack-url: ${{ secrets.SLACK_WEBHOOK }}

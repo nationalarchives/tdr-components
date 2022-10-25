@@ -3,13 +3,9 @@
   "description": "National Archives components based on the GovUK frontend",
   "version": "1.0.0",
   "main": "nationalarchives/all.js",
-  "assets": ["govuk-frontend/govuk/all.scss"],
   "exports": {
-    ".": {
-      "sass": ["./nationalarchives/all.scss", "./node_modules/govuk-frontend/govuk/all.scss"],
-      "require": "./nationalarchives/all.js"
-    },
-    "./nationalarchives/": "./nationalarchives/"
+    ".": "./index.ts",
+    "./components/nested-navigation": "./components/nested-navigation/nested-navigation.ts"
   },
   "sass": "nationalarchives/all.scss",
   "engines": {
@@ -24,7 +20,7 @@
     "url": "https://github.com/nationalarchives/tdr-components.git"
   },
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "govuk-frontend": "^4.3.1"
   }
 }

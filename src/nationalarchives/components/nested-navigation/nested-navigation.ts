@@ -1,14 +1,15 @@
 export class NestedNavigation {
   private readonly tree: HTMLUListElement
   private readonly treeItems: HTMLUListElement[]
-  private currentFocus: HTMLLIElement
+  private currentFocus: HTMLLIElement | null
 
   constructor (tree: HTMLUListElement, treeItems: HTMLUListElement[]) {
     this.tree = tree
     this.treeItems = treeItems
+    this.currentFocus = null
   }
 
-  getCurrentFocus: () => HTMLLIElement = () => {
+  getCurrentFocus: () => HTMLLIElement | null = () => {
     return this.currentFocus
   }
 
@@ -19,8 +20,10 @@ export class NestedNavigation {
   initialiseFormListeners: () => void = () => {
     const tree = document.querySelector('[role=tree]')
     if (tree !== null) {
-      tree.addEventListener('keydown', (ev: KeyboardEvent) => {
-        this.handleKeyDown(ev)
+      tree.addEventListener('keydown', (ev: Event) => {
+        if(ev instanceof KeyboardEvent) {
+          this.handleKeyDown(ev)
+        }
         ev.preventDefault()
       })
     }
@@ -53,7 +56,7 @@ export class NestedNavigation {
 
     document
       .querySelectorAll('[role=tree] .govuk-checkboxes__item')
-      .forEach((checkbox: HTMLElement) => {
+      .forEach((checkbox: Element, _, __) => {
         const input: HTMLInputElement | null = checkbox.querySelector('input')
         const label: HTMLLabelElement | null = checkbox.querySelector('label')
         if ((input != null) && (label != null)) {
@@ -167,32 +170,34 @@ export class NestedNavigation {
     localStorage.setItem('state', JSON.stringify({ expanded }))
   }
 
-  setSelected: (li: HTMLLIElement) => void = (li) => {
-    const isSelected: boolean = li.getAttribute('aria-selected') === 'true'
-    li.setAttribute('aria-selected', !isSelected ? 'true' : 'false')
-    li.setAttribute('aria-checked', !isSelected ? 'true' : 'false')
-    // If this is a node, traverse down
-    if (li.hasAttribute('aria-expanded')) {
-      const childrenGroup: HTMLUListElement | null = document.querySelector(
-        `#node-group-${li.id}`
-      )
-      if (childrenGroup != null) {
-        const children = this.allChildren(childrenGroup, [])
-        for (const child of children) {
-          child.setAttribute(
-            'aria-selected',
-            !isSelected ? 'true' : 'false'
-          )
-          child.setAttribute(
-            'aria-checked',
-            !isSelected ? 'true' : 'false'
-          )
+  setSelected: (li: HTMLLIElement | null) => void = (li) => {
+    if(li) {
+      const isSelected: boolean = li.getAttribute('aria-selected') === 'true'
+      li.setAttribute('aria-selected', !isSelected ? 'true' : 'false')
+      li.setAttribute('aria-checked', !isSelected ? 'true' : 'false')
+      // If this is a node, traverse down
+      if (li.hasAttribute('aria-expanded')) {
+        const childrenGroup: HTMLUListElement | null = document.querySelector(
+          `#node-group-${li.id}`
+        )
+        if (childrenGroup != null) {
+          const children = this.allChildren(childrenGroup, [])
+          for (const child of children) {
+            child.setAttribute(
+              'aria-selected',
+              !isSelected ? 'true' : 'false'
+            )
+            child.setAttribute(
+              'aria-checked',
+              !isSelected ? 'true' : 'false'
+            )
+          }
         }
       }
+      // Traverse up
+      const parentGroup: HTMLUListElement | null = li.closest('[role=group]')
+      this.setParentState(parentGroup)
     }
-    // Traverse up
-    const parentGroup: HTMLUListElement | null = li.closest('[role=group]')
-    this.setParentState(parentGroup)
   }
 
   setParentState: (ul: HTMLUListElement | null) => void = (ul) => {
@@ -239,46 +244,50 @@ export class NestedNavigation {
     }
   }
 
-  setFocusToPreviousItem: (input: HTMLLIElement) => void = (input) => {
-    const li: HTMLLIElement | null = input.closest('li')
-    // Do you have a sibling
-    if (li?.previousElementSibling != null) {
-      // Does sibling have an aria-expanded=true
-      if (li.previousElementSibling.getAttribute('aria-expanded') === 'true') {
-        // Go to sibling's last child
-        const lastChild: HTMLLIElement | null = li.previousElementSibling.querySelector(':scope > ul > li:last-child')
-        if (lastChild !== null) {
-          this.setFocusToItem(lastChild)
+  setFocusToPreviousItem: (input: HTMLLIElement | null) => void = (input) => {
+    if(input) {
+      const li: HTMLLIElement | null = input.closest('li')
+      // Do you have a sibling
+      if (li?.previousElementSibling != null) {
+        // Does sibling have an aria-expanded=true
+        if (li.previousElementSibling.getAttribute('aria-expanded') === 'true') {
+          // Go to sibling's last child
+          const lastChild: HTMLLIElement | null = li.previousElementSibling.querySelector(':scope > ul > li:last-child')
+          if (lastChild !== null) {
+            this.setFocusToItem(lastChild)
+          }
+        } else {
+          // Go to previous sibling
+          this.setFocusToItem(li.previousElementSibling as HTMLLIElement)
         }
-      } else {
-        // Go to previous sibling
-        this.setFocusToItem(li.previousElementSibling as HTMLLIElement)
+      } else if (li?.parentElement != null) {
+        // Go to parent
+        this.setFocusToItem(li.parentElement.closest('li') as HTMLLIElement)
       }
-    } else if (li?.parentElement != null) {
-      // Go to parent
-      this.setFocusToItem(li.parentElement.closest('li') as HTMLLIElement)
     }
   }
 
-  setFocusToNextItem: (input: HTMLLIElement) => void = (input) => {
-    const li: HTMLLIElement | null = input.closest('li')
-    if (li !== null) {
-      // Do you have a child
-      if (li.getAttribute('aria-expanded') === 'true') {
-        // go to first child
-        const firstChild: HTMLLIElement | null = li.querySelector('ul > li')
-        if (firstChild !== null) {
-          this.setFocusToItem(firstChild)
-        }
-      } else {
-        if (li.nextElementSibling !== null) {
-          // Go to next sibling
-          this.setFocusToItem(li.nextElementSibling as HTMLLIElement)
-        } else if (li.parentElement !== null) {
-          // Go to parents next sibling
-          const parent: HTMLLIElement | null = li.parentElement.closest('li')
-          if (parent?.nextElementSibling != null) {
-            this.setFocusToItem(parent.nextElementSibling as HTMLLIElement)
+  setFocusToNextItem: (input: HTMLLIElement | null) => void = (input) => {
+    if(input) {
+      const li: HTMLLIElement | null = input.closest('li')
+      if (li !== null) {
+        // Do you have a child
+        if (li.getAttribute('aria-expanded') === 'true') {
+          // go to first child
+          const firstChild: HTMLLIElement | null = li.querySelector('ul > li')
+          if (firstChild !== null) {
+            this.setFocusToItem(firstChild)
+          }
+        } else {
+          if (li.nextElementSibling !== null) {
+            // Go to next sibling
+            this.setFocusToItem(li.nextElementSibling as HTMLLIElement)
+          } else if (li.parentElement !== null) {
+            // Go to parents next sibling
+            const parent: HTMLLIElement | null = li.parentElement.closest('li')
+            if (parent?.nextElementSibling != null) {
+              this.setFocusToItem(parent.nextElementSibling as HTMLLIElement)
+            }
           }
         }
       }
@@ -307,10 +316,10 @@ export class NestedNavigation {
         break
 
       case 'ArrowRight':
-        if (this.currentFocus.getAttribute('aria-expanded') === 'false') {
+        if (this.currentFocus?.getAttribute('aria-expanded') === 'false') {
           // When focus is on a closed node, opens the node; focus does not move.
           this.toggleNode(this.currentFocus, this.currentFocus.id)
-        } else if (this.currentFocus.getAttribute('aria-expanded') === 'true') {
+        } else if (this.currentFocus?.getAttribute('aria-expanded') === 'true') {
           // When focus is on an open node, moves focus to the first child node.
           this.setFocusToNextItem(this.currentFocus)
         }
@@ -320,12 +329,12 @@ export class NestedNavigation {
         break
 
       case 'ArrowLeft':
-        if (this.currentFocus.getAttribute('aria-expanded') === 'true') {
+        if (this.currentFocus?.getAttribute('aria-expanded') === 'true') {
           // When focus is on an open node, closes the node.
           this.toggleNode(this.currentFocus, this.currentFocus.id)
-        } else if (this.currentFocus.getAttribute('role') !== 'tree') {
+        } else if (this.currentFocus?.getAttribute('role') !== 'tree') {
           // When focus is on a child node that is also either an end node or a closed node, moves focus to its parent node.
-          const parent = this.currentFocus.parentElement
+          const parent = this.currentFocus?.parentElement
           if (parent != null) {
             this.setFocusToItem(
               parent.closest('li') as HTMLLIElement

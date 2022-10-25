@@ -1,4 +1,5 @@
 import copy from 'rollup-plugin-copy'
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default {
   input: './out-tsc/src/nationalarchives/components/all.js',
@@ -6,14 +7,15 @@ export default {
     dir: 'public',
   },
   plugins: [
+    nodeResolve(),
     copy({
       targets: [
         {
           src: [
-            './out-tsc/src/nationalarchives/components/all.js',
+            'src/nationalarchives/index.ts',
             'src/nationalarchives/components',
             'src/nationalarchives/*.scss',
-          ], dest: 'package/nationalarchives'
+          ], dest: 'package'
         }
       ],
       filter: (src, _) => !src.includes("test.ts") && !src.includes(".yaml")
