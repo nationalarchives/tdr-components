@@ -24,5 +24,5 @@ jobs:
       - name: Send success message
         uses: nationalarchives/tdr-github-actions/.github/actions/slack-send@main
         with:
-          message: ":white_check_mark: Generated graphql ${{ steps.deploy-npm.outputs.set-npm-version }} has been published to npm"
+          message: ":white_check_mark: TDR Components ${{ steps.deploy-npm.outputs.set-npm-version }} has been published to npm"
           slack-url: ${{ secrets.SLACK_WEBHOOK }}
