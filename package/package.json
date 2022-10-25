@@ -1,7 +1,7 @@
 {
   "name": "@nationalarchives/tdr-components",
   "description": "National Archives components based on the GovUK frontend",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "nationalarchives/all.js",
   "exports": {
     ".": "./index.ts",
