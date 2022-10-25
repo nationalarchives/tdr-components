@@ -10,7 +10,7 @@
     "test": "jest",
     "compile": "tsc && rollup -c",
     "build-server": "npm-run-all compile sass-compile",
-    "build": "build copy-all-css copy-all-js",
+    "build": "build-server copy-all-css copy-all-js",
     "start": "ts-node app/start.ts",
     "lint": "eslint src app lib",
     "stylelint": "stylelint **/*.scss",
