@@ -24,7 +24,6 @@ export class NestedNavigation {
         if(ev instanceof KeyboardEvent) {
           this.handleKeyDown(ev)
         }
-        ev.preventDefault()
       })
     }
 
@@ -75,7 +74,7 @@ export class NestedNavigation {
   replaceCheckboxWithSpan: (input: HTMLInputElement, label: HTMLLabelElement) => void = (input, label) => {
     const spanInput = document.createElement('span')
     for (const name of input.getAttributeNames()) {
-      if (!['type'].includes(name)) {
+      if (!['type', 'tabindex'].includes(name)) {
         const inputAttribute = input.getAttribute(name)
         if (inputAttribute != null) {
           spanInput.setAttribute(name, inputAttribute)

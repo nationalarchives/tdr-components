@@ -18,3 +18,16 @@ examples:
             - name: file2
               type: item
               id: fileid2
+        - name: folder12
+          type: node
+          id: folderid12
+          children:
+            - name: file12
+              type: item
+              id: fileid12
+            - name: file22
+              type: item
+              id: fileid22
+        - name: file1
+          type: item
+          id: fileid3

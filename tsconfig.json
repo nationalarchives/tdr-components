@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "esModuleInterop": true,
     "target": "es2017",
     "skipLibCheck": true,
-    "outDir": "out-tsc",
+    "outDir": "package/dist",
     "moduleResolution": "Node",
     "lib": ["dom", "es2017"],
     "strictNullChecks": true
   },
-  "files": [
-    "src/nationalarchives/components/all.ts"
-  ],
   "include": ["src/nationalarchives/components/**/*.test.ts", "app/*.ts"]
 }

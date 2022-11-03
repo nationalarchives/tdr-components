@@ -2,10 +2,9 @@
   "name": "@nationalarchives/tdr-components",
   "description": "National Archives components based on the GovUK frontend",
   "version": "1.0.0",
-  "main": "nationalarchives/all.js",
+  "main": "dist/index.js",
   "exports": {
-    ".": "./index.ts",
-    "./components/nested-navigation": "./components/nested-navigation/nested-navigation.ts"
+    ".": "./dist"
   },
   "sass": "nationalarchives/all.scss",
   "engines": {
