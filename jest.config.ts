@@ -5,7 +5,8 @@ const config = {
       displayName: 'JavaScript component tests',
       testMatch: [
         '**/components/*/template.test.ts',
-        '**/components/*/*unit.test.ts'
+        '**/components/*/*unit.test.ts',
+        '!package/**'
       ],
       transform: {
         "^.+\\.ts?$": "ts-jest"
@@ -18,7 +19,8 @@ const config = {
       testMatch: [
         '**/components/*/*.test.ts',
         '!**/(*.)?template.test.ts',
-        '!**/components/*/*unit.test.ts'
+        '!**/components/*/*unit.test.ts',
+        '!package/**'
       ],
       preset: "jest-puppeteer",
       transform: {

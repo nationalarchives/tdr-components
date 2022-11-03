@@ -52,13 +52,13 @@ interface NestedNavigationData {
 }
 
 describe('Nested navigation', () => {
-  let data: NestedNavigationData
+  let data: NestedNavigationData[]
 
   beforeEach(async () => {
     const exampleName = 'default'
     await goToComponent(page, 'nested-navigation', { exampleName })
     const examples = await getExamples('nested-navigation')
-    data = examples[0].default.items[0]
+    data = examples[0].default.items
   })
 
   it('should load the page with the checkboxes collapsed', async () => {
@@ -70,7 +70,7 @@ describe('Nested navigation', () => {
   it('should select the first checkbox when enter is pressed', async () => {
     await page.keyboard.press('Tab')
     await page.keyboard.press('Enter')
-    const nodeItem = await page.$(`#${data.id}`)
+    const nodeItem = await page.$(`#${data[0].id}`)
     const checked = await getPropertyValue(nodeItem, 'ariaChecked')
     await expect(checked).toEqual('true')
   })
@@ -78,21 +78,21 @@ describe('Nested navigation', () => {
   it('should select the first checkbox when space is pressed', async () => {
     await page.keyboard.press('Tab')
     await page.keyboard.press('Space')
-    const nodeItem = await page.$(`#${data.id}`)
+    const nodeItem = await page.$(`#${data[0].id}`)
     const checked = await getPropertyValue(nodeItem, 'ariaChecked')
     await expect(checked).toEqual('true')
   })
 
   it('should expand the node when the expander is clicked', async () => {
     await page.click('.govuk-tna-tree__expander')
-    const nodeItem = await page.$(`#${data.id}`)
+    const nodeItem = await page.$(`#${data[0].id}`)
     const expanded = await getPropertyValue(nodeItem, 'ariaExpanded')
     expect(expanded).toEqual('true')
   })
 
   it('should expand the node when the right arrow is pressed on the closed parent node', async () => {
     await expandRootNode()
-    const nodeItem = await page.$(`#${data.id}`)
+    const nodeItem = await page.$(`#${data[0].id}`)
     const expanded = await getPropertyValue(nodeItem, 'ariaExpanded')
     expect(expanded).toEqual('true')
   })
@@ -100,41 +100,41 @@ describe('Nested navigation', () => {
   it('should select the first child when the right arrow is pressed on the expanded parent node', async () => {
     await goToFirstChild()
     const activeElementId = await getActiveId()
-    expect(activeElementId).toEqual(data.children[0].id)
+    expect(activeElementId).toEqual(data[0].children[0].id)
   })
 
   it('should select the second child when the down arrow is pressed on the first child', async () => {
     await goToFirstChild()
     await page.keyboard.press('ArrowDown')
     const activeElementId = await getActiveId()
-    expect(activeElementId).toEqual(data.children[1].id)
+    expect(activeElementId).toEqual(data[0].children[1].id)
   })
 
   it('should select the first child when the up arrow is pressed on the second child', async () => {
     await goToSecondChild()
     await page.keyboard.press('ArrowUp')
     const activeElementId = await getActiveId()
-    expect(activeElementId).toEqual(data.children[0].id)
+    expect(activeElementId).toEqual(data[0].children[0].id)
   })
 
   it('should select the root node when the left arrow is pressed on the second child', async () => {
     await goToSecondChild()
     await page.keyboard.press('ArrowLeft')
     const activeElementId = await getActiveId()
-    expect(activeElementId).toEqual(data.id)
+    expect(activeElementId).toEqual(data[0].id)
   })
 
   it('should select the root node when the left arrow is pressed on the second child', async () => {
     await goToFirstChild()
     await page.keyboard.press('ArrowLeft')
     const activeElementId = await getActiveId()
-    expect(activeElementId).toEqual(data.id)
+    expect(activeElementId).toEqual(data[0].id)
   })
 
   it('should close the root node when the left arrow is pressed if it is expanded', async () => {
     await expandRootNode()
     await page.keyboard.press('ArrowLeft')
-    const node = await page.$(`#${data.id}`)
+    const node = await page.$(`#${data[0].id}`)
     const expanded = await getPropertyValue(node, 'ariaExpanded')
     expect(expanded).toEqual('false')
   })
@@ -143,7 +143,7 @@ describe('Nested navigation', () => {
     await expandRootNode()
     await page.keyboard.press('End')
     const activeElementId = await getActiveId()
-    expect(activeElementId).toEqual(data.children[1].id)
+    expect(activeElementId).toEqual(data[2].id)
   })
 
   it('should select the root node when home is pressed on the last child', async () => {
@@ -151,6 +151,6 @@ describe('Nested navigation', () => {
     await page.keyboard.press('End')
     await page.keyboard.press('Home')
     const activeElementId = await getActiveId()
-    expect(activeElementId).toEqual(data.id)
+    expect(activeElementId).toEqual(data[0].id)
   })
 })

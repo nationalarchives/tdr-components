@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "sass-compile": "sass --load-path=node_modules --no-source-map ./src/nationalarchives/all.scss ./public/main.css",
-    "sass-copy": "copyfiles -u 2 -V 'src/nationalarchives/**/*.scss' package",
+    "sass-copy": "copyfiles -u 2 'src/nationalarchives/**/*.scss' package",
     "test": "jest",
     "compile-server": "webpack --config webpack.config.server.js --mode production",
     "compile": "webpack --mode production",

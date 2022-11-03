@@ -28,7 +28,8 @@ describe('Nested Navigation', () => {
         const labelText = label.children[0] as unknown as Text
         renderedLabelsText.push(labelText.data.trim())
       }
-      expect(renderedLabelsText.sort()).toEqual(['file1', 'file2', 'folder1'])
+
+      expect(renderedLabelsText.sort()).toEqual(['file1', 'file1', 'file12', 'file2', 'file22', 'folder1', 'folder12'])
     })
   })
 })
