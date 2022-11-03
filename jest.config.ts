@@ -11,7 +11,8 @@ const config = {
       transform: {
         "^.+\\.ts?$": "ts-jest"
       },
-      testEnvironment: "jsdom"
+      testEnvironment: "jsdom",
+      modulePathIgnorePatterns: ['<rootDir>/package']
     },
     {
       displayName: 'JavaScript puppeteer tests',
@@ -20,8 +21,8 @@ const config = {
         '**/components/*/*.test.ts',
         '!**/(*.)?template.test.ts',
         '!**/components/*/*unit.test.ts',
-        '!package/**'
       ],
+      modulePathIgnorePatterns: ['<rootDir>/package'],
       preset: "jest-puppeteer",
       transform: {
         "^.+\\.ts?$": "ts-jest"
