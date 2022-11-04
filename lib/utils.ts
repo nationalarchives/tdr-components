@@ -6,7 +6,7 @@ import yaml from 'js-yaml'
 import { paths } from '../app/config'
 import nunjucks from 'nunjucks'
 
-const kebabCaseToPascalCase: (value: string) => string = (value) => {
+export const kebabCaseToPascalCase: (value: string) => string = (value) => {
   return value
     .toLowerCase()
     .split('-')
@@ -45,9 +45,10 @@ interface ComponentDataParams {
 }
 interface ComponentDataExamples {
   name: string
+  description: string
   data: any
 }
-interface ComponentData {
+export interface ComponentData {
   name: string
   params: ComponentDataParams
   examples: ComponentDataExamples[]

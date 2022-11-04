@@ -1,3 +1,4 @@
+<link rel="stylesheet" media="screen" href="/public/main.css">
 <script type="application/javascript" src="/public/index.js"></script>
 {% block skipLink %}{% endblock %}
 {% block bodyStart %}
@@ -12,7 +13,14 @@
     <main class="govuk-main-wrapper">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
-                {{ componentView | safe }}
+                <h1>{{ component.componentName }}</h1>
+                {% for example in component.examples %}
+                    <h2>{{ example.name }}</h2>
+                    <h3>{{ example.description }}</h3>
+                    <a href="{{ example.link }}">Open in new tab</a>
+                    {{ example.html | safe }}
+
+                {% endfor %}
             </div>
         </div>
     </main>

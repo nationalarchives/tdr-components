@@ -38,8 +38,10 @@ const expandRootNode: () => Promise<void> = async () => {
   const isExpanded = await isRootNodeExpanded()
   if (!isExpanded) {
     await page.keyboard.press('Tab')
+    await page.keyboard.press('Tab')
     await page.keyboard.press('ArrowRight')
   } else {
+    await page.keyboard.press('Tab')
     await page.keyboard.press('Tab')
   }
 }
@@ -69,6 +71,7 @@ describe('Nested navigation', () => {
 
   it('should select the first checkbox when enter is pressed', async () => {
     await page.keyboard.press('Tab')
+    await page.keyboard.press('Tab')
     await page.keyboard.press('Enter')
     const nodeItem = await page.$(`#${data[0].id}`)
     const checked = await getPropertyValue(nodeItem, 'ariaChecked')
@@ -76,6 +79,7 @@ describe('Nested navigation', () => {
   })
 
   it('should select the first checkbox when space is pressed', async () => {
+    await page.keyboard.press('Tab')
     await page.keyboard.press('Tab')
     await page.keyboard.press('Space')
     const nodeItem = await page.$(`#${data[0].id}`)

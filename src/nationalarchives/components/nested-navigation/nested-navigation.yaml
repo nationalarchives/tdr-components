@@ -6,6 +6,7 @@ params:
 
 examples:
   - name: default
+    description: The default nested navigation layout
     data:
       items:
         - name: folder1

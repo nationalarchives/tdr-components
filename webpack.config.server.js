@@ -2,7 +2,7 @@ const path = require("path")
 const fs = require("fs")
 
 module.exports = {
-  entry: "./src/nationalarchives/components/all.ts",
+  entry: "./app/all.ts",
   module: {
     rules: [
       {

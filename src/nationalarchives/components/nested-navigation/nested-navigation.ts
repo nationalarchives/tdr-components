@@ -21,7 +21,7 @@ export class NestedNavigation {
     const tree = document.querySelector('[role=tree]')
     if (tree !== null) {
       tree.addEventListener('keydown', (ev: Event) => {
-        if(ev instanceof KeyboardEvent) {
+        if (ev instanceof KeyboardEvent) {
           this.handleKeyDown(ev)
         }
       })
@@ -170,7 +170,7 @@ export class NestedNavigation {
   }
 
   setSelected: (li: HTMLLIElement | null) => void = (li) => {
-    if(li) {
+    if (li != null) {
       const isSelected: boolean = li.getAttribute('aria-selected') === 'true'
       li.setAttribute('aria-selected', !isSelected ? 'true' : 'false')
       li.setAttribute('aria-checked', !isSelected ? 'true' : 'false')
@@ -244,7 +244,7 @@ export class NestedNavigation {
   }
 
   setFocusToPreviousItem: (input: HTMLLIElement | null) => void = (input) => {
-    if(input) {
+    if (input != null) {
       const li: HTMLLIElement | null = input.closest('li')
       // Do you have a sibling
       if (li?.previousElementSibling != null) {
@@ -267,7 +267,7 @@ export class NestedNavigation {
   }
 
   setFocusToNextItem: (input: HTMLLIElement | null) => void = (input) => {
-    if(input) {
+    if (input != null) {
       const li: HTMLLIElement | null = input.closest('li')
       if (li !== null) {
         // Do you have a child
