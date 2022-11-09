@@ -1,5 +1,4 @@
 .govuk-tna-tree {
-  /* Can I use this instead? $govuk-checkboxes-size */
   --checkbox-width: 40px;
   --item-expander-btn-width: 40px;
 
@@ -140,7 +139,7 @@ button.govuk-tna-tree__expander {
 }
 
 /*
- * Styles pilfered from this thread:
+ * Styles copied from this thread:
  * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
  * */
 [role="treeitem"][aria-checked="mixed"] > .govuk-checkboxes__item > .govuk-checkboxes__label::after,

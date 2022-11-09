@@ -145,7 +145,7 @@ export class NestedNavigation {
           if (item.nodeName === 'LI') {
             elements.push(item)
           }
-          // If children includes a UL/role=group then get children
+          // If children include a UL/role=group then get children
           Array.from(item.children)
             .filter((el) => el.nodeName === 'UL')
             .forEach((el) => this.allChildren(el as HTMLUListElement, elements))
@@ -315,33 +315,11 @@ export class NestedNavigation {
         break
 
       case 'ArrowRight':
-        if (this.currentFocus?.getAttribute('aria-expanded') === 'false') {
-          // When focus is on a closed node, opens the node; focus does not move.
-          this.toggleNode(this.currentFocus, this.currentFocus.id)
-        } else if (this.currentFocus?.getAttribute('aria-expanded') === 'true') {
-          // When focus is on an open node, moves focus to the first child node.
-          this.setFocusToNextItem(this.currentFocus)
-        }
-        // When focus is on an end node (a tree item with no children), does nothing.
-        ev.preventDefault()
-        // When focus is on an end node (a tree item with no children), does nothing.
+        this.processArrowRightEvent(ev)
         break
 
       case 'ArrowLeft':
-        if (this.currentFocus?.getAttribute('aria-expanded') === 'true') {
-          // When focus is on an open node, closes the node.
-          this.toggleNode(this.currentFocus, this.currentFocus.id)
-        } else if (this.currentFocus?.getAttribute('role') !== 'tree') {
-          // When focus is on a child node that is also either an end node or a closed node, moves focus to its parent node.
-          const parent = this.currentFocus?.parentElement
-          if (parent != null) {
-            this.setFocusToItem(
-              parent.closest('li') as HTMLLIElement
-            )
-          }
-        }
-        // When focus is on a closed `tree`, does nothing.
-        ev.preventDefault()
+        this.processArrowLeftEvent(ev)
         // When focus is on a closed `tree`, does nothing.
         break
 
@@ -352,18 +330,50 @@ export class NestedNavigation {
         break
 
       case 'End': {
-        // Moves focus to the last node in the tree that is focusable without opening the node.
-        let lastLi: HTMLLIElement | null = this.tree.lastElementChild as HTMLLIElement
-        while (lastLi?.getAttribute('aria-expanded') === 'true') {
-          lastLi = lastLi.lastElementChild?.lastElementChild as HTMLLIElement
-        }
-        this.setFocusToItem(lastLi)
-        ev.preventDefault()
+        this.processEndEvent(ev)
         break
       }
       default:
         break
     }
+  }
+
+  private readonly processEndEvent: (ev: KeyboardEvent) => void = ev => {
+    // Moves focus to the last node in the tree that is focusable without opening the node.
+    let lastLi: HTMLLIElement | null = this.tree.lastElementChild as HTMLLIElement
+    while (lastLi?.getAttribute('aria-expanded') === 'true') {
+      lastLi = lastLi.lastElementChild?.lastElementChild as HTMLLIElement
+    }
+    this.setFocusToItem(lastLi)
+    ev.preventDefault()
+  }
+
+  private readonly processArrowLeftEvent: (ev: KeyboardEvent) => void = ev => {
+    if (this.currentFocus?.getAttribute('aria-expanded') === 'true') {
+      // When focus is on an open node, closes the node.
+      this.toggleNode(this.currentFocus, this.currentFocus.id)
+    } else if (this.currentFocus?.getAttribute('role') !== 'tree') {
+      // When focus is on a child node that is also either an end node or a closed node, moves focus to its parent node.
+      const parent = this.currentFocus?.parentElement
+      if (parent != null) {
+        this.setFocusToItem(
+          parent.closest('li') as HTMLLIElement
+        )
+      }
+    }
+    ev.preventDefault()
+  }
+
+  private readonly processArrowRightEvent: (ev: KeyboardEvent) => void = ev => {
+    if (this.currentFocus?.getAttribute('aria-expanded') === 'false') {
+      // When focus is on a closed node, opens the node; focus does not move.
+      this.toggleNode(this.currentFocus, this.currentFocus.id)
+    } else if (this.currentFocus?.getAttribute('aria-expanded') === 'true') {
+      // When focus is on an open node, moves focus to the first child node.
+      this.setFocusToNextItem(this.currentFocus)
+    }
+    // When focus is on an end node (a tree item with no children), does nothing.
+    ev.preventDefault()
   }
 
   handleExpanders: (target: Element) => void = (target: Element) => {

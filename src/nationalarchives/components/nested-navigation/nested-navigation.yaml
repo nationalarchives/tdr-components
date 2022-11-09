@@ -29,6 +29,6 @@ examples:
             - name: file22
               type: item
               id: fileid22
-        - name: file1
+        - name: fileid3
           type: item
-          id: fileid3
+          id: fileid31

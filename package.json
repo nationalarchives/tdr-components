@@ -1,7 +1,7 @@
 {
   "name": "@nationalarchives/tdr-components",
-  "version": "1.0.11",
-  "description": "",
+  "version": "1.0.0",
+  "description": "This library contains custom components based on the GovUK frontend",
   "main": "index.ts",
   "scripts": {
     "sass-compile": "sass --load-path=node_modules --no-source-map ./src/nationalarchives/all.scss ./public/main.css",
@@ -16,7 +16,7 @@
     "stylelint": "stylelint **/*.scss",
     "checks": "npm-run-all test lint stylelint"
   },
-  "author": "",
+  "author": "The National Archives",
   "license": "MIT",
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",

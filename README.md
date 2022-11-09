@@ -1,11 +1,11 @@
 # TDR Components
 
-This library will contain custom components based on the GovUK frontend.
+This library contains custom components based on the [GovUK frontend](https://design-system.service.gov.uk/).
 
 The project is divided into different directories
 
 ## The app directory
-This is an express app which allows you to view the individual components in a browser. It is made up of the following files
+This is [an express app](https://expressjs.com/) which allows you to view the individual components in a browser. It is made up of the following files
  
 * `config.ts` Custom config such as path names which is used in multiple places.
 * `server.ts` The code for the express server. 
@@ -80,7 +80,7 @@ interface ComponentDataExamples {
 The example data is `any` because this data is specific to the component you are rendering.
 
 ## Creating a new component
-You need to create a directory with a name in kebab case.
+You need to create a directory with a name in kebab case which describes the component. For example, `card` or `navigation-text`
 
 ### Minimum required files
 #### `macro.njk`
@@ -112,7 +112,6 @@ Unit tests for the typescript
 `<component-name>.test.ts`
 
 These use [Puppeteer](https://pptr.dev/) load the pages and run tests against them. There are helper functions in the utils directory.
-
 
 ## Building the project
 There are two webpack files. 

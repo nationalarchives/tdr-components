@@ -87,6 +87,21 @@ describe('Nested navigation', () => {
     await expect(checked).toEqual('true')
   })
 
+  it('should select all child checkboxes if the parent checkbox is checked', async () => {
+    await page.keyboard.press('Tab')
+    await page.keyboard.press('Tab')
+    await page.keyboard.press('Space')
+    const nodeItem = await page.$(`#${data[0].id}`)
+    const checked = await getPropertyValue(nodeItem, 'ariaChecked')
+    await expect(checked).toEqual('true')
+    const childIds = data[0].children.map(child => child.id)
+    for (const childId of childIds) {
+      const nodeItem = await page.$(`#${childId}`)
+      const childChecked = await getPropertyValue(nodeItem, 'ariaChecked')
+      await expect(childChecked).toEqual('true')
+    }
+  })
+
   it('should expand the node when the expander is clicked', async () => {
     await page.click('.govuk-tna-tree__expander')
     const nodeItem = await page.$(`#${data[0].id}`)

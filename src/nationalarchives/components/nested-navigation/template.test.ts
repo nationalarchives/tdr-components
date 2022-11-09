@@ -29,7 +29,7 @@ describe('Nested Navigation', () => {
         renderedLabelsText.push(labelText.data.trim())
       }
 
-      expect(renderedLabelsText.sort()).toEqual(['file1', 'file1', 'file12', 'file2', 'file22', 'folder1', 'folder12'])
+      expect(renderedLabelsText.sort()).toEqual(['file1', 'file12', 'file2', 'file22', 'fileid3', 'folder1', 'folder12'])
     })
   })
 })
