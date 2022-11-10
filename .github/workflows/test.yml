@@ -2,7 +2,6 @@ name: TDR Run Tests
 on:
   push:
     branches-ignore:
-      - main
       - release-*
 permissions:
   id-token: write
