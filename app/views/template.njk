@@ -1,0 +1,20 @@
+<script type="application/javascript" src="/public/index.js"></script>
+{% block skipLink %}{% endblock %}
+{% block bodyStart %}
+    {% block banner %}
+        {% include "banner.njk" %}
+    {% endblock %}
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                {{ componentView | safe }}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
