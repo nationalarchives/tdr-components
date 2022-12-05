@@ -6,7 +6,7 @@
     "sass-compile": "sass --load-path=node_modules --no-source-map ./src/nationalarchives/all.scss ./public/main.css",
     "sass-copy": "copyfiles -u 2 'src/nationalarchives/**/*.scss' package",
     "test": "jest",
-    "compile-server": "webpack --config webpack.config.server.js --mode production",
+    "compile-server": "webpack --config webpack.config.server.js --mode development",
     "compile": "webpack --mode production",
     "build": "npm-run-all sass-copy compile",
     "build-server": "npm-run-all compile-server sass-compile",

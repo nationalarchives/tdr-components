@@ -49,13 +49,14 @@ export const app: () => Promise<Express> = async () => {
 
   app.get('/:componentName/:exampleName', (req, res) => {
     const componentName = req.params.componentName
-
-    const exampleName = req.params.exampleName === '' ? req.params.exampleName : 'default'
+    const exampleName = req.params.exampleName
 
     const exampleConfig = res.locals.componentData.examples.find(
-      example => example.name.replace(/ /g, '-') === exampleName
+      example => example.name === exampleName
     )
+
     const macroParameters = JSON.stringify(exampleConfig.data)
+
     res.locals.componentView = renderHtml(componentName, macroParameters)
 
     res.render('template')

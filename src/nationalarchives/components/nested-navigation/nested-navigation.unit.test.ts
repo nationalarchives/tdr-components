@@ -26,8 +26,8 @@ const createListElement: (ariaExpanded: string) => HTMLLIElement = (ariaExpanded
   return li
 }
 
-const createNestedNavigation: (navOption: Partial<NestedNavigation>, element?: HTMLLIElement | undefined) => NestedNavigation = (navOption, element) => {
-  const el = document.createElement('ul')
+const createNestedNavigation: (navOption: Partial<NestedNavigation>, element?: HTMLLIElement | undefined, tree?: HTMLUListElement | undefined) => NestedNavigation = (navOption, element, tree) => {
+  const el = tree ? tree : document.createElement('ul')
   const navigation = new NestedNavigation(el, [el])
   if (element != null) {
     navigation.setFocusToItem(element)
@@ -38,7 +38,19 @@ const createNestedNavigation: (navOption: Partial<NestedNavigation>, element?: H
   return navigation
 }
 
-describe('Nested Navigation', () => {
+
+describe.each(["checkboxes", "radios"])('Nested Navigation %s', classNameValue => {
+  const inputType = document.createElement("input")
+  const inputTypeValue = classNameValue === "checkboxes" ? "checkbox" : "radio"
+  inputType.id = "input-type"
+  inputType.value = inputTypeValue
+
+  const className = document.createElement("input")
+  className.id = "class-name"
+  className.value = classNameValue
+  document.body.appendChild(inputType)
+  document.body.appendChild(className)
+
   describe('handleKeyDown', () => {
     it('should select the focused item when enter is pressed', () => {
       const li = document.createElement('li')
@@ -47,9 +59,9 @@ describe('Nested Navigation', () => {
       const nestedNavigation = createNestedNavigation({ setSelected }, li)
 
       const event = createKeyboardEvent('Enter')
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
-      expect(setSelected).toHaveBeenCalledWith(li)
+      expect(setSelected).toHaveBeenCalledWith(li, classNameValue)
     })
 
     it('should select the focused item when space is pressed', () => {
@@ -58,9 +70,9 @@ describe('Nested Navigation', () => {
 
       const nestedNavigation = createNestedNavigation({ setSelected }, li)
       const event = createKeyboardEvent(' ')
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
-      expect(setSelected).toHaveBeenCalledWith(li)
+      expect(setSelected).toHaveBeenCalledWith(li, classNameValue)
     })
 
     it('should focus on the previous item when ArrowUp is pressed', () => {
@@ -69,7 +81,7 @@ describe('Nested Navigation', () => {
 
       const nestedNavigation = createNestedNavigation({ setFocusToPreviousItem }, li)
       const event = createKeyboardEvent('ArrowUp')
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
       expect(setFocusToPreviousItem).toHaveBeenCalledWith(li)
     })
@@ -81,7 +93,7 @@ describe('Nested Navigation', () => {
       const nestedNavigation = createNestedNavigation({ setFocusToNextItem }, li)
 
       const event = createKeyboardEvent('ArrowDown')
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
       expect(setFocusToNextItem).toHaveBeenCalledWith(li)
     })
@@ -94,9 +106,9 @@ describe('Nested Navigation', () => {
 
       const nestedNavigation = createNestedNavigation({ toggleNode }, li)
       const event = createKeyboardEvent('ArrowRight')
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
-      expect(toggleNode).toHaveBeenCalledWith(li, 'test-id')
+      expect(toggleNode).toHaveBeenCalledWith(li, 'test-id', classNameValue)
     })
 
     it('should focus on the checkbox when ArrowRight is pressed and the node is open', () => {
@@ -107,7 +119,7 @@ describe('Nested Navigation', () => {
       const nestedNavigation = createNestedNavigation({ setFocusToNextItem }, li)
 
       const event = createKeyboardEvent('ArrowRight')
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
       expect(setFocusToNextItem).toHaveBeenCalledWith(li)
     })
@@ -121,7 +133,7 @@ describe('Nested Navigation', () => {
       const nestedNavigation = createNestedNavigation({ setFocusToItem }, li)
 
       const event = createKeyboardEvent('ArrowLeft')
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
       expect(setFocusToItem).toHaveBeenCalledWith(parentLi)
     })
@@ -134,9 +146,9 @@ describe('Nested Navigation', () => {
 
       const nestedNavigation = createNestedNavigation({ toggleNode }, li)
       const event = createKeyboardEvent('ArrowLeft')
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
-      expect(toggleNode).toHaveBeenCalledWith(li, 'test-id')
+      expect(toggleNode).toHaveBeenCalledWith(li, 'test-id', classNameValue)
     })
 
     it('should set the focus to the first child when Home is pressed', () => {
@@ -146,7 +158,7 @@ describe('Nested Navigation', () => {
       const nestedNavigation = new NestedNavigation(tree, [tree])
       const event = createKeyboardEvent('Home')
 
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
       expect(nestedNavigation.getCurrentFocus()).toEqual(li)
     })
@@ -159,7 +171,7 @@ describe('Nested Navigation', () => {
       nestedNavigation.getTree().appendChild(li)
       const event = createKeyboardEvent('Home')
 
-      nestedNavigation.handleKeyDown(event)
+      nestedNavigation.handleKeyDown(event, classNameValue)
 
       expect(setFocusToItem).toHaveBeenCalledWith(li)
     })
@@ -177,9 +189,9 @@ describe('Nested Navigation', () => {
       li.appendChild(ul)
       document.body.appendChild(li)
 
-      nestedNavigation.handleExpanders(input)
+      nestedNavigation.handleExpanders(input, classNameValue)
 
-      expect(toggleNode).toHaveBeenCalledWith(li, input.id.replace('expander-', ''))
+      expect(toggleNode).toHaveBeenCalledWith(li, input.id.replace('expander-', ''), classNameValue)
       expect(setFocusToItem).toHaveBeenCalledWith(li)
 
       document.body.removeChild(li)
@@ -346,47 +358,6 @@ describe('Nested Navigation', () => {
     })
   })
 
-  describe.each([true, false])('setSelected', (state) => {
-    it(`should set itself and parent checkboxes to ${state.toString()} for a closed node`, () => {
-      const li = createListElement('false')
-      const currentSelection = state ? 'false' : 'true'
-      li.setAttribute('aria-selected', currentSelection)
-      const ul = document.createElement('ul')
-      ul.setAttribute('role', 'group')
-      ul.appendChild(li)
-      const setParentState = jest.fn()
-      const nestedNavigation = createNestedNavigation({ setParentState })
-      nestedNavigation.setSelected(li)
-
-      expect(setParentState).toHaveBeenCalledWith(ul)
-      expect(li.getAttribute('aria-selected')).toEqual(state.toString())
-    })
-
-    it(`should set itself and child checkboxes to ${state.toString()} for an open node`, () => {
-      const li = createListElement('true')
-      li.setAttribute('aria-selected', (!state).toString())
-      const setParentState = jest.fn()
-      const childUl = document.createElement('ul')
-      childUl.id = `node-group-${li.id}`
-      li.appendChild(childUl)
-      document.body.appendChild(li)
-      const childCheckboxOne = createInputElement()
-      const childCheckboxTwo = createInputElement()
-      const allChildren = jest.fn().mockImplementation(() => [childCheckboxOne, childCheckboxTwo])
-
-      const nestedNavigation = createNestedNavigation({ setParentState, allChildren })
-      nestedNavigation.setSelected(li)
-
-      expect(li.getAttribute('aria-checked')).toEqual(state.toString())
-      expect(childCheckboxOne.getAttribute('aria-checked')).toEqual(state.toString())
-      expect(childCheckboxOne.getAttribute('aria-selected')).toEqual(state.toString())
-      expect(childCheckboxTwo.getAttribute('aria-checked')).toEqual(state.toString())
-      expect(childCheckboxTwo.getAttribute('aria-selected')).toEqual(state.toString())
-
-      document.body.removeChild(li)
-    })
-  })
-
   describe('toggleNode', () => {
     it('should set expanded to false and remove the id from local storage if the node is expanded', () => {
       const input = createInputElement()
@@ -395,10 +366,10 @@ describe('Nested Navigation', () => {
       const nestedNavigation = createNestedNavigation({ getExpanded })
       const spy = jest.spyOn(Storage.prototype, 'setItem')
 
-      nestedNavigation.toggleNode(li, input.id.replace('expander-', ''))
+      nestedNavigation.toggleNode(li, input.id.replace('expander-', ''), classNameValue)
 
       const expectedResult = JSON.stringify({ expanded: [] })
-      expect(spy).toHaveBeenCalledWith('state', expectedResult)
+      expect(spy).toHaveBeenCalledWith(`${classNameValue}-state`, expectedResult)
       expect(li.getAttribute('aria-expanded')).toEqual('false')
     })
 
@@ -410,9 +381,9 @@ describe('Nested Navigation', () => {
       const nestedNavigation = createNestedNavigation({ getExpanded })
       const spy = jest.spyOn(Storage.prototype, 'setItem')
 
-      nestedNavigation.toggleNode(li, id)
+      nestedNavigation.toggleNode(li, id, classNameValue)
       const expectedResult = JSON.stringify({ expanded: [id] })
-      expect(spy).toHaveBeenCalledWith('state', expectedResult)
+      expect(spy).toHaveBeenCalledWith(`${classNameValue}-state`, expectedResult)
       expect(li.getAttribute('aria-expanded')).toEqual('true')
     })
   })
@@ -446,7 +417,7 @@ describe('Nested Navigation', () => {
       const ids = ['cd10c8b0-45ab-4ffa-9e9f-9e6367564fc0', '053d6e54-0ec2-44f9-85fc-90d075c25599']
       jest.spyOn(Storage.prototype, 'getItem').mockImplementation((_) => JSON.stringify({ expanded: ids }))
       const nestedNavigation = createNestedNavigation({})
-      const expanded = nestedNavigation.getExpanded()
+      const expanded = nestedNavigation.getExpanded(classNameValue)
 
       expect(expanded).toEqual(ids)
     })
@@ -456,12 +427,12 @@ describe('Nested Navigation', () => {
     it('keeps the item visible if it is in the expanded list', () => {
       const input = createInputElement()
       const li = createListElement('true')
-      const id = input.id.replace('expander-', '')
+      const id = input.id.replace('expander-', `${classNameValue}-list-`)
       const getExpanded = jest.fn().mockImplementation(() => [id])
-      input.id = input.id.replace('expander', 'node-group')
+      input.id = input.id.replace('expander', `${classNameValue}-node-group`)
 
       const nestedNavigation = createNestedNavigation({ getExpanded })
-      nestedNavigation.updateExpanded(input)
+      nestedNavigation.updateExpanded(input, classNameValue)
 
       expect(li.getAttribute('aria-expanded')).toEqual('true')
     })
@@ -474,7 +445,7 @@ describe('Nested Navigation', () => {
       input.id = input.id.replace('expander', 'node-group')
 
       const nestedNavigation = createNestedNavigation({ getExpanded })
-      nestedNavigation.updateExpanded(input)
+      nestedNavigation.updateExpanded(input, classNameValue)
 
       expect(li.getAttribute('aria-expanded')).toEqual('false')
     })
@@ -483,15 +454,15 @@ describe('Nested Navigation', () => {
   describe('initialiseFormListeners', () => {
     it('should add keydown event listeners', () => {
       const events: { keydown?: EventListenerOrEventListenerObject[] } = {}
-
       const ul = document.createElement('ul')
       ul.setAttribute('role', 'tree')
+
       ul.addEventListener = jest.fn((event, callback) => {
         events[event] = callback
       })
       document.body.appendChild(ul)
-      const nestedNavigation = createNestedNavigation({})
-      nestedNavigation.initialiseFormListeners()
+      const nestedNavigation = createNestedNavigation({}, undefined, ul)
+      nestedNavigation.initialiseFormListeners(classNameValue)
 
       expect(events.keydown?.length).toEqual(1)
     })
@@ -502,13 +473,14 @@ describe('Nested Navigation', () => {
       const ul = document.createElement('ul')
       ul.setAttribute('role', 'tree')
       const button = document.createElement('button')
+      button.classList.add(`govuk-tna-tree__expander-${classNameValue}`)
       button.addEventListener = jest.fn((event, callback) => {
         events[event] = [callback]
       })
       ul.appendChild(button)
       document.body.appendChild(ul)
       const nestedNavigation = createNestedNavigation({})
-      nestedNavigation.initialiseFormListeners()
+      nestedNavigation.initialiseFormListeners(classNameValue)
 
       expect(events.click?.length).toEqual(1)
     })
@@ -516,12 +488,13 @@ describe('Nested Navigation', () => {
     it('should update the expanded state for the checkboxes', () => {
       const input = createInputElement()
       input.setAttribute('role', 'group')
+      input.id = classNameValue
       document.body.appendChild(input)
       const updateExpanded = jest.fn()
       const nestedNavigation = createNestedNavigation({ updateExpanded })
-      nestedNavigation.initialiseFormListeners()
+      nestedNavigation.initialiseFormListeners(classNameValue)
 
-      expect(updateExpanded).toHaveBeenCalledWith(input)
+      expect(updateExpanded).toHaveBeenCalledWith(input, classNameValue)
     })
 
     it('should add a focus handler to the checkboxes', () => {
@@ -535,7 +508,7 @@ describe('Nested Navigation', () => {
       })
       document.body.appendChild(ul)
       const nestedNavigation = new NestedNavigation(ul, [ul])
-      nestedNavigation.initialiseFormListeners()
+      nestedNavigation.initialiseFormListeners(classNameValue)
 
       expect(events.focus?.length).toEqual(1)
     })
@@ -548,13 +521,13 @@ describe('Nested Navigation', () => {
       const label = document.createElement('label')
       li.appendChild(input)
       li.appendChild(label)
-      li.setAttribute('class', 'govuk-checkboxes__item')
+      li.setAttribute('class', `govuk-${classNameValue}__item`)
       ul.appendChild(li)
       document.body.appendChild(ul)
       const replaceCheckboxWithSpan = jest.fn()
 
       const nestedNavigation = createNestedNavigation({ replaceCheckboxWithSpan })
-      nestedNavigation.initialiseFormListeners()
+      nestedNavigation.initialiseFormListeners(classNameValue)
 
       expect(replaceCheckboxWithSpan).toHaveBeenCalledWith(input, label)
     })
@@ -612,5 +585,46 @@ describe('Nested Navigation', () => {
       expect(labelSpan?.getAttribute('test')).toEqual('test-label-value')
       expect(labelSpan?.textContent).toEqual('Test content')
     })
+  })
+})
+
+describe.each([true, false])('setSelected', (state) => {
+  it(`should set itself and parent checkboxes to ${state.toString()} for a closed node`, () => {
+    const li = createListElement('false')
+    const currentSelection = state ? 'false' : 'true'
+    li.setAttribute('aria-selected', currentSelection)
+    const ul = document.createElement('ul')
+    ul.setAttribute('role', 'group')
+    ul.appendChild(li)
+    const setParentState = jest.fn()
+    const nestedNavigation = createNestedNavigation({ setParentState })
+    nestedNavigation.setSelected(li, "checkboxes")
+
+    expect(setParentState).toHaveBeenCalledWith(ul)
+    expect(li.getAttribute('aria-selected')).toEqual(state.toString())
+  })
+
+  it(`should set itself and child checkboxes to ${state.toString()} for an open node`, () => {
+    const li = createListElement('true')
+    li.setAttribute('aria-selected', (!state).toString())
+    const setParentState = jest.fn()
+    const childUl = document.createElement('ul')
+    childUl.id = `checkboxes-node-group-${li.id}`
+    li.appendChild(childUl)
+    document.body.appendChild(li)
+    const childCheckboxOne = createInputElement()
+    const childCheckboxTwo = createInputElement()
+    const allChildren = jest.fn().mockImplementation(() => [childCheckboxOne, childCheckboxTwo])
+
+    const nestedNavigation = createNestedNavigation({ setParentState, allChildren })
+    nestedNavigation.setSelected(li, "checkboxes")
+
+    expect(li.getAttribute('aria-checked')).toEqual(state.toString())
+    expect(childCheckboxOne.getAttribute('aria-checked')).toEqual(state.toString())
+    expect(childCheckboxOne.getAttribute('aria-selected')).toEqual(state.toString())
+    expect(childCheckboxTwo.getAttribute('aria-checked')).toEqual(state.toString())
+    expect(childCheckboxTwo.getAttribute('aria-selected')).toEqual(state.toString())
+
+    document.body.removeChild(li)
   })
 })
