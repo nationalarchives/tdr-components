@@ -1,0 +1,16 @@
+.tna-multi-select-search__list-container {
+  position: relative;
+  height: 225px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #fff;
+}
+
+.tna-multi-select-search__list {
+  padding: 0;
+  margin: 10px 0;
+}
+
+.tna-multi-select-search__list-item.is-hidden {
+  display: none;
+}

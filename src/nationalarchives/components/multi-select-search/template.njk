@@ -1,0 +1,39 @@
+{% set unique_name = params.id | d(params.name | d("0")) %}
+{% set checkboxes_id = ["checkboxes_", unique_name] | join %}
+{% set checkboxes_count_id = ["checkboxes_count_id_", unique_name] | join %}
+{% set filter_id = ["input_filter_", unique_name] | join %}
+
+<div class="tna-multi-select-search" data-module="multi-select-search">
+
+  {# Search filter #}
+  <div class="tna-multi-select-search__filter">
+    <label for="{{filter_id}}" class="govuk-label govuk-visually-hidden">Filter Languages</label>
+    <input name="tna-multi-select-search" id="{{filter_id}}"
+        class=" js-filter tna-multi-select-search__filter-input govuk-input"
+        type="text" aria-describedby="{{checkboxes_count_id}}"
+        aria-controls="{{checkboxes_id}}">
+  </div>
+
+  {# Visible counter #}
+  <div class="js-selected-count"></div>
+
+  {# Screen reader count #}
+  <span id="{{checkboxes_count_id}}"
+      class="govuk-visually-hidden js-filter-count"
+      aria-live="polite"></span>
+
+  <div class="tna-multi-select-search__list-container js-container">
+    {# Checkboxes #}
+    <ul class="govuk-checkboxes tna-multi-select-search__list"
+        id="language-select" aria-describedby="{{checkboxes_count_id}}">
+      {% for item in params.items %}
+        <li class="govuk-checkboxes__item">
+          <input {% if item.checked == true %}checked{% endif %} class="govuk-checkboxes__input" name="{{params.name}}" type="checkbox" value="{{item.value}}">
+          <label class="govuk-label govuk-checkboxes__label" for="{{loop.index}}">
+            {{item.name}}
+          </label>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
