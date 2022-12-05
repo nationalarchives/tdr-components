@@ -10,8 +10,7 @@
     <label for="{{filter_id}}" class="govuk-label govuk-visually-hidden">Filter Languages</label>
     <input name="tna-multi-select-search" id="{{filter_id}}"
         class=" js-filter tna-multi-select-search__filter-input govuk-input"
-        type="text" aria-describedby="{{checkboxes_count_id}}"
-        aria-controls="{{checkboxes_id}}">
+        type="text" aria-describedby="{{checkboxes_count_id}}">
   </div>
 
   {# Visible counter #}
@@ -28,8 +27,8 @@
         id="language-select" aria-describedby="{{checkboxes_count_id}}">
       {% for item in params.items %}
         <li class="govuk-checkboxes__item">
-          <input {% if item.checked == true %}checked{% endif %} class="govuk-checkboxes__input" name="{{params.name}}" type="checkbox" value="{{item.value}}">
-          <label class="govuk-label govuk-checkboxes__label" for="{{loop.index}}">
+          <input {% if item.checked == true %}checked{% endif %} class="govuk-checkboxes__input" id="{{unique_name}}-{{loop.index}}" name="{{params.name}}" type="checkbox" value="{{item.value}}">
+          <label class="govuk-label govuk-checkboxes__label" for="{{unique_name}}-{{loop.index}}">
             {{item.name}}
           </label>
         </li>
