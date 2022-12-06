@@ -36,16 +36,16 @@ export class NestedNavigation {
     })
 
     // All nodes start open so need hiding on first load.
-    document.querySelectorAll(`[role="group"]`).forEach((value, _, __) => {
-      if(value.id.indexOf(itemType) !== -1) {
+    document.querySelectorAll('[role="group"]').forEach((value, _, __) => {
+      if (value.id.includes(itemType)) {
         this.updateExpanded(value as HTMLInputElement, itemType)
       }
     })
 
     document
-      .querySelectorAll(`[role=treeitem]`)
+      .querySelectorAll('[role=treeitem]')
       .forEach((treeItem, _, __) => {
-        if(treeItem.id.indexOf(itemType) !== -1) {
+        if (treeItem.id.includes(itemType)) {
           treeItem.addEventListener('click', (ev) => {
             if (ev.currentTarget instanceof HTMLLIElement) {
               this.setSelected(ev.currentTarget, itemType)
@@ -172,15 +172,14 @@ export class NestedNavigation {
   }
 
   setSelected: (li: HTMLLIElement | null, itemType: string) => void = (li, itemType) => {
-
     if (li != null) {
       const isSelected: boolean = li.getAttribute('aria-selected') === 'true'
       li.setAttribute('aria-selected', !isSelected ? 'true' : 'false')
       li.setAttribute('aria-checked', !isSelected ? 'true' : 'false')
-      if(itemType === "radios" && !isSelected) {
+      if (itemType === 'radios' && !isSelected) {
         // For radio buttons, deselect all others
-        document.querySelectorAll("li[aria-selected=true]").forEach(el => {
-          if(el.id !== li.id) {
+        document.querySelectorAll('li[aria-selected=true]').forEach(el => {
+          if (el.id !== li.id) {
             el.setAttribute('aria-selected', 'false')
             el.setAttribute('aria-checked', 'false')
           }
@@ -189,7 +188,7 @@ export class NestedNavigation {
         // If this is a node, traverse down
         if (li.hasAttribute('aria-expanded')) {
           const childrenGroup: HTMLUListElement | null = document.querySelector(
-            `#${itemType}-node-group-${li.id.replace(`${itemType}-list-`, "")}`
+            `#${itemType}-node-group-${li.id.replace(`${itemType}-list-`, '')}`
           )
           if (childrenGroup != null) {
             const children = this.allChildren(childrenGroup, [])
@@ -206,7 +205,7 @@ export class NestedNavigation {
           }
         }
         // Traverse up
-        const parentGroup: HTMLUListElement | null = li.closest(`[role=group]`)
+        const parentGroup: HTMLUListElement | null = li.closest('[role=group]')
         this.setParentState(parentGroup)
       }
     }

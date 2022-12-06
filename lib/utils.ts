@@ -21,7 +21,7 @@ export const getDirectories: (componentPath: string) => Promise<string[]> = asyn
 
 export const getExamples: (componentName: string) => Promise<{ [key: string]: any }> = async (componentName) => {
   const componentData = await getComponentData(componentName)
-  return componentData.examples.reduce((obj, example) => ({...obj, [example.name]: example.data}) ,{})
+  return componentData.examples.reduce((obj, example) => ({ ...obj, [example.name]: example.data }), {})
 }
 
 export const getComponentsData: () => Promise<ComponentData[]> = async () => {

@@ -27,7 +27,7 @@ const createListElement: (ariaExpanded: string) => HTMLLIElement = (ariaExpanded
 }
 
 const createNestedNavigation: (navOption: Partial<NestedNavigation>, element?: HTMLLIElement | undefined, tree?: HTMLUListElement | undefined) => NestedNavigation = (navOption, element, tree) => {
-  const el = tree ? tree : document.createElement('ul')
+  const el = (tree != null) ? tree : document.createElement('ul')
   const navigation = new NestedNavigation(el, [el])
   if (element != null) {
     navigation.setFocusToItem(element)
@@ -38,15 +38,14 @@ const createNestedNavigation: (navOption: Partial<NestedNavigation>, element?: H
   return navigation
 }
 
-
-describe.each(["checkboxes", "radios"])('Nested Navigation %s', classNameValue => {
-  const inputType = document.createElement("input")
-  const inputTypeValue = classNameValue === "checkboxes" ? "checkbox" : "radio"
-  inputType.id = "input-type"
+describe.each(['checkboxes', 'radios'])('Nested Navigation %s', classNameValue => {
+  const inputType = document.createElement('input')
+  const inputTypeValue = classNameValue === 'checkboxes' ? 'checkbox' : 'radio'
+  inputType.id = 'input-type'
   inputType.value = inputTypeValue
 
-  const className = document.createElement("input")
-  className.id = "class-name"
+  const className = document.createElement('input')
+  className.id = 'class-name'
   className.value = classNameValue
   document.body.appendChild(inputType)
   document.body.appendChild(className)
@@ -598,7 +597,7 @@ describe.each([true, false])('setSelected', (state) => {
     ul.appendChild(li)
     const setParentState = jest.fn()
     const nestedNavigation = createNestedNavigation({ setParentState })
-    nestedNavigation.setSelected(li, "checkboxes")
+    nestedNavigation.setSelected(li, 'checkboxes')
 
     expect(setParentState).toHaveBeenCalledWith(ul)
     expect(li.getAttribute('aria-selected')).toEqual(state.toString())
@@ -617,7 +616,7 @@ describe.each([true, false])('setSelected', (state) => {
     const allChildren = jest.fn().mockImplementation(() => [childCheckboxOne, childCheckboxTwo])
 
     const nestedNavigation = createNestedNavigation({ setParentState, allChildren })
-    nestedNavigation.setSelected(li, "checkboxes")
+    nestedNavigation.setSelected(li, 'checkboxes')
 
     expect(li.getAttribute('aria-checked')).toEqual(state.toString())
     expect(childCheckboxOne.getAttribute('aria-checked')).toEqual(state.toString())

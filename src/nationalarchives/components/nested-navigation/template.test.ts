@@ -6,7 +6,7 @@ describe('Nested Navigation', () => {
   let examples: { [key: string]: any }
   expect.extend(toHaveNoViolations)
 
-  describe.each(["default", "radio"])("nested-navigation %s", inputType => {
+  describe.each(['default', 'radio'])('nested-navigation %s', inputType => {
     beforeAll(async () => {
       examples = (await getExamples('nested-navigation'))
     })
@@ -19,7 +19,7 @@ describe('Nested Navigation', () => {
       })
 
       it('should render with the expected options', async () => {
-        const className = inputType === "default" ? "checkboxes" : "radios"
+        const className = inputType === 'default' ? 'checkboxes' : 'radios'
         const $ = render('nested-navigation', JSON.stringify(examples[inputType]))
         const $labels: cheerio.Cheerio = $(`.govuk-${className}__input`)
         const renderedLabelsText: string[] = []
@@ -35,6 +35,4 @@ describe('Nested Navigation', () => {
       })
     })
   })
-
-
 })
