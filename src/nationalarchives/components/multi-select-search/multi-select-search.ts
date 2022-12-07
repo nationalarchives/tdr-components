@@ -15,7 +15,7 @@ export class MultiSelectSearch {
   private readonly selectedCount: HTMLElement;
   private config: MutliSelectConfig;
 
-  private timeoutId: number;
+  private timeoutId: null | ReturnType<typeof setTimeout> = null;
   private labels: string[];
   private visibleItems: number[];
 
@@ -23,7 +23,9 @@ export class MultiSelectSearch {
     this.container = rootElement.querySelector(".js-container") as HTMLElement;
     this.list = rootElement.querySelector("ul") as HTMLElement;
     this.inputs = rootElement.querySelectorAll("input[type=checkbox]");
-    this.filter = rootElement.querySelector(".js-filter") as HTMLInputElement;
+    this.filter = rootElement.querySelector(
+      "input[type=text]"
+    ) as HTMLInputElement;
     this.filterCount = rootElement.querySelector(
       ".js-filter-count"
     ) as HTMLElement;
@@ -48,20 +50,19 @@ export class MultiSelectSearch {
       },
     });
 
-    this.filter.addEventListener("keyup", (ev: Event) => {
+    this.filter?.addEventListener("keyup", (ev: Event) => {
       if (ev instanceof KeyboardEvent) {
         this.handleKeyUp(ev);
       }
     });
 
     // Attach listener to update checked count
-    this.list.addEventListener("change", () => {
-      this.updateSelectedCount();
-      this.updateFilteredCount();
-    });
+    this.list.addEventListener("change", this.processInputChange);
 
-    this.updateSelectedCount();
-    this.updateFilteredCount();
+    const numChecked: number = this.getSelectedItems().length;
+    const numVisible: number = this.getVisibleItems().length;
+    this.updateSelectedCount(this.selectedCount, numChecked);
+    this.updateFilteredCount(this.filterCount, numChecked, numVisible);
 
     // Will not use for now because it requires using
     // inline styles for setting up height.
@@ -71,11 +72,8 @@ export class MultiSelectSearch {
   handleKeyUp: (ev: KeyboardEvent) => void = (ev) => {
     ev.stopPropagation();
     if (ev.key !== "Enter") {
-      clearTimeout(this.timeoutId);
-      this.timeoutId = window.setTimeout(() => {
-        this.filterItems();
-        this.updateFilteredCount();
-      }, 300);
+      clearTimeout(Number(this.timeoutId));
+      this.timeoutId = setTimeout(this.processKeyUpTimeout, 300);
     } else {
       ev.preventDefault(); // prevents forms from being submitted when user presses ENTER
     }
@@ -88,20 +86,21 @@ export class MultiSelectSearch {
     return searchText.trim().replace(/\s\s+/g, " ").toLowerCase(); // replace multiple spaces with one
   };
 
-  filterItems: (ev?: Event) => void = (ev) => {
-    const filterBy = this.cleanString(this.filter.value);
+  filterItems: (filterBy: string, listItems: HTMLCollection) => void = (
+    filterText,
+    listItems
+  ) => {
+    const filterBy = this.cleanString(filterText);
     const visibleItems = this.getSelectedItems();
-
     let i = 0;
-    for (i = 0; i < this.list.children.length; i++) {
+    for (i = 0; i < listItems.length; i++) {
       // If found by filter.
       if (this.labels[i].search(filterBy) !== -1) {
         visibleItems.push(i);
       }
     }
-
     // Hide all
-    for (i = 0; i < this.list.children.length; i++) {
+    for (i = 0; i < listItems.length; i++) {
       (this.list.children[i] as HTMLElement).classList.add("is-hidden");
     }
 
@@ -112,24 +111,25 @@ export class MultiSelectSearch {
       );
     }
   };
+
   /*
    * Updates a visible element with the amount of checked items
    */
-  updateSelectedCount: () => void = () => {
-    this.getSelectedItems();
-    if (this.selectedCount)
-      this.selectedCount.textContent = `${
-        this.getSelectedItems().length
-      } selected`;
+  updateSelectedCount: (el: HTMLElement, numChecked: number) => void = (
+    el,
+    numChecked
+  ) => {
+    if (el) el.textContent = `${numChecked} selected`;
   };
 
   /*
    * Updates a hidden/screen reader span with the amount of displayed and checked items
    */
-  updateFilteredCount: () => void = () => {
-    const numChecked: number = this.getSelectedItems().length;
-    const numVisible: number = this.getVisibleItems().length;
-
+  updateFilteredCount: (
+    el: HTMLElement,
+    numChecked: number,
+    numVisible: number
+  ) => void = (el, numChecked, numVisible) => {
     const singleMultipleString =
       numVisible === 1
         ? this.config.filter.textSingle
@@ -137,15 +137,7 @@ export class MultiSelectSearch {
 
     const output = `${numVisible} ${singleMultipleString}, ${numChecked} ${this.config.filter.textSelected}`;
 
-    this.filterCount.innerHTML = output;
-  };
-
-  getAbsoluteHeight: (el: HTMLElement) => number = (el) => {
-    const styles: CSSStyleDeclaration = window.getComputedStyle(el);
-    const margin =
-      parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-
-    return Math.ceil(el.offsetHeight + margin);
+    if (el) el.innerHTML = output;
   };
 
   setupHeight: () => void = () => {
@@ -159,29 +151,33 @@ export class MultiSelectSearch {
     }
 
     // Resize to cut last item cleanly in half
-    const visibleItems: HTMLElement[] = this.getVisible(this.list.children);
+    const visibleItems: HTMLElement[] = this.getInViewport(this.list.children);
     const lastVisibleItem: HTMLElement = visibleItems.pop() as HTMLElement;
     const position = lastVisibleItem.offsetTop;
     const height = position + lastVisibleItem.clientHeight / 1.5;
     this.container.style.height = height + "px";
   };
 
-  private readonly isVisible: (listItem: HTMLElement) => boolean = (
-    listItem
-  ) => {
+  getAbsoluteHeight: (el: HTMLElement) => number = (el) => {
+    const styles: CSSStyleDeclaration = window.getComputedStyle(el);
+    const margin =
+      parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+
+    return Math.ceil(el.offsetHeight + margin);
+  };
+
+  isInViewport: (listItem: HTMLElement) => boolean = (listItem) => {
     const containerHeight = this.container.clientHeight;
     const containerOffsetTop = this.container.getBoundingClientRect().top;
     const distanceFromTopOfContainer = listItem.getBoundingClientRect().top;
     return distanceFromTopOfContainer - containerOffsetTop < containerHeight;
   };
 
-  private readonly getVisible: (list: HTMLCollection) => HTMLElement[] = (
-    list
-  ) => {
-    return Array.from(list).filter(this.isVisible) as HTMLElement[];
+  getInViewport: (list: HTMLCollection) => HTMLElement[] = (list) => {
+    return Array.from(list).filter(this.isInViewport) as HTMLElement[];
   };
 
-  private readonly getSelectedItems: () => number[] = () => {
+  getSelectedItems: () => number[] = () => {
     const selectedIndexes: number[] = [];
     Array.from(this.inputs).forEach((input, i) => {
       if (input.checked == true) selectedIndexes.push(i);
@@ -189,7 +185,7 @@ export class MultiSelectSearch {
     return selectedIndexes;
   };
 
-  private readonly getVisibleItems: () => number[] = () => {
+  getVisibleItems: () => number[] = () => {
     const visibleItems: number[] = [];
     for (let i = 0; i < this.list.children.length; i++) {
       if (
@@ -202,5 +198,20 @@ export class MultiSelectSearch {
     }
 
     return visibleItems;
+  };
+
+  private readonly processKeyUpTimeout: (ev?: Event) => void = (ev) => {
+    this.filterItems(this.filter.value, this.list.children);
+
+    const numChecked: number = this.getSelectedItems().length;
+    const numVisible: number = this.getVisibleItems().length;
+    this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+  };
+
+  private readonly processInputChange: (ev: KeyboardEvent) => void = (ev) => {
+    const numChecked: number = this.getSelectedItems().length;
+    const numVisible: number = this.getVisibleItems().length;
+    this.updateSelectedCount(this.selectedCount, numChecked);
+    this.updateFilteredCount(this.filterCount, numChecked, numVisible);
   };
 }
