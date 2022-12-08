@@ -248,6 +248,7 @@ describe("Multi Select Search", () => {
       const visibleItems: number[] = mss.getVisibleItems();
       expect(visibleItems[0]).toEqual(3);
       // expect(setTimeout).toHaveBeenCalledTimes(3);
+      jest.useRealTimers()
     });
   });
 });
