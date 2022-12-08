@@ -30,8 +30,11 @@ describe('Nested Navigation', () => {
           const labelText = label.children[0] as unknown as Text
           renderedLabelsText.push(labelText.data.trim())
         }
+        const expectedLabels = className === 'checkboxes' ?
+          ['file1', 'file12', 'file2', 'file22', 'fileid3', 'folder1', 'folder12'] :
+          ['file1', 'file12', 'file2', 'file22', 'fileid3']
 
-        expect(renderedLabelsText.sort()).toEqual(['file1', 'file12', 'file2', 'file22', 'fileid3', 'folder1', 'folder12'])
+        expect(renderedLabelsText.sort()).toEqual(expectedLabels)
       })
     })
   })

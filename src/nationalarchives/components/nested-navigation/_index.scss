@@ -55,6 +55,13 @@
   height: 40px;
 }
 
+.govuk-tna-tree__svg-directory {
+  height: 22px;
+  width: 24px;
+  display: inline-block;
+  align-self: baseline;
+}
+
 $input-types: "checkboxes", "radios";
 
 @each $input-type in $input-types {

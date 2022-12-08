@@ -36,18 +36,28 @@
                 >
                     <span class="govuk-visually-hidden">Expand</span>
                 </button>
-                <div class="govuk-{{ className }}__item">
-                    <input
-                            class="govuk-{{ className }}__input"
-                            id="{{ inputType }}-{{ item.id }}"
-                            tabindex="-1"
-                            type="{{ inputType }}"
-                            name="nested-navigation"
-                    />
-                    <label class="govuk-label govuk-{{ className }}__label" for="{{ inputType }}-{{ item.id }}">
+                {% if className == 'checkboxes' %}
+                    <div class="govuk-{{ className }}__item">
+                        <input
+                                class="govuk-{{ className }}__input"
+                                id="{{ inputType }}-{{ item.id }}"
+                                tabindex="-1"
+                                type="{{ inputType }}"
+                                name="nested-navigation"
+                        />
+                        <label class="govuk-label govuk-{{ className }}__label" for="{{ inputType }}-{{ item.id }}">
+                            {{item.name}}
+                        </label>
+                    </div>
+                {% else %}
+                    <div class="">
+                        <img class="govuk-tna-tree__svg-directory" role="img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyMiI+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTIyIDMuNUgxMC42ODNMOC43NTguODVhMS42NjcgMS42NjcgMCAwIDAtMS4zNS0uNjgzSDJBMS42NjcgMS42NjcgMCAwIDAgLjMzMyAxLjgzM3YxOC4zMzRBMS42NjcgMS42NjcgMCAwIDAgMiAyMS44MzNoMjBhMS42NjcgMS42NjcgMCAwIDAgMS42NjctMS42NjZ2LTE1QTEuNjY2IDEuNjY2IDAgMCAwIDIyIDMuNVptMCAxNi42NjdIMlY2LjgzM2g2LjA5MmExLjY2NyAxLjY2NyAwIDAgMCAxLjY2Ni0xLjY2NkgyVjEuODMzaDUuNDA4bDIuMTc1IDIuOTkyYS44MzMuODMzIDAgMCAwIC42NzUuMzQySDIydjE1WiIvPjwvc3ZnPg==" alt="Directory"/>
+                        <span class="govuk-label govuk-{{ className }}__label" >
                         {{item.name}}
-                    </label>
-                </div>
+                    </span>
+                    </div>
+                {% endif %}
+
             </div>
             <ul class="govuk-tna-tree__nested-item-list" role="group" id="{{ className }}-node-group-{{ item.id }}">
                 {% set nextLevel = level + 1 %}
