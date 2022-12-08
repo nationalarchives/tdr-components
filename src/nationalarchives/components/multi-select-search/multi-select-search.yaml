@@ -16,12 +16,11 @@ examples:
           value: ab
         - name: English
           value: en
-          checked: true
         - name: Bislama
           value: bi
         - name: Bengali
           value: bn
-  - name: long list
+  - name: long-list
     description: A long list of options
     data:
       name: "language-long"
