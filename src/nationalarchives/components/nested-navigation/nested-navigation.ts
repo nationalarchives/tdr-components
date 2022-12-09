@@ -27,12 +27,14 @@ export class NestedNavigation {
     }
 
     // Make radio folders label/icon act as expanders as well since they are not selectable.
-    const radioFolders = Array.from(document.querySelectorAll('.tdr-radios-directory'));
+    const radioFolders = Array.from(document.querySelectorAll(`.tdr-${itemType}-directory`));
     const buttons = document.querySelectorAll(`.govuk-tna-tree__expander--${itemType}`)
     const allExpanders = [...radioFolders, ...Array.from(buttons)]
+    console.log(allExpanders)
     allExpanders.forEach((expander, _, __) => {
       (expander as HTMLElement).addEventListener('click', (ev) => {
         let el : HTMLElement = ev.currentTarget as HTMLElement;
+        console.log(el);
         if(el.id.includes("expander") === false){
           el = el.previousElementSibling as HTMLElement;
         }
