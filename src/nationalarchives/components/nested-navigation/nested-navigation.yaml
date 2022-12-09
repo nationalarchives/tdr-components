@@ -20,6 +20,16 @@ examples:
             - name: file2
               type: item
               id: fileid2
+            - name: folder1-1
+              type: node
+              id: folderid1-1
+              children:
+              - name: file1-1
+                type: item
+                id: fileid1-1
+              - name: file1-2
+                type: item
+                id: fileid1-2
         - name: folder12
           type: node
           id: folderid12
@@ -48,6 +58,16 @@ examples:
             - name: file2
               type: item
               id: fileid2
+            - name: folder1-1
+              type: node
+              id: folderid1-1
+              children:
+              - name: file1-1
+                type: item
+                id: fileid1-1
+              - name: file1-2
+                type: item
+                id: fileid1-2
         - name: folder12
           type: node
           id: folderid12
