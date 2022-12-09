@@ -26,10 +26,17 @@ export class NestedNavigation {
       })
     }
 
-    const button = document.querySelectorAll(`.govuk-tna-tree__expander--${itemType}`)
-    button.forEach((expander, _, __) => {
-      expander.addEventListener('click', (ev) => {
-        this.handleExpanders(ev.target as HTMLElement, itemType)
+    // Make radio folders label/icon act as expanders as well since they are not selectable.
+    const radioFolders = Array.from(document.querySelectorAll('.tdr-radios-directory'));
+    const buttons = document.querySelectorAll(`.govuk-tna-tree__expander--${itemType}`)
+    const allExpanders = [...radioFolders, ...Array.from(buttons)]
+    allExpanders.forEach((expander, _, __) => {
+      (expander as HTMLElement).addEventListener('click', (ev) => {
+        let el : HTMLElement = ev.currentTarget as HTMLElement;
+        if(el.id.includes("expander") === false){
+          el = el.previousElementSibling as HTMLElement;
+        }
+        this.handleExpanders(el, itemType)
         ev.preventDefault()
         ev.stopPropagation()
       })
@@ -45,7 +52,9 @@ export class NestedNavigation {
     document
       .querySelectorAll('[role=treeitem]')
       .forEach((treeItem, _, __) => {
-        if (treeItem.id.includes(itemType)) {
+        // We do not want the radio buttons directories to be selectable.
+        if((itemType == "radios" && treeItem.id.includes('folder') === true)) return;
+        if (treeItem.id.includes(itemType)){
           treeItem.addEventListener('click', (ev) => {
             if (ev.currentTarget instanceof HTMLLIElement) {
               this.setSelected(ev.currentTarget, itemType)
