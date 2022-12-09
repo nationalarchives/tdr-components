@@ -472,7 +472,7 @@ describe.each(['checkboxes', 'radios'])('Nested Navigation %s', classNameValue =
       const ul = document.createElement('ul')
       ul.setAttribute('role', 'tree')
       const button = document.createElement('button')
-      button.classList.add(`govuk-tna-tree__expander-${classNameValue}`)
+      button.classList.add(`govuk-tna-tree__expander--${classNameValue}`)
       button.addEventListener = jest.fn((event, callback) => {
         events[event] = [callback]
       })

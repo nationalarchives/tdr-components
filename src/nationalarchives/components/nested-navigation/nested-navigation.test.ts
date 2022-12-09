@@ -92,7 +92,7 @@ describe.each(['checkboxes', 'radios'])('nestedNavigation %s', className => {
   })
 
   it('should expand the node when the expander is clicked', async () => {
-    await page.click(`.govuk-tna-tree__expander-${className}`)
+    await page.click(`.govuk-tna-tree__expander--${className}`)
     const nodeItem = await page.$(`#${className}-list-${data[0].id}`)
     const expanded = await getPropertyValue(nodeItem, 'ariaExpanded')
     expect(expanded).toEqual('true')
