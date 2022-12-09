@@ -26,7 +26,7 @@ export class NestedNavigation {
       })
     }
 
-    const button = document.querySelectorAll(`.govuk-tna-tree__expander-${itemType}`)
+    const button = document.querySelectorAll(`.govuk-tna-tree__expander--${itemType}`)
     button.forEach((expander, _, __) => {
       expander.addEventListener('click', (ev) => {
         this.handleExpanders(ev.target as HTMLElement, itemType)
@@ -392,7 +392,9 @@ export class NestedNavigation {
     const newId = target.id.replace('expander-', 'node-group-')
     const nodeGroup: HTMLUListElement | null = document.querySelector(
       `#${newId}`
-    )
+      )
+    console.log(target.id, newId, nodeGroup)
+
     if (nodeGroup !== null) {
       const parent: HTMLLIElement | null = nodeGroup.parentNode as HTMLLIElement
       if (parent != null) {

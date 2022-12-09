@@ -72,28 +72,48 @@
   align-self: baseline;
 }
 
+.govuk-tna-tree__expander {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.govuk-tna-tree__expander {
+  flex-basis: auto;
+  width: var(--item-expander-btn-width);
+  height: calc(var(--item-expander-btn-width) - 6px);
+  margin: 2px 0 0;
+  padding: 0;
+}
+
+.govuk-tna-tree__expander::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  bottom: 0;
+  left: 15px;
+  margin: auto;
+
+  @include govuk-shape-arrow($direction: right, $base: 20px);
+
+  border-color: $govuk-link-colour;
+}
+
+.govuk-tna-tree [role="treeitem"][aria-expanded="true"] > .govuk-tna-tree__node-item__container > .govuk-tna-tree__expander::before {
+  @include govuk-shape-arrow($direction: down, $base: 20px);
+
+  border-color: $govuk-link-colour;
+}
+
+.govuk-tna-tree [role="treeitem"][aria-expanded="true"] > .govuk-tna-tree__node-item__container > .govuk-tna-tree__expander::before {
+  left: 10px;
+}
+
 $input-types: "checkboxes", "radios";
 
 @each $input-type in $input-types {
-  .govuk-tna-tree__expander-#{$input-type} {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    position: relative;
-  }
 
-  .govuk-tna-tree__expander-#{$input-type}::before {
-    content: "";
-    position: absolute;
-    top: -1px;
-    bottom: 0;
-    left: 10px;
-    margin: auto;
-
-    @include govuk-shape-arrow($direction: right, $base: 20px);
-
-    border-color: $govuk-link-colour;
-  }
 
   .govuk-tna-tree [role="treeitem"][aria-expanded="false"] > ul {
     display: none;
@@ -102,22 +122,6 @@ $input-types: "checkboxes", "radios";
   .govuk-tna-tree [role="treeitem"][aria-expanded="true"] > ul {
     display: block;
   }
-
-  .govuk-tna-tree [role="treeitem"][aria-expanded="true"] > .govuk-tna-tree__node-item__container > .govuk-tna-tree__expander::before {
-    @include govuk-shape-arrow($direction: down, $base: 20px);
-
-    border-color: $govuk-link-colour;
-  }
-
-
-  button.govuk-tna-tree__expander-#{$input-type} {
-    flex-basis: auto;
-    width: var(--item-expander-btn-width);
-    height: calc(var(--item-expander-btn-width) - 6px);
-    margin: 2px 0 0;
-    padding: 0;
-  }
-
 
   // https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
   .govuk-tna-tree .govuk-label govuk-#{$input-type}__label {
@@ -196,7 +200,3 @@ $input-types: "checkboxes", "radios";
   margin-left: var(--item-expander-btn-width);
 }
 
-.govuk-tna-tree__expander-checkboxes::before,
-.govuk-tna-tree__expander-radios::before {
-  left: 15px;
-}
