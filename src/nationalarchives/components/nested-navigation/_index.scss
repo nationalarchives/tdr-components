@@ -47,7 +47,8 @@
 }
 
 .govuk-tna-tree__nested-list--radios::before {
-  margin: 4px 0 0 calc(-2px + var(--directory-icon-width) / 2);
+  margin: -6px 0 0 calc(-2px + var(--directory-icon-width) / 2);
+  height: calc(100% + 8px);
 }
 
 .govuk-tna-tree__node-item__container {
