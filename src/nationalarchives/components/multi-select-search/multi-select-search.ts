@@ -14,7 +14,6 @@ export class MultiSelectSearch {
 
   private timeoutId: null | ReturnType<typeof setTimeout> = null;
   private labels: string[];
-  private visibleItems: number[];
 
   constructor(rootElement: HTMLElement) {
     this.container = rootElement.querySelector(".js-container") as HTMLElement;
@@ -46,6 +45,8 @@ export class MultiSelectSearch {
         this.cleanString(this.list.children[i].textContent || "")
       );
     }
+
+    rootElement.setAttribute("data-module-active", "true");
   }
 
   initialise: () => void = () => {
