@@ -3,7 +3,11 @@
 {% set checkboxes_count_id = ["checkboxes_count_id_", unique_name] | join %}
 {% set filter_id = ["input_filter_", unique_name] | join %}
 
-<div class="tna-multi-select-search" data-module="multi-select-search">
+<div class="tna-multi-select-search"
+    data-module="multi-select-search"
+    data-copy-single="{{params.copySingle}}"
+    data-copy-multiple="{{params.copyMultiple}}"
+    >
 
   {# Search filter #}
   <div class="tna-multi-select-search__filter">

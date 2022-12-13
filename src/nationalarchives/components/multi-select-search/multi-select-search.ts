@@ -1,9 +1,6 @@
-type MutliSelectConfig = {
-  filter: {
-    textSelected?: string;
-    textSingle?: string;
-    textMultiple?: string;
-  };
+type MultiSelectConfig = {
+  copySingle?: string;
+  copyMultiple?: string;
 };
 
 export class MultiSelectSearch {
@@ -13,7 +10,7 @@ export class MultiSelectSearch {
   private readonly filter: HTMLInputElement;
   private readonly filterCount: HTMLElement;
   private readonly selectedCount: HTMLElement;
-  private config: MutliSelectConfig;
+  private config: MultiSelectConfig;
 
   private timeoutId: null | ReturnType<typeof setTimeout> = null;
   private labels: string[];
@@ -33,6 +30,16 @@ export class MultiSelectSearch {
       ".js-selected-count"
     ) as HTMLElement;
 
+    this.config = {
+      // Adding spaces here to avoid multiple spaces when there is empty values
+      copySingle: rootElement.dataset.copySingle
+        ? `${rootElement.dataset.copySingle} `
+        : "",
+      copyMultiple: rootElement.dataset.copyMultiple
+        ? `${rootElement.dataset.copyMultiple} `
+        : "",
+    };
+
     this.labels = [];
     for (let i = 0; i < this.list.children.length; i++) {
       this.labels.push(
@@ -41,15 +48,7 @@ export class MultiSelectSearch {
     }
   }
 
-  initialise: (config?: MutliSelectConfig) => void = (config) => {
-    this.config = Object.assign({}, config, {
-      filter: {
-        textSelected: "selected",
-        textSingle: "displayed",
-        textMultiple: "displayed",
-      },
-    });
-
+  initialise: () => void = () => {
     this.filter?.addEventListener("keyup", (ev: Event) => {
       if (ev instanceof KeyboardEvent) {
         this.handleKeyUp(ev);
@@ -131,12 +130,17 @@ export class MultiSelectSearch {
     numChecked: number,
     numVisible: number
   ) => void = (el, numChecked, numVisible) => {
-    const singleMultipleString =
+    const displayedCopy =
       numVisible === 1
-        ? this.config.filter.textSingle
-        : this.config.filter.textMultiple;
+        ? `${this.config.copySingle}displayed`
+        : `${this.config.copyMultiple}displayed`;
 
-    const output = `${numVisible} ${singleMultipleString}, ${numChecked} ${this.config.filter.textSelected}`;
+    const selectedCopy =
+      numChecked === 1
+        ? `${this.config.copySingle}selected`
+        : `${this.config.copyMultiple}selected`;
+
+    const output = `${numVisible} ${displayedCopy}, ${numChecked} ${selectedCopy}`;
 
     if (el) el.innerHTML = output;
   };

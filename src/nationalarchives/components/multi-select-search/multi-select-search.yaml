@@ -9,6 +9,8 @@ examples:
     description: The default list of options
     data:
       name: "language"
+      copySingle: "language"
+      copyMultiple: "languages"
       items:
         - name: Afar
           value: aa
