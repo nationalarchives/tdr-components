@@ -11,7 +11,7 @@
 
   {# Search filter #}
   <div class="tna-multi-select-search__filter">
-    <label for="{{filter_id}}" class="govuk-label govuk-visually-hidden">Filter Languages</label>
+    <label for="{{filter_id}}" class="govuk-label govuk-visually-hidden">Filter {{params.copyMultiple | d(params.copySingle)}}</label>
     <input name="tna-multi-select-search" id="{{filter_id}}"
         class="tna-multi-select-search__filter-input govuk-input"
         type="text" aria-describedby="{{checkboxes_count_id}}">
