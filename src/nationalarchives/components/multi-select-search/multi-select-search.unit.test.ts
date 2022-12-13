@@ -208,7 +208,7 @@ describe("Multi Select Search", () => {
         ["Abkhazian", "Afar", "Bengali", "Bislama", "English"]
       );
       root.appendChild(ul);
-      // console.log(ul.children[0].textContent);
+
       const mss = createMultiSelectSearch(root);
       mss.initialise();
       mss.filterItems("Bisl", ul.children);
@@ -247,7 +247,6 @@ describe("Multi Select Search", () => {
 
       const visibleItems: number[] = mss.getVisibleItems();
       expect(visibleItems[0]).toEqual(3);
-      // expect(setTimeout).toHaveBeenCalledTimes(3);
       jest.useRealTimers()
     });
   });
