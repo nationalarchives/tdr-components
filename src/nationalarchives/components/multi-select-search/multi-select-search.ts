@@ -75,7 +75,8 @@ export class MultiSelectSearch {
       clearTimeout(Number(this.timeoutId));
       this.timeoutId = setTimeout(this.processKeyUpTimeout, 300);
     } else {
-      ev.preventDefault(); // prevents forms from being submitted when user presses ENTER
+      // prevents form from being submitted when user presses ENTER
+      ev.preventDefault();
     }
   };
 
