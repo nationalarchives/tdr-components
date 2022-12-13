@@ -109,6 +109,4 @@ describe('Nested navigation', () => {
     const content = await getPropertyValue(filterElement, 'innerHTML')
     await expect(content).toEqual("2 displayed, 1 selected")
   });
-
-
 })
