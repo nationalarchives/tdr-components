@@ -82,7 +82,7 @@ describe('Nested navigation', () => {
     await expect(content).toEqual("2 selected")
   });
 
-  it('should always showed checked items regardless of search term', async () => {
+  it('should always show checked items regardless of search term', async () => {
     // Check first element 'Afar'
     await page.focus("input[type=checkbox]:first-child");
     await page.keyboard.press('Space')
