@@ -29,7 +29,7 @@ const goToSecondChild: (className: string) => Promise<void> = async className =>
 }
 
 const isRootNodeExpanded: (className: string) => Promise<boolean> = async className => {
-  const nodeItem = await page.$(`[role="tree"] .govuk-tna-tree__node-item-${className}`)
+  const nodeItem = await page.$(`[role="tree"] .tna-tree__node-item-${className}`)
   const expanded = await getPropertyValue(nodeItem, 'ariaExpanded')
   return expanded === 'true'
 }
@@ -68,7 +68,7 @@ describe.each(['checkboxes', 'radios'])('nestedNavigation %s', className => {
   })
 
   it(`should load the page with the ${className} collapsed`, async () => {
-    const nodeItem = await page.$(`[role="tree"] .govuk-tna-tree__node-item-${className}`)
+    const nodeItem = await page.$(`[role="tree"] .tna-tree__node-item-${className}`)
     const expanded = await getPropertyValue(nodeItem, 'ariaExpanded')
     expect(expanded).toEqual('false')
   })
@@ -92,7 +92,7 @@ describe.each(['checkboxes', 'radios'])('nestedNavigation %s', className => {
   })
 
   it('should expand the node when the expander is clicked', async () => {
-    await page.click(`.govuk-tna-tree__expander--${className}`)
+    await page.click(`.js-tree__expander--${className}`)
     const nodeItem = await page.$(`#${className}-list-${data[0].id}`)
     const expanded = await getPropertyValue(nodeItem, 'ariaExpanded')
     expect(expanded).toEqual('true')
