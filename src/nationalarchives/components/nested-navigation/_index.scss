@@ -1,4 +1,4 @@
-.govuk-tna-tree {
+.tna-tree {
   --checkbox-width: 40px;
   --directory-icon-width: 24px;
   --item-expander-btn-width: 40px;
@@ -9,36 +9,36 @@
   margin-bottom: 1em;
 }
 
-.govuk-tna-tree__root-list {
+.tna-tree__root-list {
     background-image: linear-gradient(180deg, #F8F8F8 22.22%, #ffffff 22.22%, #ffffff 50%, #F8F8F8 50%, #F8F8F8 72.22%, #ffffff 72.22%, #ffffff 100%);
     background-size: 100% 180px;
 }
 
-.govuk-tna-tree__root-list,
-.govuk-tna-tree__root-list li {
+.tna-tree__root-list,
+.tna-tree__root-list li {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.govuk-tna-tree__root-list li {
+.tna-tree__root-list li {
   margin-top: 5px;
 }
 
-.govuk-tna-tree__root-list ul {
+.tna-tree__root-list ul {
   position: relative;
 }
 
-.govuk-tna-tree__nested-list {
+.tna-tree__nested-list {
   margin: 0 0 0 var(--item-expander-btn-width);
   padding: 0;
 }
 
-.govuk-tna-tree__nested-list li {
+.tna-tree__nested-list li {
   margin-left: calc(var(--item-expander-btn-width) - 10px);
 }
 
-.govuk-tna-tree__nested-list::before {
+.tna-tree__nested-list::before {
   content: "";
   margin: 4px 0 0 calc(-2px + var(--checkbox-width) / 2);
   border-left: 4px solid #b1b4b6;
@@ -46,41 +46,41 @@
   height: calc(100% - 8px);
 }
 
-.govuk-tna-tree__nested-list--radios::before {
+.tna-tree__nested-list--radios::before {
   margin: -6px 0 0 calc(-2px + var(--directory-icon-width) / 2);
   height: calc(100% + 8px);
 }
 
-.govuk-tna-tree__node-item__container {
+.tna-tree__node-item__container {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
 }
 
-.govuk-tna-tree__node-item__container > * {
+.tna-tree__node-item__container > * {
   flex-shrink: 0;
 }
 
-.govuk-tna-tree__node-item__container,
-.govuk-tna-tree__item {
+.tna-tree__node-item__container,
+.tna-tree__item {
   height: 40px;
 }
 
-.govuk-tna-tree__svg-directory {
+.tna-tree__svg-directory {
   height: 22px;
   width: 24px;
   display: inline-block;
   align-self: baseline;
 }
 
-.govuk-tna-tree__expander {
+.tna-tree__expander {
   border: none;
   background-color: transparent;
   cursor: pointer;
   position: relative;
 }
 
-.govuk-tna-tree__expander {
+.tna-tree__expander {
   flex-basis: auto;
   width: var(--item-expander-btn-width);
   height: calc(var(--item-expander-btn-width) - 6px);
@@ -88,7 +88,7 @@
   padding: 0;
 }
 
-.govuk-tna-tree__expander::before {
+.tna-tree__expander::before {
   content: "";
   position: absolute;
   top: -1px;
@@ -101,13 +101,13 @@
   border-color: $govuk-link-colour;
 }
 
-.govuk-tna-tree [role="treeitem"][aria-expanded="true"] > .govuk-tna-tree__node-item__container > .govuk-tna-tree__expander::before {
+.tna-tree [role="treeitem"][aria-expanded="true"] > .tna-tree__node-item__container > .tna-tree__expander::before {
   @include govuk-shape-arrow($direction: down, $base: 20px);
 
   border-color: $govuk-link-colour;
 }
 
-.govuk-tna-tree [role="treeitem"][aria-expanded="true"] > .govuk-tna-tree__node-item__container > .govuk-tna-tree__expander::before {
+.tna-tree [role="treeitem"][aria-expanded="true"] > .tna-tree__node-item__container > .tna-tree__expander::before {
   left: 10px;
 }
 
@@ -116,16 +116,16 @@ $input-types: "checkboxes", "radios";
 @each $input-type in $input-types {
 
 
-  .govuk-tna-tree [role="treeitem"][aria-expanded="false"] > ul {
+  .tna-tree [role="treeitem"][aria-expanded="false"] > ul {
     display: none;
   }
 
-  .govuk-tna-tree [role="treeitem"][aria-expanded="true"] > ul {
+  .tna-tree [role="treeitem"][aria-expanded="true"] > ul {
     display: block;
   }
 
   // https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
-  .govuk-tna-tree .govuk-label govuk-#{$input-type}__label {
+  .tna-tree .govuk-label govuk-#{$input-type}__label {
     white-space: nowrap;
   }
 
@@ -136,7 +136,7 @@ $input-types: "checkboxes", "radios";
    * */
 
   [role="treeitem"]:focus > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::before,
-  [role="treeitem"]:focus > .govuk-tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::before {
+  [role="treeitem"]:focus > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::before {
     border-width: 4px;
 
     // When colours are overridden, the yellow box-shadow becomes invisible
@@ -156,7 +156,7 @@ $input-types: "checkboxes", "radios";
   }
 
   [role="treeitem"][aria-selected="true"] > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after,
-  [role="treeitem"][aria-selected="true"] > .govuk-tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after {
+  [role="treeitem"][aria-selected="true"] > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after {
     opacity: 1;
   }
 
@@ -165,7 +165,7 @@ $input-types: "checkboxes", "radios";
    * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
    * */
   [role="treeitem"][aria-checked="mixed"] > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::after,
-  [role="treeitem"][aria-checked="mixed"] > .govuk-tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after {
+  [role="treeitem"][aria-checked="mixed"] > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after {
     transform: rotate(0);
     border: none;
     top: 0;
@@ -178,12 +178,12 @@ $input-types: "checkboxes", "radios";
   }
 }
 
-.tdr-radios-directory {
+.tna-radios-directory {
   display: flex;
   height: 100%;
 }
 
-.tdr-radios-directory__label {
+.tna-radios-directory__label {
   display: flex;
   gap: 10px;
   padding: 8px 0 8px;
@@ -193,11 +193,11 @@ $input-types: "checkboxes", "radios";
 }
 
 /* Accommodate for lack of button so alignment is ok */
-.govuk-tna-tree__item > .govuk-checkboxes__item {
+.tna-tree__item > .govuk-checkboxes__item {
   margin-left: calc(var(--item-expander-btn-width));
 }
 
-.govuk-tna-tree__node-item__radio {
+.tna-tree__node-item__radio {
   margin-left: var(--item-expander-btn-width);
 }
 
