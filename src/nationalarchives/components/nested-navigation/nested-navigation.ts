@@ -207,45 +207,40 @@ export class NestedNavigation {
     li,
     inputType
   ) => {
-    if (li != null) {
-      const isSelected: boolean = li.getAttribute("aria-selected") === "true";
-      li.setAttribute("aria-selected", !isSelected ? "true" : "false");
-      li.setAttribute("aria-checked", !isSelected ? "true" : "false");
-      if (inputType === InputType.radios && !isSelected) {
-        // For radio buttons, deselect all others
-        document.querySelectorAll("li[aria-selected=true]").forEach((el) => {
-          if (el.id !== li.id) {
-            el.setAttribute("aria-selected", "false");
-            el.setAttribute("aria-checked", "false");
-          }
-        });
-      } else {
-        // If this is a node, traverse down
-        if (li.hasAttribute("aria-expanded")) {
-          const childrenGroup: HTMLUListElement | null = document.querySelector(
-            `#${inputType}-node-group-${li.id.replace(
-              `${inputType}-list-`,
-              ""
-            )}`
-          );
-          if (childrenGroup != null) {
-            const children = this.allChildren(childrenGroup, []);
-            for (const child of children) {
-              child.setAttribute(
-                "aria-selected",
-                !isSelected ? "true" : "false"
-              );
-              child.setAttribute(
-                "aria-checked",
-                !isSelected ? "true" : "false"
-              );
-            }
+    if (
+      li == null ||
+      (li.id.includes("folder") && inputType == InputType.radios)
+    ) {
+      return null;
+    }
+    const isSelected: boolean = li.getAttribute("aria-selected") === "true";
+    li.setAttribute("aria-selected", !isSelected ? "true" : "false");
+    li.setAttribute("aria-checked", !isSelected ? "true" : "false");
+    if (inputType === InputType.radios && !isSelected) {
+      // For radio buttons, deselect all others
+      document.querySelectorAll("li[aria-selected=true]").forEach((el) => {
+        if (el.id !== li.id) {
+          el.setAttribute("aria-selected", "false");
+          el.setAttribute("aria-checked", "false");
+        }
+      });
+    } else {
+      // If this is a node, traverse down
+      if (li.hasAttribute("aria-expanded")) {
+        const childrenGroup: HTMLUListElement | null = document.querySelector(
+          `#${inputType}-node-group-${li.id.replace(`${inputType}-list-`, "")}`
+        );
+        if (childrenGroup != null) {
+          const children = this.allChildren(childrenGroup, []);
+          for (const child of children) {
+            child.setAttribute("aria-selected", !isSelected ? "true" : "false");
+            child.setAttribute("aria-checked", !isSelected ? "true" : "false");
           }
         }
-        // Traverse up
-        const parentGroup: HTMLUListElement | null = li.closest("[role=group]");
-        this.setParentState(parentGroup);
       }
+      // Traverse up
+      const parentGroup: HTMLUListElement | null = li.closest("[role=group]");
+      this.setParentState(parentGroup);
     }
   };
 
