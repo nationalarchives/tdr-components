@@ -76,8 +76,13 @@ describe.each(['checkboxes', 'radios'])('nestedNavigation %s', className => {
   it(`should select the first ${className} when enter is pressed`, async () => {
     await page.keyboard.press('Tab')
     await page.keyboard.press('Tab')
+    if(className == "radios"){
+      // First tabbed item is a directory and cannot be selected
+      await page.keyboard.press('ArrowDown')
+      await page.keyboard.press('ArrowDown')
+    }
     await page.keyboard.press('Enter')
-    const nodeItem = await page.$(`#${className}-list-${data[0].id}`)
+    const nodeItem = await page.$(`#${className}-list-${className == "radios" ? data[2].id : data[0].id}`)
     const checked = await getPropertyValue(nodeItem, 'ariaChecked')
     await expect(checked).toEqual('true')
   })
@@ -85,8 +90,13 @@ describe.each(['checkboxes', 'radios'])('nestedNavigation %s', className => {
   it(`should select the first ${className} when space is pressed`, async () => {
     await page.keyboard.press('Tab')
     await page.keyboard.press('Tab')
+    if(className == "radios"){
+      // First tabbed item is a directory and cannot be selected
+      await page.keyboard.press('ArrowDown')
+      await page.keyboard.press('ArrowDown')
+    }
     await page.keyboard.press('Space')
-    const nodeItem = await page.$(`#${className}-list-${data[0].id}`)
+    const nodeItem = await page.$(`#${className}-list-${className == "radios" ? data[2].id : data[0].id}`)
     const checked = await getPropertyValue(nodeItem, 'ariaChecked')
     await expect(checked).toEqual('true')
   })

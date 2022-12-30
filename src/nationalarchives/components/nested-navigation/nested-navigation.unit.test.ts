@@ -1,4 +1,4 @@
-import { NestedNavigation } from "./nested-navigation";
+import { NestedNavigation, InputType } from "./nested-navigation";
 
 const createKeyboardEvent: (key: string) => KeyboardEvent = (key) => {
   const event: KeyboardEvent = document.createEvent("KeyboardEvent");
@@ -46,9 +46,10 @@ const createNestedNavigation: (
   return navigation;
 };
 
-describe.each(["checkboxes", "radios"])(
+describe.each([InputType.checkboxes, InputType.radios])(
   "Nested Navigation %s",
   (classNameValue) => {
+
     const inputType = document.createElement("input");
     const inputTypeValue =
       classNameValue === "checkboxes" ? "checkbox" : "radio";
@@ -651,7 +652,7 @@ describe.each([true, false])("setSelected", (state) => {
     ul.appendChild(li);
     const setParentState = jest.fn();
     const nestedNavigation = createNestedNavigation({ setParentState });
-    nestedNavigation.setSelected(li, "checkboxes");
+    nestedNavigation.setSelected(li, InputType.checkboxes);
 
     expect(setParentState).toHaveBeenCalledWith(ul);
     expect(li.getAttribute("aria-selected")).toEqual(state.toString());
@@ -675,7 +676,7 @@ describe.each([true, false])("setSelected", (state) => {
       setParentState,
       allChildren,
     });
-    nestedNavigation.setSelected(li, "checkboxes");
+    nestedNavigation.setSelected(li, InputType.checkboxes);
 
     expect(li.getAttribute("aria-checked")).toEqual(state.toString());
     expect(childCheckboxOne.getAttribute("aria-checked")).toEqual(
