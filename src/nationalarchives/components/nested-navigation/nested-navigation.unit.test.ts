@@ -308,7 +308,7 @@ describe.each(["checkboxes", "radios"])(
         expect(setFocusToItem).toHaveBeenCalledWith(siblingLi);
       });
 
-      it("should go the parent if it exists and there are no siblings", () => {
+      it("should go to the parent if it exists and there are no siblings", () => {
         const parentUl = document.createElement("ul");
         const parentLi = document.createElement("li");
         parentLi.appendChild(parentUl);
