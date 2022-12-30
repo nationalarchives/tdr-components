@@ -6,9 +6,9 @@ The project is divided into different directories
 
 ## The app directory
 This is [an express app](https://expressjs.com/) which allows you to view the individual components in a browser. It is made up of the following files
- 
+
 * `config.ts` Custom config such as path names which is used in multiple places.
-* `server.ts` The code for the express server. 
+* `server.ts` The code for the express server.
 * `start.ts`  Helper code to start the express server.
 * `all.ts` A file which includes all the necessary javascript for the components. This is loaded for each page in the app.
 * `views/template.njk` A nunjucks template which is used to render a single example of a component in the browser.
@@ -17,6 +17,7 @@ This is [an express app](https://expressjs.com/) which allows you to view the in
 * `views/banner.njk` A nunjucks template used to render the page banner
 
 ### Running the app.
+The following commands will install, compile and serve the compiled assets.
 ```shell
 npm i
 npm run build-server
@@ -26,6 +27,12 @@ Go to [http://localhost:3000](http://localhost:3000) which has the following pag
 * `/` will take you to a list of all available components.
 * `/component-name` will take you to a page with all the examples of that component
 * `/component-name/example-name` will take you to a page with that single example rendered.
+
+#### Running in development mode
+This will watch for changes to `yaml`, `sass` and `ts` files and restart the server. It does not live reload on changes.
+```
+npm run dev
+```
 
 ### Adding a new component to the app
 Components should be added automatically so long as they are added with [the correct structure](#the-component-directory).
@@ -62,7 +69,7 @@ They can be used to test interactive parts of the component.
 * `template.test.ts` These tests render the component and make assertions about the structure of the HTML.
 
 ### Configuration
-* `<component-name>.yaml` 
+* `<component-name>.yaml`
 
 This is the example data used to render the component in the app. It follows this structure.
 ```typescript
@@ -84,7 +91,7 @@ You need to create a directory with a name in kebab case which describes the com
 
 ### Minimum required files
 #### `macro.njk`
-This contains the nunjucks template for the component. 
+This contains the nunjucks template for the component.
 
 #### `template.njk`
 Given a component directory called `component-name` The template would look like:
@@ -97,13 +104,13 @@ Given a component directory called `component-name` The template would look like
 Create this file based on [this description](#configuration)
 
 #### `_index.scss`
-This contains all the sass needed for the component. You can use existing govuk classes without redefining them here. 
+This contains all the sass needed for the component. You can use existing govuk classes without redefining them here.
 
 #### `template.test.ts`
 This renders the template with nunjucks and then uses [Cheerio](https://cheerio.js.org/) to query the html.
 
 ### If there is typescript for the component
-#### `<component-name>.ts` 
+#### `<component-name>.ts`
 The typescript for the component
 #### `<component-name>.unit.test.ts`
 Unit tests for the typescript
@@ -114,7 +121,7 @@ Unit tests for the typescript
 These use [Puppeteer](https://pptr.dev/) load the pages and run tests against them. There are helper functions in the utils directory.
 
 ## Building the project
-There are two webpack files. 
+There are two webpack files.
 
 `webpack.config.js` is used during the `npm run build` command which generates `js` and `d.ts` files from the typescript in the `src/nationalarchives/**` directories.
 
