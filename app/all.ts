@@ -1,4 +1,6 @@
 import { NestedNavigation, InputType } from "../src/nationalarchives";
+import { MultiSelectSearch } from "../src/nationalarchives";
+
 window.onload = () => {
   const checkboxTreeItems: NodeListOf<HTMLUListElement> =
     document.querySelectorAll("#checkbox-tree");
@@ -22,5 +24,13 @@ window.onload = () => {
     const nestedNavigation = new NestedNavigation(radioTree, radioTreeItemList);
 
     nestedNavigation.initialiseFormListeners(InputType.radios);
+
+  const multiSelects: NodeListOf<HTMLElement> | null =
+    document.querySelectorAll("[data-module=multi-select-search]");
+  if (multiSelects != null) {
+    multiSelects.forEach((ms) => {
+      const multiSelectSearch = new MultiSelectSearch(ms);
+      multiSelectSearch.initialise();
+    });
   }
 };
