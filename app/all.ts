@@ -24,6 +24,7 @@ window.onload = () => {
     const nestedNavigation = new NestedNavigation(radioTree, radioTreeItemList);
 
     nestedNavigation.initialiseFormListeners(InputType.radios);
+  }
 
   const multiSelects: NodeListOf<HTMLElement> | null =
     document.querySelectorAll("[data-module=multi-select-search]");
