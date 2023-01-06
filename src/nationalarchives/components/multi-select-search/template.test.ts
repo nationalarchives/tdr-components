@@ -7,18 +7,18 @@ describe("Multi Select Search", () => {
   expect.extend(toHaveNoViolations);
 
   beforeAll(async () => {
-    examples = (await getExamples("multi-select-search"))[0];
+    examples = (await getExamples("multi-select-search"))["default"];
   });
 
   describe("default example", () => {
     it("passes accessibility tests", async () => {
-      const $ = render("multi-select-search", JSON.stringify(examples.default));
+      const $ = render("multi-select-search", JSON.stringify(examples));
       const results = await axe($.html());
       expect(results).toHaveNoViolations();
     });
 
     it("should render with the expected options", async () => {
-      const $ = render("multi-select-search", JSON.stringify(examples.default));
+      const $ = render("multi-select-search", JSON.stringify(examples));
       const $labels: cheerio.Cheerio = $(".govuk-checkboxes__input");
       const renderedLabelsText: string[] = [];
       for (let i = 0; i < $labels.length; i++) {
