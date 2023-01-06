@@ -6,30 +6,36 @@ describe('Nested Navigation', () => {
   let examples: { [key: string]: any }
   expect.extend(toHaveNoViolations)
 
-  beforeAll(async () => {
-    examples = (await getExamples('nested-navigation'))[0]
-  })
-
-  describe('default example', () => {
-    it('passes accessibility tests', async () => {
-      const $ = render('nested-navigation', JSON.stringify(examples.default))
-      const results = await axe($.html())
-      expect(results).toHaveNoViolations()
+  describe.each(['default', 'radio'])('nested-navigation %s', inputType => {
+    beforeAll(async () => {
+      examples = (await getExamples('nested-navigation'))
     })
 
-    it('should render with the expected options', async () => {
-      const $ = render('nested-navigation', JSON.stringify(examples.default))
-      const $labels: cheerio.Cheerio = $('.govuk-checkboxes__input')
-      const renderedLabelsText: string[] = []
-      for (let i = 0; i < $labels.length; i++) {
-        const labelTag = $labels[i] as cheerio.TagElement
-        const id: string = labelTag.attribs.id
-        const label = $(`label[for='${id}']`)[0] as cheerio.TagElement
-        const labelText = label.children[0] as unknown as Text
-        renderedLabelsText.push(labelText.data.trim())
-      }
+    describe(`${inputType} example`, () => {
+      it('passes accessibility tests', async () => {
+        const $ = render('nested-navigation', JSON.stringify(examples[inputType]))
+        const results = await axe($.html())
+        expect(results).toHaveNoViolations()
+      })
 
-      expect(renderedLabelsText.sort()).toEqual(['file1', 'file12', 'file2', 'file22', 'fileid3', 'folder1', 'folder12'])
+      it('should render with the expected options', async () => {
+        const className = inputType === 'default' ? 'checkboxes' : 'radios'
+        const $ = render('nested-navigation', JSON.stringify(examples[inputType]))
+        const $labels: cheerio.Cheerio = $(`.govuk-${className}__input`)
+        const renderedLabelsText: string[] = []
+        for (let i = 0; i < $labels.length; i++) {
+          const labelTag = $labels[i] as cheerio.TagElement
+          const id: string = labelTag.attribs.id
+          const label = $(`label[for='${id}']`)[0] as cheerio.TagElement
+          const labelText = label.children[0] as unknown as Text
+          renderedLabelsText.push(labelText.data.trim())
+        }
+        const expectedLabels = className === 'checkboxes' ?
+          ['file1', 'file1-1', 'file1-2', 'file12', 'file2', 'file22', 'fileid3', 'folder1', 'folder1-1', 'folder12'] :
+          ['file1', 'file1-1', 'file1-2', 'file12', 'file2', 'file22', 'fileid3']
+
+        expect(renderedLabelsText.sort()).toEqual(expectedLabels)
+      })
     })
   })
 })

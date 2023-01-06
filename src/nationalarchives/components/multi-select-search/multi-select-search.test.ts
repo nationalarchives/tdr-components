@@ -34,10 +34,7 @@ describe('Nested navigation', () => {
     const exampleName = 'default'
     await goToComponent(page, 'multi-select-search', { exampleName })
     const examples = await getExamples('multi-select-search')
-    const filtered = examples.filter((example)=>{
-      return Object.keys(example)[0] == exampleName;
-    })
-    data = filtered[0][exampleName].items
+    data = examples[exampleName].items
   })
 
   it('should change the filtered count when text is input into filter', async () => {

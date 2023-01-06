@@ -1,5 +1,6 @@
-.govuk-tna-tree {
+.tna-tree {
   --checkbox-width: 40px;
+  --directory-icon-width: 24px;
   --item-expander-btn-width: 40px;
 
   overflow-x: auto;
@@ -8,31 +9,36 @@
   margin-bottom: 1em;
 }
 
-.govuk-tna-tree ul[role="tree"],
-.govuk-tna-tree ul[role="tree"] li {
+.tna-tree__root-list {
+    background-image: linear-gradient(180deg, #F8F8F8 22.22%, #ffffff 22.22%, #ffffff 50%, #F8F8F8 50%, #F8F8F8 72.22%, #ffffff 72.22%, #ffffff 100%);
+    background-size: 100% 180px;
+}
+
+.tna-tree__root-list,
+.tna-tree__root-list li {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.govuk-tna-tree ul[role="group"] li {
-  margin-left: var(--item-expander-btn-width);
-}
-
-.govuk-tna-tree ul[role="tree"] li {
+.tna-tree__root-list li {
   margin-top: 5px;
 }
 
-.govuk-tna-tree ul[role="tree"] li ul {
+.tna-tree__root-list ul {
+  position: relative;
+}
+
+.tna-tree__nested-list {
   margin: 0 0 0 var(--item-expander-btn-width);
   padding: 0;
 }
 
-.govuk-tna-tree ul[role="tree"] ul {
-  position: relative;
+.tna-tree__nested-list li {
+  margin-left: calc(var(--item-expander-btn-width) - 10px);
 }
 
-.govuk-tna-tree ul[role="tree"] ul::before {
+.tna-tree__nested-list::before {
   content: "";
   margin: 4px 0 0 calc(-2px + var(--checkbox-width) / 2);
   border-left: 4px solid #b1b4b6;
@@ -40,12 +46,41 @@
   height: calc(100% - 8px);
 }
 
-/* Accommodate for lack of button so alignment is ok */
-.govuk-tna-tree__item > .govuk-checkboxes__item {
-  margin-left: var(--item-expander-btn-width);
+.tna-tree__nested-list--radios::before {
+  margin: -6px 0 0 calc(-2px + var(--directory-icon-width) / 2);
+  height: calc(100% + 8px);
 }
 
-button.govuk-tna-tree__expander {
+.tna-tree__node-item__container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.tna-tree__node-item__container > * {
+  flex-shrink: 0;
+}
+
+.tna-tree__node-item__container,
+.tna-tree__item {
+  height: 40px;
+}
+
+.tna-tree__svg-directory {
+  height: 22px;
+  width: 24px;
+  display: inline-block;
+  align-self: baseline;
+}
+
+.tna-tree__expander {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.tna-tree__expander {
   flex-basis: auto;
   width: var(--item-expander-btn-width);
   height: calc(var(--item-expander-btn-width) - 6px);
@@ -53,34 +88,12 @@ button.govuk-tna-tree__expander {
   padding: 0;
 }
 
-.govuk-tna-tree__node-item__container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-}
-
-.govuk-tna-tree__node-item__container > * {
-  flex-shrink: 0;
-}
-
-.govuk-tna-tree__node-item__container,
-.govuk-tna-tree__item {
-  height: 40px;
-}
-
-.govuk-tna-tree__expander {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  position: relative;
-}
-
-.govuk-tna-tree__expander::before {
+.tna-tree__expander::before {
   content: "";
   position: absolute;
   top: -1px;
   bottom: 0;
-  left: 10px;
+  left: 15px;
   margin: auto;
 
   @include govuk-shape-arrow($direction: right, $base: 20px);
@@ -88,69 +101,103 @@ button.govuk-tna-tree__expander {
   border-color: $govuk-link-colour;
 }
 
-.govuk-tna-tree [role="treeitem"][aria-expanded="false"] > ul {
-  display: none;
-}
-
-.govuk-tna-tree [role="treeitem"][aria-expanded="true"] > ul {
-  display: block;
-}
-
-.govuk-tna-tree [role="treeitem"][aria-expanded="true"] > .govuk-tna-tree__node-item__container > .govuk-tna-tree__expander::before {
+.tna-tree [role="treeitem"][aria-expanded="true"] > .tna-tree__node-item__container > .tna-tree__expander::before {
   @include govuk-shape-arrow($direction: down, $base: 20px);
 
   border-color: $govuk-link-colour;
 }
 
-// https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
-.govuk-tna-tree .govuk-checkboxes__label {
-  white-space: nowrap;
+.tna-tree [role="treeitem"][aria-expanded="true"] > .tna-tree__node-item__container > .tna-tree__expander::before {
+  left: 10px;
 }
 
-/*
- * Using same CSS as govuk-frontend checkboxes component:
- * https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/components/checkboxes/_index.scss#L128
- * Not including the IE8 stuff.
- * */
+$input-types: "checkboxes", "radios";
 
-[role="treeitem"]:focus > .govuk-checkboxes__item > .govuk-checkboxes__label::before,
-[role="treeitem"]:focus > .govuk-tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-checkboxes__label::before {
-  border-width: 4px;
+@each $input-type in $input-types {
 
-  // When colours are overridden, the yellow box-shadow becomes invisible
-  // which means the focus state is less obvious. By adding a transparent
-  // outline, which becomes solid (text-coloured) in that context, we ensure
-  // the focus remains clearly visible.
-  outline: $govuk-focus-width solid transparent;
-  outline-offset: 1px;
 
-  // When in an explicit forced-color mode, we can use the Highlight system
-  // color for the outline to better match focus states of native controls
-  @media screen and (forced-colors: active), (-ms-high-contrast: active) {
-    outline-color: Highlight;
+  .tna-tree [role="treeitem"][aria-expanded="false"] > ul {
+    display: none;
   }
 
-  box-shadow: 0 0 0 $govuk-focus-width $govuk-focus-colour;
+  .tna-tree [role="treeitem"][aria-expanded="true"] > ul {
+    display: block;
+  }
+
+  // https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
+  .tna-tree .govuk-label govuk-#{$input-type}__label {
+    white-space: nowrap;
+  }
+
+  /*
+   * Using same CSS as govuk-frontend checkboxes component:
+   * https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/components/checkboxes/_index.scss#L128
+   * Not including the IE8 stuff.
+   * */
+
+  [role="treeitem"]:focus > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::before,
+  [role="treeitem"]:focus > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::before {
+    border-width: 4px;
+
+    // When colours are overridden, the yellow box-shadow becomes invisible
+    // which means the focus state is less obvious. By adding a transparent
+    // outline, which becomes solid (text-coloured) in that context, we ensure
+    // the focus remains clearly visible.
+    outline: $govuk-focus-width solid transparent;
+    outline-offset: 1px;
+
+    // When in an explicit forced-color mode, we can use the Highlight system
+    // color for the outline to better match focus states of native controls
+    @media screen and (forced-colors: active), (-ms-high-contrast: active) {
+      outline-color: Highlight;
+    }
+
+    box-shadow: 0 0 0 $govuk-focus-width $govuk-focus-colour;
+  }
+
+  [role="treeitem"][aria-selected="true"] > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after,
+  [role="treeitem"][aria-selected="true"] > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after {
+    opacity: 1;
+  }
+
+  /*
+   * Styles copied from this thread:
+   * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
+   * */
+  [role="treeitem"][aria-checked="mixed"] > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::after,
+  [role="treeitem"][aria-checked="mixed"] > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after {
+    transform: rotate(0);
+    border: none;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 6px;
+    width: 22px;
+    background: currentcolor;
+    opacity: 1;
+  }
 }
 
-[role="treeitem"][aria-selected="true"] > .govuk-checkboxes__item > .govuk-checkboxes__label::after,
-[role="treeitem"][aria-selected="true"] > .govuk-tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-checkboxes__label::after {
-  opacity: 1;
+.tna-radios-directory {
+  display: flex;
+  height: 100%;
 }
 
-/*
- * Styles copied from this thread:
- * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
- * */
-[role="treeitem"][aria-checked="mixed"] > .govuk-checkboxes__item > .govuk-checkboxes__label::after,
-[role="treeitem"][aria-checked="mixed"] > .govuk-tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-checkboxes__label::after {
-  transform: rotate(0);
-  border: none;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  height: 6px;
-  width: 22px;
-  background: currentcolor;
-  opacity: 1;
+.tna-radios-directory__label {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0 8px;
+  cursor: pointer;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
 }
+
+/* Accommodate for lack of button so alignment is ok */
+.tna-tree__item > .govuk-checkboxes__item {
+  margin-left: calc(var(--item-expander-btn-width));
+}
+
+.tna-tree__node-item__radio {
+  margin-left: var(--item-expander-btn-width);
+}
+

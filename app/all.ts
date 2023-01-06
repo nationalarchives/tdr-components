@@ -1,15 +1,29 @@
-import { NestedNavigation } from "../src/nationalarchives";
+import { NestedNavigation, InputType } from "../src/nationalarchives";
 import { MultiSelectSearch } from "../src/nationalarchives";
 
 window.onload = () => {
-  const treeItems: NodeListOf<HTMLUListElement> =
-    document.querySelectorAll("[role=tree]");
-  const tree: HTMLUListElement | null = document.querySelector("[role=tree]");
+  const checkboxTreeItems: NodeListOf<HTMLUListElement> =
+    document.querySelectorAll("#checkbox-tree");
+  const checkboxTree: HTMLUListElement | null =
+    document.querySelector("#checkbox-tree");
   const treeItemList: HTMLUListElement[] = [];
-  if (tree != null) {
-    treeItems.forEach((item) => treeItemList.push(item));
-    const nestedNavigation = new NestedNavigation(tree, treeItemList);
-    nestedNavigation.initialiseFormListeners();
+  if (checkboxTree != null) {
+    checkboxTreeItems.forEach((item) => treeItemList.push(item));
+    const nestedNavigation = new NestedNavigation(checkboxTree, treeItemList);
+
+    nestedNavigation.initialiseFormListeners(InputType.checkboxes);
+  }
+
+  const radioTreeItems: NodeListOf<HTMLUListElement> =
+    document.querySelectorAll("#radio-tree");
+  const radioTree: HTMLUListElement | null =
+    document.querySelector("#radio-tree");
+  const radioTreeItemList: HTMLUListElement[] = [];
+  if (radioTree != null) {
+    radioTreeItems.forEach((item) => radioTreeItemList.push(item));
+    const nestedNavigation = new NestedNavigation(radioTree, radioTreeItemList);
+
+    nestedNavigation.initialiseFormListeners(InputType.radios);
   }
 
   const multiSelects: NodeListOf<HTMLElement> | null =
