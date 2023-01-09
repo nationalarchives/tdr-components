@@ -39,11 +39,9 @@ export class NestedNavigation {
       `.js-tree__expander--${inputType}`
     );
     const allExpanders = [...radioFolders, ...Array.from(buttons)];
-    console.log(allExpanders);
     allExpanders.forEach((expander, _, __) => {
       (expander as HTMLElement).addEventListener("click", (ev) => {
         let el: HTMLElement = ev.currentTarget as HTMLElement;
-        console.log(el);
         if (el.id.includes("expander") === false) {
           el = el.previousElementSibling as HTMLElement;
         }
@@ -443,7 +441,6 @@ export class NestedNavigation {
     const nodeGroup: HTMLUListElement | null = document.querySelector(
       `#${newId}`
     );
-    console.log(target.id, newId, nodeGroup);
 
     if (nodeGroup !== null) {
       const parent: HTMLLIElement | null =
