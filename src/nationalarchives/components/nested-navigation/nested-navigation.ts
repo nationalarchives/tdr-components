@@ -344,8 +344,6 @@ export class NestedNavigation {
     ev,
     inputType
   ) => {
-    console.log(ev.key);
-
     switch (ev.key) {
       case "Enter":
       case " ":
