@@ -36,7 +36,7 @@ const createNestedNavigation: (
   tree?: HTMLUListElement | undefined
 ) => NestedNavigation = (navOption, element, tree) => {
   const el = tree != null ? tree : document.createElement("ul");
-  const navigation = new NestedNavigation(el, [el]);
+  const navigation = new NestedNavigation(el);
   if (element != null) {
     navigation.setFocusToItem(element);
   }
@@ -49,7 +49,6 @@ const createNestedNavigation: (
 describe.each([InputType.checkboxes, InputType.radios])(
   "Nested Navigation %s",
   (classNameValue) => {
-
     const inputType = document.createElement("input");
     const inputTypeValue =
       classNameValue === "checkboxes" ? "checkbox" : "radio";
@@ -175,7 +174,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const li = document.createElement("li");
         const tree = document.createElement("ul");
         tree.appendChild(li);
-        const nestedNavigation = new NestedNavigation(tree, [tree]);
+        const nestedNavigation = new NestedNavigation(tree);
         const event = createKeyboardEvent("Home");
 
         nestedNavigation.handleKeyDown(event, classNameValue);
@@ -200,28 +199,27 @@ describe.each([InputType.checkboxes, InputType.radios])(
     describe("handleExpanders", () => {
       it("should toggle the correct elements", () => {
         const toggleNode = jest.fn();
+        const tree = document.createElement("ul");
         const li = document.createElement("li");
         const setFocusToItem = jest.fn();
         const nestedNavigation = createNestedNavigation(
           { setFocusToItem, toggleNode },
-          li
+          li,
+          tree
         );
         const input = createInputElement();
         const ul = document.createElement("ul");
         ul.setAttribute("id", input.id.replace("expander-", "node-group-"));
         li.appendChild(ul);
-        document.body.appendChild(li);
+        tree.appendChild(li);
 
         nestedNavigation.handleExpanders(input, classNameValue);
-
         expect(toggleNode).toHaveBeenCalledWith(
           li,
           input.id.replace("expander-", ""),
           classNameValue
         );
         expect(setFocusToItem).toHaveBeenCalledWith(li);
-
-        document.body.removeChild(li);
       });
     });
 
@@ -528,40 +526,28 @@ describe.each([InputType.checkboxes, InputType.radios])(
           events[event] = [callback];
         });
         ul.appendChild(button);
-        document.body.appendChild(ul);
-        const nestedNavigation = createNestedNavigation({});
+        // document.body.appendChild(ul);
+        const nestedNavigation = createNestedNavigation({}, undefined, ul);
         nestedNavigation.initialiseFormListeners(classNameValue);
 
         expect(events.click?.length).toEqual(1);
       });
 
       it("should update the expanded state for the checkboxes", () => {
+        const tree = document.createElement("ul");
         const input = createInputElement();
         input.setAttribute("role", "group");
         input.id = classNameValue;
-        document.body.appendChild(input);
+        tree.appendChild(input);
         const updateExpanded = jest.fn();
-        const nestedNavigation = createNestedNavigation({ updateExpanded });
+        const nestedNavigation = createNestedNavigation(
+          { updateExpanded },
+          undefined,
+          tree
+        );
         nestedNavigation.initialiseFormListeners(classNameValue);
 
         expect(updateExpanded).toHaveBeenCalledWith(input, classNameValue);
-      });
-
-      it("should add a focus handler to the checkboxes", () => {
-        const events: { [key: string]: EventListenerOrEventListenerObject[] } =
-          {};
-
-        const ul = document.createElement("ul");
-        ul.setAttribute("role", "tree");
-
-        ul.addEventListener = jest.fn((event, callback) => {
-          events[event] = [callback];
-        });
-        document.body.appendChild(ul);
-        const nestedNavigation = new NestedNavigation(ul, [ul]);
-        nestedNavigation.initialiseFormListeners(classNameValue);
-
-        expect(events.focus?.length).toEqual(1);
       });
 
       it("should replace the checkboxes with spans", () => {
@@ -574,12 +560,16 @@ describe.each([InputType.checkboxes, InputType.radios])(
         li.appendChild(label);
         li.setAttribute("class", `govuk-${classNameValue}__item`);
         ul.appendChild(li);
-        document.body.appendChild(ul);
+        // document.body.appendChild(ul);
         const replaceCheckboxWithSpan = jest.fn();
 
-        const nestedNavigation = createNestedNavigation({
-          replaceCheckboxWithSpan,
-        });
+        const nestedNavigation = createNestedNavigation(
+          {
+            replaceCheckboxWithSpan,
+          },
+          undefined,
+          ul
+        );
         nestedNavigation.initialiseFormListeners(classNameValue);
 
         expect(replaceCheckboxWithSpan).toHaveBeenCalledWith(input, label);
@@ -589,7 +579,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
     describe("getTree", () => {
       it("should get the tree", () => {
         const el = document.createElement("ul");
-        const navigation = new NestedNavigation(el, [el]);
+        const navigation = new NestedNavigation(el);
 
         expect(navigation.getTree()).toEqual(el);
       });
@@ -609,7 +599,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const tree = document.createElement("ul");
         const li = document.createElement("li");
         tree.appendChild(li);
-        const nestedNavigation = new NestedNavigation(tree, [tree]);
+        const nestedNavigation = new NestedNavigation(tree);
         nestedNavigation.setFocusToItem = setFocusToItem;
 
         nestedNavigation.updateFocus();
