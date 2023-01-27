@@ -87,8 +87,10 @@ export class NestedNavigation {
 
     const firstSelected: HTMLLIElement | null =
       this.tree.querySelector("[role=treeitem]");
-    if (firstSelected) firstSelected.tabIndex = 0;
-    // this.updateFocus(firstSelected);
+    if (firstSelected) {
+      firstSelected.tabIndex = 0;
+      this.currentFocus = firstSelected;
+    }
   };
 
   replaceCheckboxWithSpan: (
