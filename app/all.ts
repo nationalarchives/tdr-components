@@ -2,18 +2,15 @@ import { NestedNavigation, InputType } from "../src/nationalarchives";
 import { MultiSelectSearch } from "../src/nationalarchives";
 
 window.onload = () => {
-  const checkboxTrees: NodeListOf<HTMLUListElement> =
-    document.querySelectorAll("#checkbox-tree");
-  checkboxTrees.forEach((tree) => {
+  const trees: NodeListOf<HTMLUListElement> =
+    document.querySelectorAll("[role=tree]");
+  trees.forEach((tree) => {
     const nestedNavigation = new NestedNavigation(tree);
-    nestedNavigation.initialiseFormListeners(InputType.checkboxes);
-  });
-
-  const radioTrees: NodeListOf<HTMLUListElement> =
-    document.querySelectorAll("#radio-tree");
-  radioTrees.forEach((tree) => {
-    const nestedNavigation = new NestedNavigation(tree);
-    nestedNavigation.initialiseFormListeners(InputType.radios);
+    if (tree.hasAttribute("aria-multiselectable")) {
+      nestedNavigation.initialiseFormListeners(InputType.checkboxes);
+    } else {
+      nestedNavigation.initialiseFormListeners(InputType.radios);
+    }
   });
 
   const multiSelects: NodeListOf<HTMLElement> | null =
