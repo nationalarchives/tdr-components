@@ -5,12 +5,12 @@ export enum InputType {
 
 export class NestedNavigation {
   private readonly tree: HTMLUListElement;
-  private readonly treeItems: HTMLUListElement[];
+  private readonly treeItems: NodeListOf<HTMLElement>;
   private currentFocus: HTMLLIElement | null;
 
-  constructor(tree: HTMLUListElement, treeItems: HTMLUListElement[]) {
+  constructor(tree: HTMLUListElement) {
     this.tree = tree;
-    this.treeItems = treeItems;
+    this.treeItems = this.tree.querySelectorAll("[role=treeitem]");
     this.currentFocus = null;
   }
 
@@ -33,9 +33,9 @@ export class NestedNavigation {
 
     // Make radio folders label/icon act as expanders as well since they are not selectable.
     const radioFolders = Array.from(
-      document.querySelectorAll(`.js-${inputType}-directory`)
+      this.tree.querySelectorAll(`.js-${inputType}-directory`)
     );
-    const buttons = document.querySelectorAll(
+    const buttons = this.tree.querySelectorAll(
       `.js-tree__expander--${inputType}`
     );
     const allExpanders = [...radioFolders, ...Array.from(buttons)];
@@ -52,13 +52,13 @@ export class NestedNavigation {
     });
 
     // All nodes start open so need hiding on first load.
-    document.querySelectorAll('[role="group"]').forEach((value, _, __) => {
+    this.tree.querySelectorAll('[role="group"]').forEach((value, _, __) => {
       if (value.id.includes(inputType)) {
         this.updateExpanded(value as HTMLInputElement, inputType);
       }
     });
 
-    document.querySelectorAll("[role=treeitem]").forEach((treeItem, _, __) => {
+    this.tree.querySelectorAll("[role=treeitem]").forEach((treeItem, _, __) => {
       // We do not want the radio buttons directories to be selectable.
       if (
         inputType == InputType.radios &&
@@ -75,7 +75,7 @@ export class NestedNavigation {
         });
       }
     });
-    document
+    this.tree
       .querySelectorAll(`[role=tree] .govuk-${inputType}__item`)
       .forEach((checkbox: Element, _, __) => {
         const input: HTMLInputElement | null = checkbox.querySelector("input");
@@ -85,12 +85,10 @@ export class NestedNavigation {
         }
       });
 
-    this.tree.addEventListener("focus", () => {
-      const firstSelected: HTMLLIElement | null = document.querySelector(
-        "[role=treeitem][aria-selected=true]"
-      );
-      this.updateFocus(firstSelected);
-    });
+    const firstSelected: HTMLLIElement | null =
+      this.tree.querySelector("[role=treeitem]");
+    if (firstSelected) firstSelected.tabIndex = 0;
+    // this.updateFocus(firstSelected);
   };
 
   replaceCheckboxWithSpan: (
@@ -216,7 +214,7 @@ export class NestedNavigation {
     li.setAttribute("aria-checked", !isSelected ? "true" : "false");
     if (inputType === InputType.radios && !isSelected) {
       // For radio buttons, deselect all others
-      document.querySelectorAll("li[aria-selected=true]").forEach((el) => {
+      this.tree.querySelectorAll("li[aria-selected=true]").forEach((el) => {
         if (el.id !== li.id) {
           el.setAttribute("aria-selected", "false");
           el.setAttribute("aria-checked", "false");
@@ -346,6 +344,8 @@ export class NestedNavigation {
     ev,
     inputType
   ) => {
+    console.log(ev.key);
+
     switch (ev.key) {
       case "Enter":
       case " ":
@@ -438,7 +438,7 @@ export class NestedNavigation {
     inputType
   ) => {
     const newId = target.id.replace("expander-", "node-group-");
-    const nodeGroup: HTMLUListElement | null = document.querySelector(
+    const nodeGroup: HTMLUListElement | null = this.tree.querySelector(
       `#${newId}`
     );
 
