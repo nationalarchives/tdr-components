@@ -526,7 +526,6 @@ describe.each([InputType.checkboxes, InputType.radios])(
           events[event] = [callback];
         });
         ul.appendChild(button);
-        // document.body.appendChild(ul);
         const nestedNavigation = createNestedNavigation({}, undefined, ul);
         nestedNavigation.initialiseFormListeners(classNameValue);
 
@@ -560,7 +559,6 @@ describe.each([InputType.checkboxes, InputType.radios])(
         li.appendChild(label);
         li.setAttribute("class", `govuk-${classNameValue}__item`);
         ul.appendChild(li);
-        // document.body.appendChild(ul);
         const replaceCheckboxWithSpan = jest.fn();
 
         const nestedNavigation = createNestedNavigation(
