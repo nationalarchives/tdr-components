@@ -75,7 +75,7 @@
   {% elseif params.inputType == 'checkbox' %}
     {% set className = 'checkboxes' %}
   {% endif %}
-  <ul tabindex="0" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkboxes' %} aria-multiselectable="true"{% endif %}>
+  <ul tabindex="0" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkbox' %} aria-multiselectable="true"{% endif %}>
     {% for node in params.items %}
       {{ navigationItem(node, params.inputType, className, 1, loop.length, loop.index) }}
     {% endfor %}
