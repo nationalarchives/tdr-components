@@ -548,30 +548,6 @@ describe.each([InputType.checkboxes, InputType.radios])(
 
         expect(updateExpanded).toHaveBeenCalledWith(input, classNameValue);
       });
-
-      it("should replace the checkboxes with spans", () => {
-        const input = createInputElement();
-        const li = createListElement("true");
-        const ul = document.createElement("ul");
-        ul.setAttribute("role", "tree");
-        const label = document.createElement("label");
-        li.appendChild(input);
-        li.appendChild(label);
-        li.setAttribute("class", `govuk-${classNameValue}__item`);
-        ul.appendChild(li);
-        const replaceCheckboxWithSpan = jest.fn();
-
-        const nestedNavigation = createNestedNavigation(
-          {
-            replaceCheckboxWithSpan,
-          },
-          undefined,
-          ul
-        );
-        nestedNavigation.initialiseFormListeners(classNameValue);
-
-        expect(replaceCheckboxWithSpan).toHaveBeenCalledWith(input, label);
-      });
     });
 
     describe("getTree", () => {
@@ -602,29 +578,6 @@ describe.each([InputType.checkboxes, InputType.radios])(
 
         nestedNavigation.updateFocus();
         expect(setFocusToItem).toHaveBeenCalledWith(li);
-      });
-    });
-
-    describe("replaceCheckboxWithSpan", () => {
-      it("should replace checkboxes and labels with span elements", () => {
-        const input = createInputElement();
-        const li = createListElement("true");
-        const label = document.createElement("label");
-        label.setAttribute("test", "test-label-value");
-        label.textContent = "Test content";
-        li.appendChild(input);
-        li.appendChild(label);
-        const nestedNavigation = createNestedNavigation({});
-
-        nestedNavigation.replaceCheckboxWithSpan(input, label);
-        const checkboxSpan = li.children.item(0);
-        const labelSpan = li.children.item(1);
-
-        expect(checkboxSpan?.tagName).toEqual("SPAN");
-        expect(labelSpan?.tagName).toEqual("SPAN");
-        expect(checkboxSpan?.id).toEqual(input.id);
-        expect(labelSpan?.getAttribute("test")).toEqual("test-label-value");
-        expect(labelSpan?.textContent).toEqual("Test content");
       });
     });
   }
