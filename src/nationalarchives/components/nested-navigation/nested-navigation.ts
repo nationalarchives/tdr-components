@@ -75,56 +75,12 @@ export class NestedNavigation {
         });
       }
     });
-    this.tree
-      .querySelectorAll(`[role=tree] .govuk-${inputType}__item`)
-      .forEach((checkbox: Element, _, __) => {
-        const input: HTMLInputElement | null = checkbox.querySelector("input");
-        const label: HTMLLabelElement | null = checkbox.querySelector("label");
-        if (input != null && label != null) {
-          this.replaceCheckboxWithSpan(input, label);
-        }
-      });
 
     const firstSelected: HTMLLIElement | null =
       this.tree.querySelector("[role=treeitem]");
     if (firstSelected) {
       firstSelected.tabIndex = 0;
       this.currentFocus = firstSelected;
-    }
-  };
-
-  replaceCheckboxWithSpan: (
-    input: HTMLInputElement,
-    label: HTMLLabelElement
-  ) => void = (input, label) => {
-    const spanInput = document.createElement("span");
-    for (const name of input.getAttributeNames()) {
-      if (!["type", "tabindex"].includes(name)) {
-        const inputAttribute = input.getAttribute(name);
-        if (inputAttribute != null) {
-          spanInput.setAttribute(name, inputAttribute);
-        }
-      }
-      spanInput.setAttribute("aria-hidden", "true");
-    }
-    input.parentElement?.appendChild(spanInput);
-    input.remove();
-
-    const spanLabel = document.createElement("span");
-    for (const name of label.getAttributeNames()) {
-      if (!["for"].includes(name)) {
-        const labelAttribute = label.getAttribute(name);
-        if (labelAttribute != null) {
-          spanLabel.setAttribute(name, labelAttribute);
-        }
-      }
-    }
-    if (label.textContent != null) {
-      spanLabel.appendChild(document.createTextNode(label.textContent));
-    }
-    if (label.parentElement != null) {
-      label.parentElement.appendChild(spanLabel);
-      label.remove();
     }
   };
 
