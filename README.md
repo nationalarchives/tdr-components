@@ -23,6 +23,7 @@ npm i
 npm run build-server
 npm run start
 ```
+
 Go to [http://localhost:3000](http://localhost:3000) which has the following pages for each component
 * `/` will take you to a list of all available components.
 * `/component-name` will take you to a page with all the examples of that component
