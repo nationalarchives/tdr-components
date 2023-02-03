@@ -30,6 +30,7 @@
         >
       <div class="tna-tree__node-item__container">
         <button
+                        aria-hidden="true"
                         class="tna-tree__expander js-tree__expander--{{ className }}"
                         tabindex="-1"
                         id="{{ className }}-expander-{{ item.id }}"
@@ -75,7 +76,9 @@
   {% elseif params.inputType == 'checkbox' %}
     {% set className = 'checkboxes' %}
   {% endif %}
-  <ul tabindex="0" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkbox' %} aria-multiselectable="true"{% endif %}>
+
+  <p class="govuk-hint" id="tree-view-description">Navigate files and folders using arrow keys.</p>
+  <ul aria-label="File selection" aria-describedby="tree-view-description" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkbox' %} aria-multiselectable="true"{% endif %}>
     {% for node in params.items %}
       {{ navigationItem(node, params.inputType, className, 1, loop.length, loop.index) }}
     {% endfor %}
