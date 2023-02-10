@@ -243,30 +243,41 @@ export class NestedNavigation {
     }
   };
 
+  setFocusToLastExpandedChild: (li: HTMLLIElement | null) => void = (li) => {
+    // Does last child have children?
+    if (li && li.getAttribute("aria-expanded") === "true") {
+      const lastChild: HTMLLIElement | null = li.querySelector(
+        ":scope > ul > li:last-child"
+      );
+      this.setFocusToLastExpandedChild(lastChild);
+    } else if (li) {
+      // Set to this li
+      this.setFocusToItem(li);
+    }
+  };
+
   setFocusToPreviousItem: (input: HTMLLIElement | null) => void = (input) => {
     if (input != null) {
       const li: HTMLLIElement | null = input.closest("li");
       // Do you have a sibling
       if (li?.previousElementSibling != null) {
-        // Does sibling have an aria-expanded=true
-        if (
-          li.previousElementSibling.getAttribute("aria-expanded") === "true"
-        ) {
-          // Go to sibling's last child
-          const lastChild: HTMLLIElement | null =
-            li.previousElementSibling.querySelector(
-              ":scope > ul > li:last-child"
-            );
-          if (lastChild !== null) {
-            this.setFocusToItem(lastChild);
-          }
-        } else {
-          // Go to previous sibling
-          this.setFocusToItem(li.previousElementSibling as HTMLLIElement);
-        }
+        this.setFocusToLastExpandedChild(
+          li.previousElementSibling as HTMLLIElement
+        );
       } else if (li?.parentElement != null) {
         // Go to parent
         this.setFocusToItem(li.parentElement.closest("li") as HTMLLIElement);
+      }
+    }
+  };
+
+  setFocusToNextParent: (ul: HTMLUListElement) => void = (ul) => {
+    if (ul.getAttribute("role") != "tree") {
+      const parent: HTMLLIElement = ul.closest("li") as HTMLLIElement;
+      if (parent?.nextElementSibling != null) {
+        this.setFocusToItem(parent.nextElementSibling as HTMLLIElement);
+      } else {
+        this.setFocusToNextParent(parent.parentElement as HTMLUListElement);
       }
     }
   };
@@ -283,15 +294,13 @@ export class NestedNavigation {
             this.setFocusToItem(firstChild);
           }
         } else {
+          // Do you have a sibling?
           if (li.nextElementSibling !== null) {
             // Go to next sibling
             this.setFocusToItem(li.nextElementSibling as HTMLLIElement);
           } else if (li.parentElement !== null) {
             // Go to parents next sibling
-            const parent: HTMLLIElement | null = li.parentElement.closest("li");
-            if (parent?.nextElementSibling != null) {
-              this.setFocusToItem(parent.nextElementSibling as HTMLLIElement);
-            }
+            this.setFocusToNextParent(li.parentElement as HTMLUListElement);
           }
         }
       }
