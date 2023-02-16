@@ -29,14 +29,14 @@
                 aria-posinset="{{pos}}"
         >
       <div class="tna-tree__node-item__container">
-        <button
+        <span
                         aria-hidden="true"
                         class="tna-tree__expander js-tree__expander--{{ className }}"
                         tabindex="-1"
                         id="{{ className }}-expander-{{ item.id }}"
                 >
           <span class="govuk-visually-hidden">Expand</span>
-        </button>
+        </span>
         {% if className == 'checkboxes' %}
           <div class="govuk-{{ className }}__item">
             <input
