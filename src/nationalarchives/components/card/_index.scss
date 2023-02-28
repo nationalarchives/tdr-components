@@ -1,6 +1,4 @@
-@import "node_modules/govuk-frontend/govuk/base";
-
-.tdr-card {
+tdr-card {
   border: 1px solid $govuk-border-colour;
   @include govuk-responsive-padding(5);
   @include govuk-responsive-padding(6, "right");
@@ -23,16 +21,16 @@
   position: relative;
 }
 
-.tdr-card__content > *:last-child {
+.tdr-card__content>*:last-child {
   margin: 0;
 }
 
-.tdr-card__state {
+.tdr-card--metadata__state {
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.tdr-card__inset-text {
+.tdr-card--metadata__inset-text {
   color: $govuk-secondary-text-colour
 }
