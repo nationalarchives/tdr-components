@@ -1,31 +1,28 @@
-import './_index.scss';
-import render from './story.njk'
+import "./_index.scss";
+import render from "./story.njk";
 
 export default {
   title: "TDR/Card",
-  args : {
+  args: {
     error: false,
-    metadataState: "Not entered"
+    copy: "This is a basic card.",
   },
-  argTypes: {
-    error: {
-      control: { control: 'boolean' }
-    },
-    metadataState: {
-      options: ["Not entered", "Entered", "Incomplete"],
-      control: { type: 'radio' },
-    },
-  }
-}
+  argTypes: {},
+};
 
 const createCard = (args) => {
   return render({
-    params: { ...args }
+    params: { ...args },
   });
 };
 
-const Template = ({ label, ...args }) => {
-  return createCard({ label, ...args });
+const Template = ({ ...args }) => {
+  return createCard({ ...args });
 };
 
 export const Default = Template.bind({});
+
+export const Error = Template.bind({});
+Error.args = {
+  error: true,
+};
