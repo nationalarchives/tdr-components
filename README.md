@@ -91,6 +91,7 @@ The example data is `any` because this data is specific to the component you are
 You need to create a directory with a name in kebab case which describes the component. For example, `card` or `navigation-text`
 
 ### Minimum required files
+
 #### `macro.njk`
 This contains the nunjucks template for the component.
 
