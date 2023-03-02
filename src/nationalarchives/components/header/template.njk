@@ -1,0 +1,25 @@
+<header class="govuk-header " role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="govuk-header__logo">
+      <a href="/" class="govuk-header__link govuk-header__link--homepage">
+        <img src="/tna-horizontal-white-logo.svg" class="govuk-header__tna-logo-image img-responsive" alt="The National Archives">
+      </a>
+    </div>
+    <div class="govuk-header__content govuk-header__content--nav-right">
+      <a href="/" class="govuk-header__link govuk-header__service-name">
+          Transfer Digital Records
+      </a>
+      {% if params.showSignOut %}
+        <nav>
+          <ul id="navigation" class="govuk-header__navigation govuk-header__navigation--end">
+            <li class="govuk-header__navigation-item">
+              <a href="#" class="govuk-header__link">
+              Sign out
+            </a>
+            </li>
+          </ul>
+        </nav>
+      {% endif %}
+    </div>
+  </div>
+</header>

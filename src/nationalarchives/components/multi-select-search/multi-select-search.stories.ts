@@ -7,6 +7,7 @@ import {
   userEvent,
   waitFor,
   waitForElementToBeRemoved,
+  getByDisplayValue,
 } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
 
@@ -130,7 +131,7 @@ Search.play = async ({ canvasElement }) => {
 export const SearchSelect = Template.bind({});
 SearchSelect.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  await userEvent.click(canvas.getByLabelText("Filter items"));
+  // await userEvent.click(canvas.getByLabelText("Filter items"));
   await userEvent.type(canvas.getByLabelText("Filter items"), "Afar");
   // `nextElementSibling` is label so we're also checking the label is
   // present and working
@@ -138,4 +139,22 @@ SearchSelect.play = async ({ canvasElement }) => {
     canvas.getByLabelText("Afar").nextElementSibling as HTMLElement
   );
   await expect(canvas.getByLabelText("Afar")).toBeChecked();
+};
+
+export const FilteredCount = Template.bind({});
+FilteredCount.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  // Depend on params the label test changes from, for example,
+  // 'Filter items' to 'Filter languages'
+  await userEvent.type(canvas.getByLabelText("Filter", { exact: false }), "b");
+
+  await userEvent.tab();
+  await userEvent.keyboard("[Space]");
+
+  await waitFor(() => {
+    expect(
+      canvas.queryByText("4 languages displayed, 1 language selected")
+    ).toBeInTheDocument();
+  });
 };

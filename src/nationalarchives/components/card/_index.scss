@@ -1,4 +1,4 @@
-tdr-card {
+.tdr-card {
   border: 1px solid $govuk-border-colour;
   @include govuk-responsive-padding(5);
   @include govuk-responsive-padding(6, "right");
