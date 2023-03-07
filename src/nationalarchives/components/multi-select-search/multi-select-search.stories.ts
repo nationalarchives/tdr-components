@@ -154,7 +154,7 @@ FilteredCount.play = async ({ canvasElement }) => {
 
   await waitFor(() => {
     expect(
-      canvas.queryByText("4 languages displayed, 1 language selected")
+      canvas.queryByText("4 items displayed, 1 item selected")
     ).toBeInTheDocument();
   });
 };
