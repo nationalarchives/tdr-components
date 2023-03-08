@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - storybook
+      - test-another-deploy-method
 permissions:
   contents: write
 jobs:
