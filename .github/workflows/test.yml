@@ -3,7 +3,6 @@ on:
   push:
     branches-ignore:
       - release-*
-      - storybook
 permissions:
   id-token: write
   contents: read
