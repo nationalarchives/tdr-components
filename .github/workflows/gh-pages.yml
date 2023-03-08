@@ -16,7 +16,9 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build Storybook
-        run: yarn build-storybook --quiet
+        run: |
+          yarn sass-compile
+          yarn build-storybook --quiet
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
