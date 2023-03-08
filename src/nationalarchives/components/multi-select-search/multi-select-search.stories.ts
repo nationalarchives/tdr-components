@@ -92,8 +92,8 @@ LongList.args = {
   dataSource: "long-list",
 };
 
-export const SelectTwoItems = Template.bind({});
-SelectTwoItems.play = async ({ canvasElement }) => {
+export const Select = Template.bind({});
+Select.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   // `nextElementSibling` is label so we're also checking the label is
   // present and working
@@ -107,15 +107,8 @@ SelectTwoItems.play = async ({ canvasElement }) => {
   await expect(canvas.getByLabelText("English")).toBeChecked();
 };
 
-export const SelectedIndicatorAppears = Template.bind({});
-SelectedIndicatorAppears.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  // wait for appearance and return the element
-  expect(await canvas.findByText("0 selected")).toBeVisible();
-};
-
-export const Search = Template.bind({});
-Search.play = async ({ canvasElement }) => {
+export const Filter = Template.bind({});
+Filter.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByLabelText("Filter items"));
@@ -141,20 +134,68 @@ SearchSelect.play = async ({ canvasElement }) => {
   await expect(canvas.getByLabelText("Afar")).toBeChecked();
 };
 
-export const FilteredCount = Template.bind({});
-FilteredCount.play = async ({ canvasElement }) => {
+// it should change the filtered count when text is input into filter
+export const SRIndicatorChangeOnFilter = Template.bind({});
+SRIndicatorChangeOnFilter.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
 
-  // Depend on params the label test changes from, for example,
-  // 'Filter items' to 'Filter languages'
   await userEvent.type(canvas.getByLabelText("Filter", { exact: false }), "b");
-
-  await userEvent.tab();
-  await userEvent.keyboard("[Space]");
 
   await waitFor(() => {
     expect(
-      canvas.queryByText("4 items displayed, 1 item selected")
+      canvas.queryByText("3 items displayed, 0 items selected")
     ).toBeInTheDocument();
   });
+};
+
+// it should change the filtered count when text is input into filter
+export const SRIndicatorChangeOnChecked = Template.bind({});
+SRIndicatorChangeOnChecked.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  await userEvent.click(
+    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement
+  );
+  await userEvent.click(
+    canvas.getByLabelText("Abkhazian").nextElementSibling as HTMLElement
+  );
+
+  await waitFor(() => {
+    expect(
+      canvas.queryByText("5 items displayed, 2 items selected")
+    ).toBeInTheDocument();
+  });
+};
+
+// it should change the filtered count when checkbox is checked
+export const SelectedIndicatorIsVisible = Template.bind({});
+SelectedIndicatorIsVisible.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  // wait for appearance and return the element
+  expect(await canvas.findByText("0 selected")).toBeVisible();
+};
+
+// it should change the filtered count when checkbox is checked
+export const SelectedIndicatorChangeOnChecked = Template.bind({});
+SelectedIndicatorChangeOnChecked.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(
+    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement
+  );
+  await userEvent.click(
+    canvas.getByLabelText("Abkhazian").nextElementSibling as HTMLElement
+  );
+  expect(await canvas.findByText("2 selected")).toBeVisible();
+};
+
+// it should change the filtered count when text is input into filter
+export const KeyboardSelect = Template.bind({});
+KeyboardSelect.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  await userEvent.tab();
+  await userEvent.tab();
+  await userEvent.keyboard("[Space]");
+
+  await expect(canvas.getByLabelText("Afar")).toBeChecked();
 };
