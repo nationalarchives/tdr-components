@@ -1,4 +1,4 @@
-name: TDR Run Tests
+name: Run storybook test runner
 on:
   push:
     branches:
