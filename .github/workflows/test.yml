@@ -13,7 +13,6 @@ jobs:
       repo-name: tdr-components
       test-command: |
         npm ci
-        npm run build-server
         npm t
     secrets:
       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
