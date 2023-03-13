@@ -8,76 +8,97 @@ examples:
   - name: default
     description: The default nested navigation layout
     data:
-      inputType: checkbox
       items:
-        - name: folder1
+        - name: Old recipes
           type: node
-          id: folderid1
+          id: 0
           children:
-            - name: file1
+            - name: Vanilla cake.xlsx
               type: item
-              id: fileid1
-            - name: file2
-              type: item
-              id: fileid2
-            - name: folder1-1
-              type: node
-              id: folderid1-1
-              children:
-              - name: file1-1
-                type: item
-                id: fileid1-1
-              - name: file1-2
-                type: item
-                id: fileid1-2
-        - name: folder12
-          type: node
-          id: folderid12
-          children:
-            - name: file12
-              type: item
-              id: fileid12
-            - name: file22
-              type: item
-              id: fileid22
-        - name: fileid3
+              id: "0-10"
+        - name: Baking-powder Nov 1999.docx
           type: item
-          id: fileid31
-  - name: radio
+          id: "10"
+        - name: Baking-powder Nov 2020.docx
+          type: item
+          id: "20"
+        - name: Cake Basics
+          type: node
+          id: "30"
+          children:
+            - name: Mixing.xlsx
+              type: item
+              id: "30-10"
+            - name: Flour
+              type: node
+              id: "30-20"
+              children:
+                - name: Self-raising.db
+                  type: item
+                  id: "30-20-10"
+                - name: All-purpose.db
+                  type: item
+                  id: "30-20-20"
+            - name: Rising-agents.xlsx
+              type: item
+              id: "30-30"
+            - name: Making a mess.jpg
+              type: item
+              id: "30-40"
+        - name: Cupcakes
+          type: node
+          id: "40"
+          children:
+            - name: Red velvet.pptx
+              type: item
+              id: "40-10"
+            - name: Non dairy
+              type: node
+              id: "40-20"
+              children:
+                - name: Vegan banana.png
+                  type: item
+                  id: "40-20-10"
+                - name: Lemon and poppyseed gf.json
+                  type: item
+                  id: "40-20-20"
+                - name: Coffee and walnut.gif
+                  type: item
+                  id: "40-20-30"
+            - name: Carrot cake.pptx
+              type: item
+              id: "40-30"
+  - name: No folders
     description: The radio button navigation
     data:
-      inputType: radio
       items:
-        - name: folder1
-          type: node
-          id: folderid1
-          children:
-            - name: file1
-              type: item
-              id: fileid1
-            - name: file2
-              type: item
-              id: fileid2
-            - name: folder1-1
-              type: node
-              id: folderid1-1
-              children:
-              - name: file1-1
-                type: item
-                id: fileid1-1
-              - name: file1-2
-                type: item
-                id: fileid1-2
-        - name: folder12
-          type: node
-          id: folderid12
-          children:
-            - name: file12
-              type: item
-              id: fileid12
-            - name: file22
-              type: item
-              id: fileid22
-        - name: fileid3
+        - name: baking powder.xls
           type: item
-          id: fileid31
+          id: 1
+        - name: cocoa.xlsx
+          type: item
+          id: 2
+        - name: flour.xlsx
+          type: item
+          id: 3
+        - name: caster sugar.xlsx
+          type: item
+          id: 4
+        - name: eggs.xlsx
+          type: item
+          id: 5
+        - name: fries.xls
+          type: item
+          id: 6
+        - name: ketchup.xlsx
+          type: item
+          id: 7
+        - name: beans.xlsx
+          type: item
+          id: 8
+        - name: bacon.xls
+          type: item
+          id: 9
+        - name: butternut squash.xlsx
+          type: item
+          id: 10
