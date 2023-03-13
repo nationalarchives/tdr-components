@@ -4,54 +4,20 @@ This library contains custom components based on the [GovUK frontend](https://de
 
 We use [Storybook.js](https://storybook.js.org/docs/html/get-started/why-storybook) to render the components in various states and test for [interactions](https://storybook.js.org/docs/html/writing-tests/interaction-testing) and [accessibility](https://storybook.js.org/docs/html/writing-tests/accessibility-testing).
 
-See the `.storybook/` directory for configuration files.
-
 The project is divided into different directories
 
-## The app directory (to be deleted)
+## `.storybook/` - Storybook configuration
 
-This is [an express app](https://expressjs.com/) which allows you to view the individual components in a browser. It is made up of the following files
+Read documentation on how to [configure storybook](https://storybook.js.org/docs/html/configure/overview#configure-your-storybook-project).
 
-- `config.ts` Custom config such as path names which is used in multiple places.
-- `server.ts` The code for the express server.
-- `start.ts` Helper code to start the express server.
-- `all.ts` A file which includes all the necessary javascript for the components. This is loaded for each page in the app.
-- `views/template.njk` A nunjucks template which is used to render a single example of a component in the browser.
-- `views/component.njk` A nunjucks template used to render all component examples.
-- `views/all-components.njk` A nunjucks template used to render a list of links to the components.
-- `views/banner.njk` A nunjucks template used to render the page banner
+`.storybook/main.js` contains some custom config so that we can...
 
-### Running the app.
+- use nunjucks for our templating
+- additionally load the Govuk base sass file into all our sass modules
 
-The following commands will install, compile and serve the compiled assets.
+## The lib directory
 
-```shell
-npm i
-npm run build-server
-npm run start
-```
-
-Go to [http://localhost:3000](http://localhost:3000) which has the following pages for each component
-
-- `/` will take you to a list of all available components.
-- `/component-name` will take you to a page with all the examples of that component
-- `/component-name/example-name` will take you to a page with that single example rendered.
-
-#### Running in development mode
-
-This will watch for changes to `yaml`, `sass` and `ts` files and restart the server. It does not live reload on changes.
-
-```
-npm run dev
-```
-
-### Adding a new component to the app
-
-Components should be added automatically so long as they are added with [the correct structure](#the-component-directory).
-
-## The lib directory (to be deleted?)
-
-This contains helper classes for jest, puppeteer and for rendering html in the app.
+This contains helper classes for unit tests.
 
 ## The src/nationalarchives directory
 
@@ -90,10 +56,9 @@ This has the following structure.
 
 ### Tests
 
-- `<component-name>.test.ts` These are puppeteer tests which run in a headless Chrome browser. (To be deleted?)
+- `<component-name>.stories.ts` These are Storybook CSF files which render the UI in varying states.
   They can be used to test interactive parts of the component.
 - `<component-name>.unit.test.ts` These are unit tests for the `<component-name>.ts` file.
-- `template.test.ts` These tests render the component and make assertions about the structure of the HTML. (To be deleted?)
 
 ### Configuration
 
@@ -156,10 +121,6 @@ Create this file based on [this description](#configuration)
 
 This contains all the sass needed for the component. You can use existing govuk classes without redefining them here.
 
-#### `template.test.ts` (Delete)
-
-This renders the template with nunjucks and then uses [Cheerio](https://cheerio.js.org/) to query the html.
-
 ### If there is typescript for the component
 
 #### `<component-name>.ts`
@@ -170,11 +131,19 @@ The typescript for the component
 
 Unit tests for the typescript
 
-### If you need tests which run in a headless browser
+## Running locally for development
 
-`<component-name>.test.ts` (Delete)
+You can build your components locally by running:
 
-These use [Puppeteer](https://pptr.dev/) load the pages and run tests against them. There are helper functions in the utils directory.
+`npm run start-storybook`
+
+## Run tests
+
+`npm run test`
+This will run unit tests using Jest.
+
+`npm run test-storybook`
+This runs accessiblity and interaction tests on the cli. You need to have an instance of storybook running locally (`npm run storybook`) to be able to use the storybook CLI test runner.
 
 ## Building the project
 
