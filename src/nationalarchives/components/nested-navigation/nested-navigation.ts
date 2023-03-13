@@ -7,11 +7,13 @@ export class NestedNavigation {
   private readonly tree: HTMLUListElement;
   private readonly treeItems: NodeListOf<HTMLElement>;
   private currentFocus: HTMLLIElement | null;
+  private rememberExpanded: Boolean = false;
 
   constructor(tree: HTMLUListElement) {
     this.tree = tree;
     this.treeItems = this.tree.querySelectorAll("[role=treeitem]");
     this.currentFocus = null;
+    this.rememberExpanded = tree.dataset.rememberExpanded == "true";
   }
 
   getCurrentFocus: () => HTMLLIElement | null = () => {
@@ -154,7 +156,8 @@ export class NestedNavigation {
       li.setAttribute("aria-expanded", "false");
       expanded.splice(expanded.indexOf(id));
     }
-    localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
+    if (this.rememberExpanded == true)
+      localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
   };
 
   setSelected: (li: HTMLLIElement | null, inputType: InputType) => void = (
