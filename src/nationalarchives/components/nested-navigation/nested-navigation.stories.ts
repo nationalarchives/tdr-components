@@ -7,12 +7,7 @@ import { expect } from "@storybook/jest";
 
 export default {
   title: "TDR/Tree View",
-  args: {
-    // id: "123",
-    // name: "item_select",
-    // copySingle: "item",
-    // copyMultiple: "items",
-  },
+  args: {},
   decorators: [
     (storyFn) => {
       // Create an element that centres element with margin.
@@ -48,24 +43,6 @@ export default {
         disable: true,
       },
     },
-    // id: {
-    //   description:
-    //     "When using Nunjucks template creates unique IDs within the component. If not provided `name` param is used.",
-    // },
-    // name: {
-    //   description:
-    //     "When using Nunjucks template sets the `name` attribute on all checkboxes",
-    // },
-    // copySingle: {
-    //   name: "Copy for single item found",
-    //   description:
-    //     "For example to configure SR to announce '1 language found' instead of '1 item found', enter 'language'",
-    // },
-    // copyMultiple: {
-    //   name: "Copy for multiple items found",
-    //   description:
-    //     "For example to configure SR to announce '23 languages found' instead of '23 items found', enter 'languages'",
-    // },
   },
 };
 

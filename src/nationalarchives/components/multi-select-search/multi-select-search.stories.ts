@@ -40,10 +40,6 @@ export default {
     },
   ],
   argTypes: {
-    // dataSource: {
-    //   options: ["default", "long-list"],
-    //   control: { type: "radio" },
-    // },
     id: {
       description:
         "When using Nunjucks template creates unique IDs within the component. If not provided `name` param is used.",
