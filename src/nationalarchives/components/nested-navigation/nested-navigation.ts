@@ -69,7 +69,10 @@ export class NestedNavigation {
         return;
       if (treeItem.id.includes(inputType)) {
         treeItem.addEventListener("click", (ev) => {
-          if (ev.currentTarget instanceof HTMLLIElement) {
+          if (
+            ev.currentTarget instanceof HTMLLIElement &&
+            !(ev.target instanceof HTMLLabelElement)
+          ) {
             this.setSelected(ev.currentTarget, inputType);
             this.setFocusToItem(ev.currentTarget);
           }
@@ -192,6 +195,10 @@ export class NestedNavigation {
           for (const child of children) {
             child.setAttribute("aria-selected", !isSelected ? "true" : "false");
             child.setAttribute("aria-checked", !isSelected ? "true" : "false");
+            const itemCheckbox = child.getElementsByTagName(
+              "input"
+            )[0] as HTMLInputElement;
+            itemCheckbox.checked = !isSelected;
           }
         }
       }
