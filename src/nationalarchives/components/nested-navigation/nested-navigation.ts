@@ -198,7 +198,7 @@ export class NestedNavigation {
             const itemCheckbox = child.getElementsByTagName(
               "input"
             )[0] as HTMLInputElement;
-            itemCheckbox.checked = !isSelected;
+            if (itemCheckbox) itemCheckbox.checked = !isSelected;
           }
         }
       }

@@ -391,7 +391,13 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const input = createInputElement();
         const li = createListElement("true");
         const getExpanded = jest.fn().mockImplementation(() => [input.id]);
-        const nestedNavigation = createNestedNavigation({ getExpanded });
+        const tree = document.createElement("ul");
+        tree.dataset.rememberExpanded = "true";
+        const nestedNavigation = createNestedNavigation(
+          { getExpanded },
+          undefined,
+          tree
+        );
         const spy = jest.spyOn(Storage.prototype, "setItem");
 
         nestedNavigation.toggleNode(
@@ -413,7 +419,13 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const id = input.id.replace("expander-", "");
         const li = createListElement("false");
         const getExpanded = jest.fn().mockImplementation(() => []);
-        const nestedNavigation = createNestedNavigation({ getExpanded });
+        const tree = document.createElement("ul");
+        tree.dataset.rememberExpanded = "true";
+        const nestedNavigation = createNestedNavigation(
+          { getExpanded },
+          undefined,
+          tree
+        );
         const spy = jest.spyOn(Storage.prototype, "setItem");
 
         nestedNavigation.toggleNode(li, id, classNameValue);
