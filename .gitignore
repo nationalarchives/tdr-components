@@ -1,6 +1,7 @@
 node_modules
 .idea
 public/main.css
+public/govuk.css
 public/index.js
 out-tsc/
 package/*
