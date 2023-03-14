@@ -166,13 +166,7 @@ MultipleSelectChildSetsParentToIndeterminate.play = async ({
 
   // Cannot run a test on indeterminate states because we're using
   // aria-checked incorrectly. It needs to be on the checkbox not the
-  // parent tree element.
-  // await expect(
-  //   canvas.getByRole("treeitem", { name: /^Non dairy/ })
-  // ).toBePartiallyChecked();
-  // await expect(
-  //   canvas.getByRole("treeitem", { name: /^Cupcakes/ })
-  // ).toBePartiallyChecked();
+  // parent tree element. When completed use `expect().toBePartiallyChecked()`
 };
 
 //  should select the last child when end is pressed on the expanded root node
