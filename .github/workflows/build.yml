@@ -13,3 +13,21 @@ jobs:
       - run: gh workflow run deploy.yml
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' && !contains(github.event.pull_request.labels.*.name, 'Version bump') }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: yarn
+      - name: Build Storybook
+        run: |
+          yarn sass-compile
+          yarn build-storybook --quiet
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: storybook-static # The folder the action should deploy.

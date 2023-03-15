@@ -7,11 +7,13 @@ export class NestedNavigation {
   private readonly tree: HTMLUListElement;
   private readonly treeItems: NodeListOf<HTMLElement>;
   private currentFocus: HTMLLIElement | null;
+  private rememberExpanded: Boolean = false;
 
   constructor(tree: HTMLUListElement) {
     this.tree = tree;
     this.treeItems = this.tree.querySelectorAll("[role=treeitem]");
     this.currentFocus = null;
+    this.rememberExpanded = tree.dataset.rememberExpanded == "true";
   }
 
   getCurrentFocus: () => HTMLLIElement | null = () => {
@@ -67,7 +69,10 @@ export class NestedNavigation {
         return;
       if (treeItem.id.includes(inputType)) {
         treeItem.addEventListener("click", (ev) => {
-          if (ev.currentTarget instanceof HTMLLIElement) {
+          if (
+            ev.currentTarget instanceof HTMLLIElement &&
+            !(ev.target instanceof HTMLLabelElement)
+          ) {
             this.setSelected(ev.currentTarget, inputType);
             this.setFocusToItem(ev.currentTarget);
           }
@@ -154,7 +159,8 @@ export class NestedNavigation {
       li.setAttribute("aria-expanded", "false");
       expanded.splice(expanded.indexOf(id));
     }
-    localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
+    if (this.rememberExpanded == true)
+      localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
   };
 
   setSelected: (li: HTMLLIElement | null, inputType: InputType) => void = (
@@ -189,6 +195,10 @@ export class NestedNavigation {
           for (const child of children) {
             child.setAttribute("aria-selected", !isSelected ? "true" : "false");
             child.setAttribute("aria-checked", !isSelected ? "true" : "false");
+            const itemCheckbox = child.getElementsByTagName(
+              "input"
+            )[0] as HTMLInputElement;
+            if (itemCheckbox) itemCheckbox.checked = !isSelected;
           }
         }
       }

@@ -1,0 +1,29 @@
+<div class="tdr-card{% if params.error == true %} tdr-card--error{% endif %}">
+  <div class="tdr-card__content">
+    <h2 class="govuk-heading-s">
+      <a class="govuk-link govuk-link--no-visited-state" href="#">Descriptive metadata</a>
+    </h2>
+
+    <strong class="tdr-card--metadata__state govuk-tag govuk-tag--{% if params.metadataState | lower == "entered" %}blue{% elif params.metadataState | lower == "incomplete" %}red{% else %}grey{% endif %}">
+      {{params.metadataState | d("Not entered")}}
+    </strong>
+    <p class="govuk-body">Add descriptive metadata to your files</p>
+    <p class="tdr-card--metadata__inset-text govuk-inset-text govuk-!-margin-top-0">You do not need to add descriptive metadata but it can enhance your record.</p>
+    <details class="govuk-details   govuk-!-margin-bottom-2" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">What descriptive metadata you can provide</span>
+      </summary>
+      <div class="govuk-details__text">
+        <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
+          <li>Description</li>
+          <li>Date of the record</li>
+          <li>Language</li>
+          <li>Translated title of record</li>
+          <li>Related materials</li>
+          <li>Former reference</li>
+          <li>Creating body</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</div>

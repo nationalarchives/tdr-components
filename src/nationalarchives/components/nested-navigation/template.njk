@@ -16,7 +16,6 @@
         </label>
       </div>
     </li>
-
   {% elif item.type == 'node' %}
     <li
                 class="tna-tree__node-item-{{ className }}"
@@ -77,7 +76,6 @@
     {% set className = 'checkboxes' %}
   {% endif %}
 
-  <p class="govuk-hint" id="tree-view-description">Navigate files and folders using arrow keys.</p>
   <ul aria-label="File selection" aria-describedby="tree-view-description" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkbox' %} aria-multiselectable="true"{% endif %}>
     {% for node in params.items %}
       {{ navigationItem(node, params.inputType, className, 1, loop.length, loop.index) }}

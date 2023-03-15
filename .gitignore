@@ -1,6 +1,12 @@
 node_modules
 .idea
-public/
+public/main.css
+public/govuk.css
+public/index.js
 out-tsc/
 package/*
 !package/package.json
+src/stories
+.npmrc
+build-storybook.log
+storybook-static

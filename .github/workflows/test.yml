@@ -1,4 +1,4 @@
-name: TDR Run Tests
+name: Run unit & storybook tests
 on:
   push:
     branches-ignore:
@@ -7,13 +7,30 @@ permissions:
   id-token: write
   contents: read
 jobs:
-  test:
+  unit-tests:
     uses: nationalarchives/tdr-github-actions/.github/workflows/tdr_test.yml@main
     with:
       repo-name: tdr-components
       test-command: |
         npm ci
-        npm run build-server
         npm t
     secrets:
       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  interaction-and-accessibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: yarn
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Build Storybook
+        run: yarn build-storybook
+      - name: Serve Storybook and run tests
+        run: |
+          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "npx http-server storybook-static --port 6006 --silent" \
+            "npx wait-on tcp:6006 && yarn test-storybook"
