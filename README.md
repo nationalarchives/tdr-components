@@ -143,7 +143,7 @@ You can build your components locally by running:
 This will run unit tests using Jest.
 
 `npm run test-storybook`
-This runs accessiblity and interaction tests on the cli. You need to have an instance of storybook running locally (`npm run storybook`) to be able to use the storybook CLI test runner.
+This runs accessibility and interaction tests on the cli. You need to have an instance of storybook running locally (`npm run storybook`) to be able to use the storybook CLI test runner.
 
 ## Building the project
 
