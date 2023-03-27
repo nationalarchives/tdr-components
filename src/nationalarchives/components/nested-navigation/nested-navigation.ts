@@ -177,6 +177,8 @@ export class NestedNavigation {
     const isSelected: boolean = li.getAttribute("aria-selected") === "true";
     li.setAttribute("aria-selected", !isSelected ? "true" : "false");
     li.setAttribute("aria-checked", !isSelected ? "true" : "false");
+    const input = li.querySelector("input");
+    if (input) input.checked = !isSelected;
     if (inputType === InputType.radios && !isSelected) {
       // For radio buttons, deselect all others
       this.tree.querySelectorAll("li[aria-selected=true]").forEach((el) => {
