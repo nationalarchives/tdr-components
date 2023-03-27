@@ -163,14 +163,15 @@ export class NestedNavigation {
       localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
   };
 
-  setSelected: (li: HTMLLIElement | null, inputType: InputType) => void = (
+  setSelected: (li: HTMLLIElement, inputType: InputType) => void = (
     li,
     inputType
   ) => {
     if (
       li == null ||
-      (li.id.includes("folder") && inputType == InputType.radios)
+      (li.querySelectorAll("ul").length > 0 && inputType == InputType.radios)
     ) {
+      this.toggleNode(li as HTMLLIElement, li.id, InputType.radios);
       return null;
     }
     const isSelected: boolean = li.getAttribute("aria-selected") === "true";
@@ -182,6 +183,8 @@ export class NestedNavigation {
         if (el.id !== li.id) {
           el.setAttribute("aria-selected", "false");
           el.setAttribute("aria-checked", "false");
+          const input = el.querySelector("input");
+          if (input) input.checked = false;
         }
       });
     } else {
@@ -325,7 +328,7 @@ export class NestedNavigation {
       case "Enter":
       case " ":
         // Check or uncheck checkbox
-        this.setSelected(this.currentFocus, inputType);
+        this.setSelected(this.currentFocus as HTMLLIElement, inputType);
         ev.preventDefault();
         break;
 
