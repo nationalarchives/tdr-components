@@ -8,7 +8,7 @@
     "sass-copy": "copyfiles -u 2 'src/nationalarchives/**/*.scss' package",
     "test": "jest",
     "compile": "webpack --mode production",
-    "build": "npm-s sass-compile sass-copy compile",
+    "build": "npm-run-all sass-compile sass-copy compile",
     "lint": "eslint src app lib",
     "stylelint": "stylelint **/*.scss",
     "checks": "npm-run-all test lint stylelint",
