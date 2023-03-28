@@ -167,18 +167,20 @@ export class NestedNavigation {
     li,
     inputType
   ) => {
-    if (
-      li == null ||
-      (li.querySelectorAll("ul").length > 0 && inputType == InputType.radios)
-    ) {
+    // If this is a radio directory do not select, toggle instead
+    if (li.querySelectorAll("ul").length > 0 && inputType == InputType.radios) {
       this.toggleNode(li as HTMLLIElement, li.id, InputType.radios);
-      return null;
+      return;
     }
+
+    // Set the aria attribute and input
     const isSelected: boolean = li.getAttribute("aria-selected") === "true";
     li.setAttribute("aria-selected", !isSelected ? "true" : "false");
     li.setAttribute("aria-checked", !isSelected ? "true" : "false");
     const input = li.querySelector("input");
     if (input) input.checked = !isSelected;
+
+    // If radio directory and we're not deselecting a selected radio
     if (inputType === InputType.radios && !isSelected) {
       // For radio buttons, deselect all others
       this.tree.querySelectorAll("li[aria-selected=true]").forEach((el) => {
@@ -189,9 +191,12 @@ export class NestedNavigation {
           if (input) input.checked = false;
         }
       });
-    } else {
-      // If this is a node, traverse down
-      if (li.hasAttribute("aria-expanded")) {
+    }
+
+    // Only traverse down and set parents for checkboxes
+    if (inputType === InputType.checkboxes) {
+      // If this is a node with children, traverse down
+      if (li.querySelectorAll("ul").length > 0) {
         const childrenGroup: HTMLUListElement | null = document.querySelector(
           `#${inputType}-node-group-${li.id.replace(`${inputType}-list-`, "")}`
         );
