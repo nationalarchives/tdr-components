@@ -229,6 +229,61 @@ KeyboardNavigateSelect.play = async ({ canvasElement }) => {
 };
 
 // should expand the node when the right arrow is pressed on the closed parent node
+export const ClickSelectAndKeyboardDeselect = Template.bind({});
+ClickSelectAndKeyboardDeselect.args = {
+  inputType: "radio",
+};
+// should expand the node when the expander is clicked
+ClickSelectAndKeyboardDeselect.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  await userEvent.click(canvas.getByText("Baking-powder Nov 1999.docx"));
+
+  await expect(
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+  ).toBeChecked();
+
+  await expect(
+    canvas.getByRole("radio", { name: "Baking-powder Nov 1999.docx" })
+  ).toBeChecked();
+
+  await userEvent.keyboard("[ArrowDown]");
+  await userEvent.keyboard("[Space]");
+
+  await expect(
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+  ).not.toBeChecked();
+
+  await expect(
+    canvas.getByRole("radio", { name: "Baking-powder Nov 1999.docx" })
+  ).not.toBeChecked();
+
+  await expect(
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 2020.docx" })
+  ).toBeChecked();
+
+  await expect(
+    canvas.getByRole("radio", { name: "Baking-powder Nov 2020.docx" })
+  ).toBeChecked();
+};
+
+// should expand the node when the right arrow is pressed on the closed parent node
+export const KeyboardOpenFolder = Template.bind({});
+KeyboardOpenFolder.args = {
+  inputType: "radio",
+};
+// should expand the node when the expander is clicked
+KeyboardOpenFolder.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.tab();
+  await userEvent.keyboard("[Space]");
+
+  await expect(
+    canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" })
+  ).toBeVisible();
+};
+
+// should expand the node when the right arrow is pressed on the closed parent node
 export const KeyboardNavigateSelectAndDeselect = Template.bind({});
 KeyboardNavigateSelectAndDeselect.args = {
   inputType: "radio",
@@ -245,10 +300,18 @@ KeyboardNavigateSelectAndDeselect.play = async ({ canvasElement }) => {
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
   ).toBeChecked();
 
+  await expect(
+    canvas.getByRole("radio", { name: "Baking-powder Nov 1999.docx" })
+  ).toBeChecked();
+
   await userEvent.keyboard("[Enter]");
 
   await expect(
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+  ).not.toBeChecked();
+
+  await expect(
+    canvas.getByRole("radio", { name: "Baking-powder Nov 1999.docx" })
   ).not.toBeChecked();
 };
 
