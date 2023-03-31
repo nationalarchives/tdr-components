@@ -1,3 +1,18 @@
+{% macro input(labelName, id, inputType, className) %}
+  <div class="tna-tree__node-item__{{ inputType }} govuk-{{ className }}__item">
+    <input
+        aria-hidden="true"
+        class="govuk-{{ className }}__input"
+        id="{{ inputType }}-{{ id }}"
+        tabindex="-1"
+        type="{{ inputType }}"
+        name="nested-navigation"/>
+    <label class="govuk-label govuk-{{ className }}__label" for="{{ inputType }}-{{ id }}">
+      {{labelName}}
+    </label>
+  </div>
+{% endmacro %}
+
 {% macro navigationItem(item, inputType, className, level, size, pos) %}
   {% if item.type == 'item' or item.children.length == 0 %}
     <li
@@ -9,12 +24,7 @@
                 aria-posinset="{{pos}}"
                 aria-selected="false"
         >
-      <div class="tna-tree__node-item__{{ inputType }} govuk-{{ className }}__item">
-        <input class="govuk-{{ className }}__input" tabindex="-1" id="{{ inputType }}-{{ item.id }}" type="{{ inputType }}" name="nested-navigation"/>
-        <label class="govuk-label govuk-{{ className }}__label" for="{{ inputType }}-{{ item.id }}">
-          {{item.name}}
-        </label>
-      </div>
+      {{ input(item.name, item.id, inputType, className) }}
     </li>
   {% elif item.type == 'node' %}
     <li
@@ -37,18 +47,7 @@
           <span class="govuk-visually-hidden">Expand</span>
         </span>
         {% if className == 'checkboxes' %}
-          <div class="govuk-{{ className }}__item">
-            <input
-                                class="govuk-{{ className }}__input"
-                                id="{{ inputType }}-{{ item.id }}"
-                                tabindex="-1"
-                                type="{{ inputType }}"
-                                name="nested-navigation"
-/>
-            <label class="govuk-label govuk-{{ className }}__label" for="{{ inputType }}-{{ item.id }}">
-              {{item.name}}
-            </label>
-          </div>
+          {{ input(item.name, item.id, inputType, className) }}
         {% else %}
           <div class="js-radios-directory tna-radios-directory">
             <span class="govuk-label tna-radios-directory__label" >
