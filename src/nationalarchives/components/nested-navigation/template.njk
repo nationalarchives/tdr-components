@@ -68,16 +68,19 @@
   {% endif %}
 {% endmacro %}
 
-<div class="tna-tree">
-  {% if params.inputType == 'radio' %}
-    {% set className = 'radios' %}
-  {% elseif params.inputType == 'checkbox' %}
-    {% set className = 'checkboxes' %}
-  {% endif %}
-
-  <ul aria-label="File selection" aria-describedby="tree-view-description" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkbox' %} aria-multiselectable="true"{% endif %}>
-    {% for node in params.items %}
-      {{ navigationItem(node, params.inputType, className, 1, loop.length, loop.index) }}
-    {% endfor %}
-  </ul>
+<div>
+  <h2 class="govuk-heading-m" id="tree-view-label">{{params.label|d("Choose a file")}}</h2>
+  <div class="govuk-inset-text" id="tree-view-description">The arrow keys can be used to navigate through the files. Right and left to open and close a folder. Up and down to move between files and folders. Space or enter to select a file or open and close a folder.</div>
+  <div class="tna-tree">
+    {% if params.inputType == 'radio' %}
+      {% set className = 'radios' %}
+    {% elseif params.inputType == 'checkbox' %}
+      {% set className = 'checkboxes' %}
+    {% endif %}
+    <ul aria-labelledby="tree-view-label" aria-describedby="tree-view-description" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkbox' %} aria-multiselectable="true"{% endif %}>
+      {% for node in params.items %}
+        {{ navigationItem(node, params.inputType, className, 1, loop.length, loop.index) }}
+      {% endfor %}
+    </ul>
+  </div>
 </div>
