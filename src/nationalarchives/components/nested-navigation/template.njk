@@ -16,42 +16,39 @@
 {% macro navigationItem(item, inputType, className, level, size, pos) %}
   {% if item.type == 'item' or item.children.length == 0 %}
     <li
-                class="tna-tree__item{% if inputType == "radio" %} govuk-radios--small{% endif %}"
-                role="treeitem"
-                id="{{ className }}-list-{{ item.id }}"
-                aria-level="{{level}}"
-                aria-setsize="{{size}}"
-                aria-posinset="{{pos}}"
-                aria-selected="false"
-        >
+      class="tna-tree__item{% if inputType == "radio" %} govuk-radios--small{% endif %}"
+      role="treeitem"
+      id="{{ className }}-list-{{ item.id }}"
+      aria-level="{{level}}"
+      aria-setsize="{{size}}"
+      aria-posinset="{{pos}}">
       {{ input(item.name, item.id, inputType, className) }}
     </li>
   {% elif item.type == 'node' %}
     <li
-                class="tna-tree__node-item-{{ className }}"
-                role="treeitem"
-                id="{{ className }}-list-{{ item.id }}"
-                aria-expanded="true"
-                aria-selected="false"
-                aria-level="{{level}}"
-                aria-setsize="{{size}}"
-                aria-posinset="{{pos}}"
-        >
+      class="tna-tree__node-item-{{ className }}"
+      role="treeitem"
+      id="{{ className }}-list-{{ item.id }}"
+      aria-expanded="true"
+      {% if inputType == checkbox %}aria-selected="false"{% endif %}
+      aria-level="{{level}}"
+      aria-setsize="{{size}}"
+      aria-posinset="{{pos}}">
       <div class="tna-tree__node-item__container">
         <span
-                        aria-hidden="true"
-                        class="tna-tree__expander js-tree__expander--{{ className }}"
-                        tabindex="-1"
-                        id="{{ className }}-expander-{{ item.id }}"
-                >
+          aria-hidden="true"
+          class="tna-tree__expander js-tree__expander--{{ className }}"
+          tabindex="-1"
+          id="{{ className }}-expander-{{ item.id }}">
           <span class="govuk-visually-hidden">Expand</span>
         </span>
-        {% if className == 'checkboxes' %}
+
+        {% if inputType == 'checkbox' %}
           {{ input(item.name, item.id, inputType, className) }}
         {% else %}
           <div class="js-radios-directory tna-radios-directory">
-            <span class="govuk-label tna-radios-directory__label" >
-              <img class="tna-tree__svg-directory" role="img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyMiI+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTIyIDMuNUgxMC42ODNMOC43NTguODVhMS42NjcgMS42NjcgMCAwIDAtMS4zNS0uNjgzSDJBMS42NjcgMS42NjcgMCAwIDAgLjMzMyAxLjgzM3YxOC4zMzRBMS42NjcgMS42NjcgMCAwIDAgMiAyMS44MzNoMjBhMS42NjcgMS42NjcgMCAwIDAgMS42NjctMS42NjZ2LTE1QTEuNjY2IDEuNjY2IDAgMCAwIDIyIDMuNVptMCAxNi42NjdIMlY2LjgzM2g2LjA5MmExLjY2NyAxLjY2NyAwIDAgMCAxLjY2Ni0xLjY2NkgyVjEuODMzaDUuNDA4bDIuMTc1IDIuOTkyYS44MzMuODMzIDAgMCAwIC42NzUuMzQySDIydjE1WiIvPjwvc3ZnPg==" alt="Directory"/>
+            <span class="govuk-label tna-radios-directory__label">
+              <img class="tna-tree__svg-directory" role="img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyMiI+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTIyIDMuNUgxMC42ODNMOC43NTguODVhMS42NjcgMS42NjcgMCAwIDAtMS4zNS0uNjgzSDJBMS42NjcgMS42NjcgMCAwIDAgLjMzMyAxLjgzM3YxOC4zMzRBMS42NjcgMS42NjcgMCAwIDAgMiAyMS44MzNoMjBhMS42NjcgMS42NjcgMCAwIDAgMS42NjctMS42NjZ2LTE1QTEuNjY2IDEuNjY2IDAgMCAwIDIyIDMuNVptMCAxNi42NjdIMlY2LjgzM2g2LjA5MmExLjY2NyAxLjY2NyAwIDAgMCAxLjY2Ni0xLjY2NkgyVjEuODMzaDUuNDA4bDIuMTc1IDIuOTkyYS44MzMuODMzIDAgMCAwIC42NzUuMzQySDIydjE1WiIvPjwvc3ZnPg==" alt="Directory - "/>
               {{item.name}}
             </span>
           </div>
