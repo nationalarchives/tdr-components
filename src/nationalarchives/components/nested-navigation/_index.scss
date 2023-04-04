@@ -10,8 +10,9 @@
 }
 
 .tna-tree__root-list {
-    background-image: linear-gradient(180deg, #F8F8F8 22.22%, #ffffff 22.22%, #ffffff 50%, #F8F8F8 50%, #F8F8F8 72.22%, #ffffff 72.22%, #ffffff 100%);
-    background-size: 100% 180px;
+  background-image: linear-gradient(180deg, #F8F8F8 25%, #ffffff 25%, #ffffff 50%, #F8F8F8 50%, #F8F8F8 75%, #ffffff 75%, #ffffff 100%);
+  background-size: 100% 180px;
+  background-position: 0 -2px;
 }
 
 .tna-tree__root-list,
@@ -57,7 +58,7 @@
   align-items: flex-start;
 }
 
-.tna-tree__node-item__container > * {
+.tna-tree__node-item__container>* {
   flex-shrink: 0;
 }
 
@@ -71,6 +72,7 @@
   width: 24px;
   display: inline-block;
   align-self: baseline;
+  z-index: 1;
 }
 
 .tna-tree__expander {
@@ -101,14 +103,42 @@
   border-color: $govuk-link-colour;
 }
 
-.tna-tree [role="treeitem"][aria-expanded="true"] > .tna-tree__node-item__container > .tna-tree__expander::before {
+.tna-tree [role="treeitem"][aria-expanded="true"]>.tna-tree__node-item__container>.tna-tree__expander::before {
   @include govuk-shape-arrow($direction: down, $base: 20px);
 
   border-color: $govuk-link-colour;
 }
 
-.tna-tree [role="treeitem"][aria-expanded="true"] > .tna-tree__node-item__container > .tna-tree__expander::before {
+.tna-tree [role="treeitem"][aria-expanded="true"]>.tna-tree__node-item__container>.tna-tree__expander::before {
   left: 10px;
+}
+
+[role="treeitem"]:hover {
+  cursor: pointer;
+}
+
+[role="treeitem"]:focus > div > div > .tna-radios-directory__label,
+[role="treeitem"]:hover > div > div > .tna-radios-directory__label {
+  position: relative;
+}
+
+[role="treeitem"]:focus > div > div > .tna-radios-directory__label:before,
+[role="treeitem"]:hover > div > div > .tna-radios-directory__label:before {
+  content: " ";
+  background-color: #b1b4b69a;
+  border-radius: 16px;
+  width: 40px;
+  height: 36px;
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: -8px;
+}
+
+[role="treeitem"]:focus {
+  background-color: rgba(210, 250, 249, 0.25);
+  outline: 3px solid rgb(210, 250, 249);
+  outline-offset: 1px;
 }
 
 $input-types: "checkboxes", "radios";
@@ -116,11 +146,11 @@ $input-types: "checkboxes", "radios";
 @each $input-type in $input-types {
 
 
-  .tna-tree [role="treeitem"][aria-expanded="false"] > ul {
+  .tna-tree [role="treeitem"][aria-expanded="false"]>ul {
     display: none;
   }
 
-  .tna-tree [role="treeitem"][aria-expanded="true"] > ul {
+  .tna-tree [role="treeitem"][aria-expanded="true"]>ul {
     display: block;
   }
 
@@ -135,9 +165,9 @@ $input-types: "checkboxes", "radios";
    * Not including the IE8 stuff.
    * */
 
-  [role="treeitem"]:focus > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::before,
-  [role="treeitem"]:focus > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::before {
-    border-width: 4px;
+  [role="treeitem"]:focus>.govuk-#{$input-type}__item>.govuk-label govuk-#{$input-type}__label::before,
+  [role="treeitem"]:focus>.tna-tree__node-item__container>.govuk-#{$input-type}__item>.govuk-label govuk-#{$input-type}__label::before {
+    border-width: 1px;
 
     // When colours are overridden, the yellow box-shadow becomes invisible
     // which means the focus state is less obvious. By adding a transparent
@@ -148,34 +178,57 @@ $input-types: "checkboxes", "radios";
 
     // When in an explicit forced-color mode, we can use the Highlight system
     // color for the outline to better match focus states of native controls
-    @media screen and (forced-colors: active), (-ms-high-contrast: active) {
+    @media screen and (forced-colors: active),
+    (-ms-high-contrast: active) {
       outline-color: Highlight;
     }
 
     box-shadow: 0 0 0 $govuk-focus-width $govuk-focus-colour;
   }
 
-  [role="treeitem"][aria-selected="true"] > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after,
-  [role="treeitem"][aria-selected="true"] > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after {
+  [role="treeitem"][aria-selected="true"]>.govuk-#{$input-type}__item>.govuk-#{$input-type}__label::after,
+  [role="treeitem"][aria-selected="true"]>.tna-tree__node-item__container>.govuk-#{$input-type}__item>.govuk-#{$input-type}__label::after {
     opacity: 1;
   }
+}
 
-  /*
-   * Styles copied from this thread:
-   * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
-   * */
-  [role="treeitem"][aria-checked="mixed"] > .govuk-#{$input-type}__item > .govuk-label govuk-#{$input-type}__label::after,
-  [role="treeitem"][aria-checked="mixed"] > .tna-tree__node-item__container > .govuk-#{$input-type}__item > .govuk-#{$input-type}__label::after {
-    transform: rotate(0);
-    border: none;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    height: 6px;
-    width: 22px;
-    background: currentcolor;
-    opacity: 1;
-  }
+// Hover state for small radios.
+//
+// We use a hover state for small radios because the touch target size
+// is so much larger than their visible size, and so we need to provide
+// feedback to the user as to which radio they will select when their
+// cursor is outside of the visible area.
+[role="treeitem"]:focus>.govuk-radios__item .govuk-radios__input:not(:disabled)+.govuk-radios__label:before,
+[role="treeitem"]:hover>.govuk-radios__item .govuk-radios__input:not(:disabled)+.govuk-radios__label:before{
+  box-shadow: 0 0 0 $govuk-hover-width $govuk-hover-colour;
+}
+
+// Because we've overridden the border-shadow provided by the focus state,
+// we need to redefine that too.
+//
+// We use two box shadows, one that restores the original focus state [1]
+// and another that then applies the hover state [2].
+[role="treeitem"]:hover>.govuk-radios__item .govuk-radios__input+.govuk-radios__label:before {
+  box-shadow:
+    0 0 0 $govuk-focus-width+1 $govuk-focus-colour, // 1
+    0 0 0 $govuk-hover-width $govuk-hover-colour; // 2
+}
+
+/*
+ * Styles copied from this thread for indeterminate/mixed checkbox state:
+ * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
+ * */
+[role="treeitem"][aria-checked="mixed"]>.govuk-checkboxes__item>.govuk-label .govuk-checkboxes__label::after,
+[role="treeitem"][aria-checked="mixed"]>.tna-tree__node-item__container>.govuk-checkboxes__item>.govuk-checkboxes__label::after {
+  transform: rotate(0);
+  border: none;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 6px;
+  width: 22px;
+  background: currentcolor;
+  opacity: 1;
 }
 
 .tna-radios-directory {
@@ -187,17 +240,13 @@ $input-types: "checkboxes", "radios";
   display: flex;
   gap: 10px;
   padding: 8px 0 8px;
-  cursor: pointer;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
 }
 
 /* Accommodate for lack of button so alignment is ok */
-.tna-tree__item > .govuk-checkboxes__item {
+.tna-tree__item>.govuk-checkboxes__item {
   margin-left: calc(var(--item-expander-btn-width));
 }
 
 .tna-tree__node-item__radio {
   margin-left: var(--item-expander-btn-width);
 }
-
