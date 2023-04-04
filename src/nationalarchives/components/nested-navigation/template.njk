@@ -40,7 +40,7 @@
           class="tna-tree__expander js-tree__expander--{{ className }}"
           tabindex="-1"
           id="{{ className }}-expander-{{ item.id }}">
-          <span class="govuk-visually-hidden">Expand</span>
+          <span aria-hidden="true" class="govuk-visually-hidden">Expand</span>
         </span>
 
         {% if inputType == 'checkbox' %}
