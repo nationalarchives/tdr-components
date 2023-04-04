@@ -178,6 +178,11 @@ export class NestedNavigation {
     const input = li.querySelector("input");
     if (input) input.checked = !isSelected;
 
+    // If checkbox then we need to deselect a mixed state
+    if (inputType === InputType.checkboxes) {
+      li.setAttribute("aria-checked", !isSelected ? "true" : "false");
+    }
+
     // If radio directory and we're not deselecting a selected radio
     if (inputType === InputType.radios && !isSelected) {
       // For radio buttons, deselect all others
@@ -201,6 +206,7 @@ export class NestedNavigation {
           const children = this.allChildren(childrenGroup, []);
           for (const child of children) {
             child.setAttribute("aria-selected", !isSelected ? "true" : "false");
+            child.setAttribute("aria-checked", !isSelected ? "true" : "false");
             const itemCheckbox = child.getElementsByTagName(
               "input"
             )[0] as HTMLInputElement;
