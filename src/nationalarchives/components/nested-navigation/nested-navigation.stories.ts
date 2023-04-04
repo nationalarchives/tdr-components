@@ -88,26 +88,16 @@ ExpandNodeAndFocus.args = {
 // should expand the node when the expander is clicked
 ExpandNodeAndFocus.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  await userEvent.click(canvas.getAllByText("Expand")[0]);
-
-  await expect(canvas.getByText("Vanilla cake.xlsx")).toBeVisible();
-
-  await expect(
-    canvas.getByRole("treeitem", { name: /Old recipes/ })
-  ).toHaveFocus();
-};
-
-export const SelectInputAndFocus = Template.bind({});
-SelectInputAndFocus.args = {
-  inputType: "radio",
-};
-SelectInputAndFocus.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  // Click label
-  await userEvent.click(canvas.getByText("Baking-powder Nov 1999.docx"));
+  await userEvent.click(
+    canvas.getByRole("treeitem", { name: /^Directory - Old recipes/ })
+  );
 
   await expect(
-    canvas.getByLabelText("Baking-powder Nov 1999.docx")
+    canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" })
+  ).toBeVisible();
+
+  await expect(
+    canvas.getByRole("treeitem", { name: /^Directory - Old recipes/ })
   ).toHaveFocus();
 };
 
@@ -167,6 +157,13 @@ MultipleSelectChildSetsParentToIndeterminate.play = async ({
   // Cannot run a test on indeterminate states because we're using
   // aria-checked incorrectly. It needs to be on the checkbox not the
   // parent tree element. When completed use `expect().toBePartiallyChecked()`
+  await expect(
+    canvas.getByRole("treeitem", { name: /^Non dairy/ })
+  ).toHaveAttribute("aria-checked", "mixed");
+
+  await expect(
+    canvas.getByRole("treeitem", { name: /^Cupcakes/ })
+  ).toHaveAttribute("aria-checked", "mixed");
 };
 
 //  should select the last child when end is pressed on the expanded root node
@@ -183,14 +180,24 @@ MultipleSelectParentSelectsAllChildren.play = async ({ canvasElement }) => {
   await userEvent.click(canvas.getAllByText("Expand")[4]);
   await userEvent.click(canvas.getByText("Cupcakes") as Element);
 
-  await expect(canvas.getByLabelText("Red velvet.pptx")).toBeChecked();
-  await expect(canvas.getByLabelText("Non dairy")).toBeChecked();
-  await expect(canvas.getByLabelText("Carrot cake.pptx")).toBeChecked();
-  await expect(canvas.getByLabelText("Vegan banana.png")).toBeChecked();
   await expect(
-    canvas.getByLabelText("Lemon and poppyseed gf.json")
+    canvas.getByRole("treeitem", { name: /^Red velvet.pptx/ })
   ).toBeChecked();
-  await expect(canvas.getByLabelText("Coffee and walnut.gif")).toBeChecked();
+  await expect(
+    canvas.getByRole("treeitem", { name: /^Non dairy/ })
+  ).toBeChecked();
+  await expect(
+    canvas.getByRole("treeitem", { name: /^Carrot cake.pptx/ })
+  ).toBeChecked();
+  await expect(
+    canvas.getByRole("treeitem", { name: /^Vegan banana.png/ })
+  ).toBeChecked();
+  await expect(
+    canvas.getByRole("treeitem", { name: /^Lemon and poppyseed gf.json/ })
+  ).toBeChecked();
+  await expect(
+    canvas.getByRole("treeitem", { name: /^Coffee and walnut.gif/ })
+  ).toBeChecked();
 };
 
 // should expand the node when the right arrow is pressed on the closed parent node
@@ -225,7 +232,7 @@ KeyboardNavigateSelect.play = async ({ canvasElement }) => {
 
   await expect(
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
-  ).toBeChecked();
+  ).toHaveAttribute("aria-selected", "true");
 };
 
 // should expand the node when the right arrow is pressed on the closed parent node
@@ -237,34 +244,27 @@ ClickSelectAndKeyboardDeselect.args = {
 ClickSelectAndKeyboardDeselect.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
 
-  await userEvent.click(canvas.getByText("Baking-powder Nov 1999.docx"));
+  await userEvent.click(
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+  );
 
+  // await expect(
+  //   canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+  // ).toBeChecked();
   await expect(
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
-  ).toBeChecked();
-
-  await expect(
-    canvas.getByRole("radio", { name: "Baking-powder Nov 1999.docx" })
-  ).toBeChecked();
+  ).toHaveAttribute("aria-selected", "true");
 
   await userEvent.keyboard("[ArrowDown]");
   await userEvent.keyboard("[Space]");
 
   await expect(
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
-  ).not.toBeChecked();
-
-  await expect(
-    canvas.getByRole("radio", { name: "Baking-powder Nov 1999.docx" })
-  ).not.toBeChecked();
+  ).not.toHaveAttribute("aria-selected", "true");
 
   await expect(
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 2020.docx" })
-  ).toBeChecked();
-
-  await expect(
-    canvas.getByRole("radio", { name: "Baking-powder Nov 2020.docx" })
-  ).toBeChecked();
+  ).toHaveAttribute("aria-selected", "true");
 };
 
 // should expand the node when the right arrow is pressed on the closed parent node
@@ -298,21 +298,13 @@ KeyboardNavigateSelectAndDeselect.play = async ({ canvasElement }) => {
 
   await expect(
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
-  ).toBeChecked();
-
-  await expect(
-    canvas.getByRole("radio", { name: "Baking-powder Nov 1999.docx" })
-  ).toBeChecked();
+  ).toHaveAttribute("aria-selected", "true");
 
   await userEvent.keyboard("[Enter]");
 
   await expect(
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
-  ).not.toBeChecked();
-
-  await expect(
-    canvas.getByRole("radio", { name: "Baking-powder Nov 1999.docx" })
-  ).not.toBeChecked();
+  ).not.toHaveAttribute("aria-selected", "true");
 };
 
 // // should expand the node when the right arrow is pressed on the closed parent node
