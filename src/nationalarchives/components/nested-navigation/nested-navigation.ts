@@ -3,6 +3,11 @@ export enum InputType {
   checkboxes = "checkboxes",
 }
 
+export enum InputTypeHtmlAttrValue {
+  radios = "radio",
+  checkboxes = "checkbox",
+}
+
 export class NestedNavigation {
   private readonly tree: HTMLUListElement;
   private readonly treeItems: NodeListOf<HTMLElement>;
@@ -80,12 +85,28 @@ export class NestedNavigation {
       }
     });
 
+    // Hide all inputs from SR so that they don't conflict with
+    // the tree role
+    this.removeFocusFromInputs(inputType);
+
+    // Set the first item as focusable
     const firstSelected: HTMLLIElement | null =
       this.tree.querySelector("[role=treeitem]");
     if (firstSelected) {
       firstSelected.tabIndex = 0;
       this.currentFocus = firstSelected;
     }
+  };
+
+  removeFocusFromInputs: (inputType: InputType) => void = (inputType) => {
+    const inputs: NodeListOf<HTMLInputElement> = this.tree.querySelectorAll(
+      `input[type=${InputTypeHtmlAttrValue[inputType]}]`
+    );
+
+    inputs.forEach((input) => {
+      input.tabIndex = -1;
+      input.setAttribute("aria-hidden", "true");
+    });
   };
 
   updateFocus: (element?: HTMLLIElement | null) => void = (element) => {
@@ -340,7 +361,7 @@ export class NestedNavigation {
       case " ":
         // Check or uncheck checkbox
         this.setSelected(this.currentFocus as HTMLLIElement, inputType);
-        this.setFocusToItem(this.currentFocus)
+        this.setFocusToItem(this.currentFocus);
         doPrevent = true;
         break;
 
@@ -380,13 +401,12 @@ export class NestedNavigation {
       }
       default:
         break;
-      }
+    }
 
-      if(doPrevent === true){
-        ev.preventDefault();
-        ev.stopPropagation();
-      }
-
+    if (doPrevent === true) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
   };
 
   private readonly processEndEvent: (ev: KeyboardEvent) => void = (ev) => {

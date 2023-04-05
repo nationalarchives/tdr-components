@@ -1,10 +1,8 @@
 {% macro input(labelName, id, inputType, className) %}
   <div class="tna-tree__node-item__{{ inputType }} govuk-{{ className }}__item">
     <input
-        aria-hidden="true"
         class="govuk-{{ className }}__input"
         id="{{ inputType }}-{{ id }}"
-        tabindex="-1"
         type="{{ inputType }}"
         name="nested-navigation"/>
     <label class="govuk-label govuk-{{ className }}__label" for="{{ inputType }}-{{ id }}">
