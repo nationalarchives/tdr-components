@@ -1,3 +1,9 @@
+{% if params.inputType == 'radio' %}
+  {% set className = 'radios' %}
+{% elseif params.inputType == 'checkbox' %}
+  {% set className = 'checkboxes' %}
+{% endif %}
+
 {% macro input(labelName, id, inputType, className) %}
   <div class="tna-tree__node-item__{{ inputType }} govuk-{{ className }}__item">
     <input
@@ -40,23 +46,21 @@
           id="{{ className }}-expander-{{ item.id }}">
           <span aria-hidden="true" class="govuk-visually-hidden">Expand</span>
         </span>
-
-        {% if inputType == 'checkbox' %}
+        {%- if inputType == 'checkbox' -%}
           {{ input(item.name, item.id, inputType, className) }}
-        {% else %}
+        {%- else -%}
           <div class="js-radios-directory tna-tree__radios-directory">
             <span class="govuk-label tna-tree__radios-directory__label">
               <span class="govuk-visually-hidden">Directory - </span>{{item.name}}
             </span>
           </div>
-        {% endif %}
-
+        {%- endif -%}
       </div>
       <ul class="tna-tree__nested-list tna-tree__nested-list--{{className}}" role="group" id="{{ className }}-node-group-{{ item.id }}">
-        {% set nextLevel = level + 1 %}
-        {% for child in item.children %}
+        {%- set nextLevel = level + 1 -%}
+        {%- for child in item.children -%}
           {{ navigationItem(child, inputType, className, nextLevel, loop.length, loop.index) }}
-        {% endfor %}
+        {%- endfor -%}
       </ul>
     </li>
   {% endif %}
@@ -77,18 +81,13 @@
     </div>
   </details>
   <div class="tna-tree">
-    {% if params.inputType == 'radio' %}
-      {% set className = 'radios' %}
-    {% elseif params.inputType == 'checkbox' %}
-      {% set className = 'checkboxes' %}
-    {% endif %}
-    <ul aria-labelledby="tree-view-label" aria-describedby="tree-view-description" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkbox' %} aria-multiselectable="true"{% endif %}>
-      {% for node in params.items %}
+    <ul aria-labelledby="tree-view-label" aria-describedby="tree-view-description" class="tna-tree__root-list" id="{{ params.inputType }}-tree" role="tree"{% if params.inputType == 'checkbox' %} aria-multiselectable="true"{% endif -%}>
+      {%- for node in params.items -%}
         {{ navigationItem(node, params.inputType, className, 1, loop.length, loop.index) }}
-      {% endfor %}
+      {%- endfor -%}
     </ul>
-    {% if params.inputType == 'radio' %}
+    {% if params.inputType == 'radio' -%}
       <div aria-atomic="true" aria-live="assertive" class="govuk-inset-text">File selected: <span class="govuk-!-font-weight-bold" id="{{ params.inputType }}-tree-selected">No file selected</span></div>
-    {% endif %}
+    {%- endif %}
   </div>
 </div>
