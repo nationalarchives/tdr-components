@@ -88,5 +88,8 @@
         {{ navigationItem(node, params.inputType, className, 1, loop.length, loop.index) }}
       {% endfor %}
     </ul>
+    {% if params.inputType == 'radio' %}
+      <div aria-atomic="true" aria-live="assertive" class="govuk-inset-text">File selected: <span class="govuk-!-font-weight-bold" id="{{ params.inputType }}-tree-selected">No file selected</span></div>
+    {% endif %}
   </div>
 </div>

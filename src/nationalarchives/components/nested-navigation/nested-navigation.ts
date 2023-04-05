@@ -12,6 +12,7 @@ export class NestedNavigation {
   private readonly tree: HTMLUListElement;
   private readonly treeItems: NodeListOf<HTMLElement>;
   private currentFocus: HTMLLIElement | null;
+  private fileSelected: HTMLElement | null;
   private rememberExpanded: Boolean = false;
 
   constructor(tree: HTMLUListElement) {
@@ -183,6 +184,14 @@ export class NestedNavigation {
       localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
   };
 
+  displaySelected: (filename: string) => void = (filename) => {
+    this.fileSelected =
+      this.fileSelected || document.getElementById(`${this.tree.id}-selected`);
+
+    filename = filename === "" ? "No file selected" : filename;
+    if (this.fileSelected != null) this.fileSelected.textContent = filename;
+  };
+
   setSelected: (li: HTMLLIElement, inputType: InputType) => void = (
     li,
     inputType
@@ -198,6 +207,8 @@ export class NestedNavigation {
     li.setAttribute("aria-selected", !isSelected ? "true" : "false");
     const input = li.querySelector("input");
     if (input) input.checked = !isSelected;
+
+    this.displaySelected(isSelected ? "" : (li.textContent?.trim() as string));
 
     // If checkbox then we need to deselect a mixed state
     if (inputType === InputType.checkboxes) {
