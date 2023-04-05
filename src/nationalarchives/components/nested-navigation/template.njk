@@ -44,10 +44,9 @@
         {% if inputType == 'checkbox' %}
           {{ input(item.name, item.id, inputType, className) }}
         {% else %}
-          <div class="js-radios-directory tna-radios-directory">
-            <span class="govuk-label tna-radios-directory__label">
-              <img class="tna-tree__svg-directory" role="img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAC6SURBVHgB7ZXRDcIgFEWvxgEcoRtUN8ANGIER2KArsAFuABuoIziBbkA3wPdI+iU1iPLHSU5CQ+GGR8IDgIkMZMz4IA/4gQ1vNAwDhBBvk957zAQNj+QTlUSlVMzhnFtOckElu0+TUkporWGMEfTpyBnl3MgzD1ZPwIQQuIS5+ylRoORHLtU3WGuXtSqVaO2SmXEcU6lqSQG8OaWiBVs0pgf0gB7QAwrglsn9eI82nPg15X474f/cyesLxTel2GiK/tEAAAAASUVORK5CYII=" alt="Directory - "/>
-              {{item.name}}
+          <div class="js-radios-directory tna-tree__radios-directory">
+            <span class="govuk-label tna-tree__radios-directory__label">
+              <span class="govuk-visually-hidden">Directory - </span>{{item.name}}
             </span>
           </div>
         {% endif %}

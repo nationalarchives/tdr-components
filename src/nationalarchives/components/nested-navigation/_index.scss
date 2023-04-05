@@ -9,6 +9,10 @@
   margin-bottom: 1em;
 }
 
+.tna-tree .govuk-label {
+  white-space: nowrap;
+}
+
 .tna-tree__root-list {
   background-image: linear-gradient(180deg, #F8F8F8 25%, #ffffff 25%, #ffffff 50%, #F8F8F8 50%, #F8F8F8 75%, #ffffff 75%, #ffffff 100%);
   background-size: 100% 180px;
@@ -48,8 +52,8 @@
 }
 
 .tna-tree__nested-list--radios::before {
-  margin: -6px 0 0 calc(-2px + var(--directory-icon-width) / 2);
-  height: calc(100% + 8px);
+  margin: -2px 0 0 calc(-2px + var(--directory-icon-width) / 2);
+  height: calc(100% + 4px);
 }
 
 .tna-tree__node-item__container {
@@ -117,98 +121,78 @@
   cursor: pointer;
 }
 
-[role="treeitem"]:focus > div > div > .tna-radios-directory__label,
-[role="treeitem"]:hover > div > div > .tna-radios-directory__label {
-  position: relative;
-}
-
-[role="treeitem"]:focus > div > div > .tna-radios-directory__label:before,
-[role="treeitem"]:hover > div > div > .tna-radios-directory__label:before {
-  content: " ";
-  background-color: #b1b4b69a;
-  border-radius: 16px;
-  width: 40px;
-  height: 36px;
-  display: block;
-  position: absolute;
-  top: 0px;
-  left: -8px;
-}
-
 [role="treeitem"]:focus {
   background-color: rgba(210, 250, 249, 0.25);
   outline: 3px solid rgb(210, 250, 249);
   outline-offset: 1px;
 }
 
-$input-types: "checkboxes", "radios";
+.tna-tree [role="treeitem"][aria-expanded="false"]>ul {
+  display: none;
+}
 
-@each $input-type in $input-types {
+.tna-tree [role="treeitem"][aria-expanded="true"]>ul {
+  display: block;
+}
 
+/*
+* Using same CSS as govuk-frontend checkboxes component:
+* https: //github.com/alphagov/govuk-frontend/blob/main/package/govuk/components/checkboxes/_index.scss
+* Not including the IE8 stuff.
+* */
+[role="treeitem"]:hover > div .govuk-checkboxes__input + .govuk-checkboxes__label:before,
+[role="treeitem"]:focus > div .govuk-checkboxes__input + .govuk-checkboxes__label:before {
+  border-width: 4px;
 
-  .tna-tree [role="treeitem"][aria-expanded="false"]>ul {
-    display: none;
+  // When colours are overridden, the yellow box-shadow becomes invisible
+  // which means the focus state is less obvious. By adding a transparent
+  // outline, which becomes solid (text-coloured) in that context, we ensure
+  // the focus remains clearly visible.
+  outline: $govuk-focus-width solid transparent;
+  outline-offset: 1px;
+
+  // When in an explicit forced-color mode, we can use the Highlight system
+  // color for the outline to better match focus states of native controls
+  @media screen and (forced-colors: active),
+  (-ms-high-contrast: active) {
+    outline-color: Highlight;
   }
 
-  .tna-tree [role="treeitem"][aria-expanded="true"]>ul {
-    display: block;
+  box-shadow: 0 0 0 $govuk-focus-width $govuk-focus-colour;
+}
+
+// Hover state for checkboxes.
+[role="treeitem"]:hover>div .govuk-checkboxes__input+.govuk-checkboxes__label:before {
+  box-shadow: 0 0 0 $govuk-focus-width $govuk-hover-colour;
+}
+
+/*
+* Using same CSS as govuk-frontend radio component:
+* https: //github.com/alphagov/govuk-frontend/blob/main/src/govuk/components/radios/_index.scss
+* */
+
+// Focus state for small radios.
+[role="treeitem"]:focus > .govuk-radios__item .govuk-radios__input:not(:disabled) + .govuk-radios__label:before {
+  border-width: 4px;
+
+  outline: $govuk-focus-width solid transparent;
+  outline-offset: 1px;
+
+  @media screen and (forced-colors: active),
+  (-ms-high-contrast: active) {
+    outline-color: Highlight;
   }
 
-  // https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
-  .tna-tree .govuk-label govuk-#{$input-type}__label {
-    white-space: nowrap;
-  }
-
-  /*
-   * Using same CSS as govuk-frontend checkboxes component:
-   * https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/components/checkboxes/_index.scss#L128
-   * Not including the IE8 stuff.
-   * */
-
-  [role="treeitem"]:focus>.govuk-#{$input-type}__item>.govuk-label govuk-#{$input-type}__label::before,
-  [role="treeitem"]:focus>.tna-tree__node-item__container>.govuk-#{$input-type}__item>.govuk-label govuk-#{$input-type}__label::before {
-    border-width: 1px;
-
-    // When colours are overridden, the yellow box-shadow becomes invisible
-    // which means the focus state is less obvious. By adding a transparent
-    // outline, which becomes solid (text-coloured) in that context, we ensure
-    // the focus remains clearly visible.
-    outline: $govuk-focus-width solid transparent;
-    outline-offset: 1px;
-
-    // When in an explicit forced-color mode, we can use the Highlight system
-    // color for the outline to better match focus states of native controls
-    @media screen and (forced-colors: active),
-    (-ms-high-contrast: active) {
-      outline-color: Highlight;
-    }
-
-    box-shadow: 0 0 0 $govuk-focus-width $govuk-focus-colour;
-  }
-
-  [role="treeitem"][aria-selected="true"]>.govuk-#{$input-type}__item>.govuk-#{$input-type}__label::after,
-  [role="treeitem"][aria-selected="true"]>.tna-tree__node-item__container>.govuk-#{$input-type}__item>.govuk-#{$input-type}__label::after {
-    opacity: 1;
-  }
+  box-shadow: 0 0 0 4px $govuk-focus-colour;
 }
 
 // Hover state for small radios.
-//
-// We use a hover state for small radios because the touch target size
-// is so much larger than their visible size, and so we need to provide
-// feedback to the user as to which radio they will select when their
-// cursor is outside of the visible area.
-[role="treeitem"]:focus>.govuk-radios__item .govuk-radios__input:not(:disabled)+.govuk-radios__label:before,
-[role="treeitem"]:hover>.govuk-radios__item .govuk-radios__input:not(:disabled)+.govuk-radios__label:before{
+[role="treeitem"]:hover > .govuk-radios__item .govuk-radios__input:not(:disabled) + .govuk-radios__label:before {
   box-shadow: 0 0 0 $govuk-hover-width $govuk-hover-colour;
 }
 
 // Because we've overridden the border-shadow provided by the focus state,
-// we need to redefine that too.
-//
-// We use two box shadows, one that restores the original focus state [1]
-// and another that then applies the hover state [2].
-[role="treeitem"]:hover>.govuk-radios__item .govuk-radios__input+.govuk-radios__label:before {
+[role="treeitem"]:hover > .govuk-radios__item .govuk-radios__input + .govuk-radios__label:before {
   box-shadow:
     0 0 0 $govuk-focus-width+1 $govuk-focus-colour, // 1
     0 0 0 $govuk-hover-width $govuk-hover-colour; // 2
@@ -218,8 +202,8 @@ $input-types: "checkboxes", "radios";
  * Styles copied from this thread for indeterminate/mixed checkbox state:
  * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
  * */
-[role="treeitem"][aria-checked="mixed"]>.govuk-checkboxes__item>.govuk-label .govuk-checkboxes__label::after,
-[role="treeitem"][aria-checked="mixed"]>.tna-tree__node-item__container>.govuk-checkboxes__item>.govuk-checkboxes__label::after {
+[role="treeitem"][aria-checked="mixed"] > .govuk-checkboxes__item > .govuk-label .govuk-checkboxes__label::after,
+[role="treeitem"][aria-checked="mixed"] > .tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-checkboxes__label::after {
   transform: rotate(0);
   border: none;
   top: 0;
@@ -231,15 +215,38 @@ $input-types: "checkboxes", "radios";
   opacity: 1;
 }
 
-.tna-radios-directory {
+.tna-tree__radios-directory {
   display: flex;
   height: 100%;
 }
 
-.tna-radios-directory__label {
+.tna-tree__radios-directory__label {
   display: flex;
   gap: 10px;
-  padding: 8px 0 8px;
+  padding: 8px 34px 8px;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAC6SURBVHgB7ZXRDcIgFEWvxgEcoRtUN8ANGIER2KArsAFuABuoIziBbkA3wPdI+iU1iPLHSU5CQ+GGR8IDgIkMZMz4IA/4gQ1vNAwDhBBvk957zAQNj+QTlUSlVMzhnFtOckElu0+TUkporWGMEfTpyBnl3MgzD1ZPwIQQuIS5+ylRoORHLtU3WGuXtSqVaO2SmXEcU6lqSQG8OaWiBVs0pgf0gB7QAwrglsn9eI82nPg15X474f/cyesLxTel2GiK/tEAAAAASUVORK5CYII=");
+  background-repeat: no-repeat;
+  background-size: 24px 22px;
+  background-position-y: 8px;
+  z-index: 1;
+}
+
+[role="treeitem"]:focus>div>.tna-tree__radios-directory,
+[role="treeitem"]:hover>div>.tna-tree__radios-directory {
+  position: relative;
+}
+
+[role="treeitem"]:focus>div>.tna-tree__radios-directory:before,
+[role="treeitem"]:hover>div>.tna-tree__radios-directory:before {
+  content: " ";
+  background-color: #b1b4b6;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: -8px;
 }
 
 /* Accommodate for lack of button so alignment is ok */
