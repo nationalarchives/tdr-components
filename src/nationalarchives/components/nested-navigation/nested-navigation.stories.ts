@@ -17,17 +17,19 @@ export default {
       const doc = parser.parseFromString(storyFn(), "text/html");
       wrapper.appendChild(doc.body.firstElementChild as HTMLElement);
 
-      // Also use this wrapper element to init the MSS js.
-      const trees: NodeListOf<HTMLUListElement> =
-        wrapper.querySelectorAll("[role=tree]");
-      trees.forEach((tree) => {
-        const nestedNavigation = new NestedNavigation(tree);
-        if (tree.hasAttribute("aria-multiselectable")) {
-          nestedNavigation.initialiseFormListeners(InputType.checkboxes);
-        } else {
-          nestedNavigation.initialiseFormListeners(InputType.radios);
-        }
-      });
+      document.addEventListener("DOMContentLoaded", (event) => {
+        // Also use this wrapper element to init the MSS js.
+        const trees: NodeListOf<HTMLUListElement> =
+          wrapper.querySelectorAll("[role=tree]");
+        trees.forEach((tree) => {
+          const nestedNavigation = new NestedNavigation(tree);
+          if (tree.hasAttribute("aria-multiselectable")) {
+            nestedNavigation.initialiseFormListeners(InputType.checkboxes);
+          } else {
+            nestedNavigation.initialiseFormListeners(InputType.radios);
+          }
+        });
+      }, { once : true });
 
       return wrapper;
     },
@@ -67,11 +69,11 @@ const Template = ({ ...args }) => {
   return createTree({ ...args });
 };
 
-export const SingleSelectExample = Template.bind({});
-SingleSelectExample.args = {
+export const DefaultSingle = Template.bind({});
+DefaultSingle.args = {
   inputType: "radio",
 };
-SingleSelectExample.play = async ({ canvasElement }) => {
+DefaultSingle.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
 
   // should load the page with the directories collapsed, i.e. children invisible
@@ -101,13 +103,12 @@ ExpandNodeAndFocus.play = async ({ canvasElement }) => {
   ).toHaveFocus();
 };
 
-export const SelectTreeItemAndFocus = Template.bind({});
-SelectTreeItemAndFocus.args = {
+export const ClickItemAndFocus = Template.bind({});
+ClickItemAndFocus.args = {
   inputType: "radio",
 };
-SelectTreeItemAndFocus.play = async ({ canvasElement }) => {
+ClickItemAndFocus.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  // Click label
   await userEvent.click(
     canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ })
   );
@@ -115,6 +116,28 @@ SelectTreeItemAndFocus.play = async ({ canvasElement }) => {
   await expect(
     canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ })
   ).toHaveFocus();
+};
+
+export const ClickItemAndUpdateFileSelected = Template.bind({});
+ClickItemAndUpdateFileSelected.args = {
+  inputType: "radio",
+};
+ClickItemAndUpdateFileSelected.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(
+    canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ })
+  );
+
+  const allTexts = canvas.getAllByText(/Baking-powder Nov 2020/)
+  await expect(
+    allTexts.length
+  ).toBeGreaterThan(1)
+
+  // Last item should be the 'File Selected' component
+  await expect(
+    allTexts.pop()?.textContent
+  ).toEqual("Baking-powder Nov 2020.docx")
+
 };
 
 export const ExpandSelectAndFocus = Template.bind({});
@@ -133,8 +156,8 @@ ExpandSelectAndFocus.play = async ({ canvasElement }) => {
   ).toHaveFocus();
 };
 
-export const MultipleSelectExample = Template.bind({});
-MultipleSelectExample.args = {
+export const DefaultMultiple = Template.bind({});
+DefaultMultiple.args = {
   inputType: "checkbox",
 };
 
