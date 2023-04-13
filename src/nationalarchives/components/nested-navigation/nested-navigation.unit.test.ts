@@ -526,24 +526,6 @@ describe.each([InputType.checkboxes, InputType.radios])(
         expect(events.keydown?.length).toEqual(1);
       });
 
-      it("should add click event listeners to the buttons", () => {
-        const events: { [key: string]: EventListenerOrEventListenerObject[] } =
-          {};
-
-        const ul = document.createElement("ul");
-        ul.setAttribute("role", "tree");
-        const button = document.createElement("button");
-        button.classList.add(`js-tree__expander--${classNameValue}`);
-        button.addEventListener = jest.fn((event, callback) => {
-          events[event] = [callback];
-        });
-        ul.appendChild(button);
-        const nestedNavigation = createNestedNavigation({}, undefined, ul);
-        nestedNavigation.initialiseFormListeners(classNameValue);
-
-        expect(events.click?.length).toEqual(1);
-      });
-
       it("should update the expanded state for the checkboxes", () => {
         const tree = document.createElement("ul");
         const input = createInputElement();

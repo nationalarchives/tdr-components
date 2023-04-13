@@ -3,10 +3,16 @@ export enum InputType {
   checkboxes = "checkboxes",
 }
 
+export enum InputTypeHtmlAttrValue {
+  radios = "radio",
+  checkboxes = "checkbox",
+}
+
 export class NestedNavigation {
   private readonly tree: HTMLUListElement;
   private readonly treeItems: NodeListOf<HTMLElement>;
   private currentFocus: HTMLLIElement | null;
+  private fileSelected: HTMLElement | null;
   private rememberExpanded: Boolean = false;
 
   constructor(tree: HTMLUListElement) {
@@ -33,15 +39,14 @@ export class NestedNavigation {
       });
     }
 
-    // Make radio folders label/icon act as expanders as well since they are not selectable.
-    const radioFolders = Array.from(
-      this.tree.querySelectorAll(`.js-${inputType}-directory`)
-    );
+    // Radio button directory expander icons don't need an explicit
+    // click event listener because the whole li/row is a clickable expander.
+    // A checkbox directory li/row has two functions, select and open so the
+    // expander has to have it's own event listener for opening.
     const buttons = this.tree.querySelectorAll(
-      `.js-tree__expander--${inputType}`
+      `.js-tree__expander--${InputType.checkboxes}`
     );
-    const allExpanders = [...radioFolders, ...Array.from(buttons)];
-    allExpanders.forEach((expander, _, __) => {
+    Array.from(buttons).forEach((expander, _, __) => {
       (expander as HTMLElement).addEventListener("click", (ev) => {
         let el: HTMLElement = ev.currentTarget as HTMLElement;
         if (el.id.includes("expander") === false) {
@@ -81,12 +86,28 @@ export class NestedNavigation {
       }
     });
 
+    // Hide all inputs from SR so that they don't conflict with
+    // the tree role
+    this.removeFocusFromInputs(inputType);
+
+    // Set the first item as focusable
     const firstSelected: HTMLLIElement | null =
       this.tree.querySelector("[role=treeitem]");
     if (firstSelected) {
       firstSelected.tabIndex = 0;
       this.currentFocus = firstSelected;
     }
+  };
+
+  removeFocusFromInputs: (inputType: InputType) => void = (inputType) => {
+    const inputs: NodeListOf<HTMLInputElement> = this.tree.querySelectorAll(
+      `input[type=${InputTypeHtmlAttrValue[inputType]}]`
+    );
+
+    inputs.forEach((input) => {
+      input.tabIndex = -1;
+      input.setAttribute("aria-hidden", "true");
+    });
   };
 
   updateFocus: (element?: HTMLLIElement | null) => void = (element) => {
@@ -163,6 +184,14 @@ export class NestedNavigation {
       localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
   };
 
+  displaySelected: (filename: string) => void = (filename) => {
+    this.fileSelected =
+      this.fileSelected || document.getElementById(`${this.tree.id}-selected`);
+
+    filename = filename === "" ? "No file selected" : filename;
+    if (this.fileSelected != null) this.fileSelected.textContent = filename;
+  };
+
   setSelected: (li: HTMLLIElement, inputType: InputType) => void = (
     li,
     inputType
@@ -176,9 +205,15 @@ export class NestedNavigation {
     // Set the aria attribute and input
     const isSelected: boolean = li.getAttribute("aria-selected") === "true";
     li.setAttribute("aria-selected", !isSelected ? "true" : "false");
-    li.setAttribute("aria-checked", !isSelected ? "true" : "false");
     const input = li.querySelector("input");
     if (input) input.checked = !isSelected;
+
+    this.displaySelected(isSelected ? "" : (li.textContent?.trim() as string));
+
+    // If checkbox then we need to deselect a mixed state
+    if (inputType === InputType.checkboxes) {
+      li.setAttribute("aria-checked", !isSelected ? "true" : "false");
+    }
 
     // If radio directory and we're not deselecting a selected radio
     if (inputType === InputType.radios && !isSelected) {
@@ -186,7 +221,6 @@ export class NestedNavigation {
       this.tree.querySelectorAll("li[aria-selected=true]").forEach((el) => {
         if (el.id !== li.id) {
           el.setAttribute("aria-selected", "false");
-          el.setAttribute("aria-checked", "false");
           const input = el.querySelector("input");
           if (input) input.checked = false;
         }
@@ -331,47 +365,58 @@ export class NestedNavigation {
     ev,
     inputType
   ) => {
+    let doPrevent = false;
+
     switch (ev.key) {
       case "Enter":
       case " ":
         // Check or uncheck checkbox
         this.setSelected(this.currentFocus as HTMLLIElement, inputType);
-        ev.preventDefault();
+        this.setFocusToItem(this.currentFocus);
+        doPrevent = true;
         break;
 
       case "ArrowUp":
         // Moves focus to the previous node that is focusable without opening or closing a node.
         this.setFocusToPreviousItem(this.currentFocus);
-        ev.preventDefault();
+        doPrevent = true;
         break;
 
       case "ArrowDown":
         // Moves focus to the next node that is focusable without opening or closing a node.
         this.setFocusToNextItem(this.currentFocus);
-        ev.preventDefault();
+        doPrevent = true;
         break;
 
       case "ArrowRight":
         this.processArrowRightEvent(ev, inputType);
+        doPrevent = true;
         break;
 
       case "ArrowLeft":
         this.processArrowLeftEvent(ev, inputType);
+        doPrevent = true;
         // When focus is on a closed `tree`, does nothing.
         break;
 
       case "Home":
         // Moves focus to the first node in the tree without opening or closing a node.
         this.setFocusToItem(this.tree.firstElementChild as HTMLLIElement);
-        ev.preventDefault();
+        doPrevent = true;
         break;
 
       case "End": {
         this.processEndEvent(ev);
+        doPrevent = true;
         break;
       }
       default:
         break;
+    }
+
+    if (doPrevent === true) {
+      ev.preventDefault();
+      ev.stopPropagation();
     }
   };
 
