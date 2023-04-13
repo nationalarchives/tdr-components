@@ -271,9 +271,8 @@ ClickSelectAndKeyboardDeselect.play = async ({ canvasElement }) => {
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
   );
 
-  // await expect(
-  //   canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
-  // ).toBeChecked();
+  // Currently treeitems are not recognised by Testing Library as having a
+  // selected state so can't use `await expect.toBeChecked();`. Maybe a bug.
   await expect(
     canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
   ).toHaveAttribute("aria-selected", "true");
