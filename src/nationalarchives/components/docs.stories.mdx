@@ -1,0 +1,11 @@
+<Meta title="TDR/Docs"  />
+
+# Button (disabled)
+
+This component is a very simple implementation of a [GDS Button](https://design-system.service.gov.uk/components/button/) but using `aria-disabled` instead of `disabled`. Using the `disabled` attribute removes keyboard focus when tabbing, which is particularly unhelpful for keyboard-only users.
+
+`aria-disabled` however maintains the keyboard tabbing focus but does not prevent the button from being submitted. We have therefore added Javascript to prevent the button submission if `aria-disabled` is `true`. Some research relating to this:
+
+- [Axess Lab | Disabled buttons suck](https://axesslab.com/disabled-buttons-suck/)
+- [Aria-disabled | Introduction to Accessibility](https://a11y-101.com/development/aria-disabled)
+- [Making Disabled Buttons More Inclusive | CSS-Tricks - CSS-Tricks](https://css-tricks.com/making-disabled-buttons-more-inclusive/)
