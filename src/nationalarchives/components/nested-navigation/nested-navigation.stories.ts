@@ -15,7 +15,7 @@ export default {
       wrapper.style.margin = "0 3em";
       const parser = new DOMParser();
       const doc = parser.parseFromString(storyFn(), "text/html");
-      wrapper.appendChild(doc.body.firstElementChild as HTMLElement);
+      wrapper.append(...doc.body.children);
 
       document.addEventListener("DOMContentLoaded", (event) => {
         // Also use this wrapper element to init the MSS js.
