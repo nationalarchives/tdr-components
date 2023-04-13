@@ -4707,8 +4707,6 @@
   .js-enabled .govuk-tabs__tab:hover {
     color: rgba(11, 12, 12, 0.99);
   }
-}
-@media (min-width: 40.0625em) {
   .js-enabled .govuk-tabs__tab:active, .js-enabled .govuk-tabs__tab:focus {
     color: #0b0c0c;
   }
@@ -4727,8 +4725,6 @@
     bottom: 0;
     left: 0;
   }
-}
-@media (min-width: 40.0625em) {
   .js-enabled .govuk-tabs__panel {
     margin-bottom: 0;
     padding: 30px 20px;
@@ -4738,8 +4734,6 @@
   .js-enabled .govuk-tabs__panel > :last-child {
     margin-bottom: 0;
   }
-}
-@media (min-width: 40.0625em) {
   .js-enabled .govuk-tabs__panel--hidden {
     display: none;
   }
@@ -7284,13 +7278,18 @@ body {
   --item-expander-btn-width: 40px;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 90vh;
+  max-height: 70vh;
   margin-bottom: 1em;
 }
 
+.tna-tree .govuk-label {
+  white-space: nowrap;
+}
+
 .tna-tree__root-list {
-  background-image: linear-gradient(180deg, #F8F8F8 22.22%, #ffffff 22.22%, #ffffff 50%, #F8F8F8 50%, #F8F8F8 72.22%, #ffffff 72.22%, #ffffff 100%);
+  background-image: linear-gradient(180deg, #F8F8F8 25%, #ffffff 25%, #ffffff 50%, #F8F8F8 50%, #F8F8F8 75%, #ffffff 75%, #ffffff 100%);
   background-size: 100% 180px;
+  background-position: 0 -2px;
 }
 
 .tna-tree__root-list,
@@ -7326,8 +7325,8 @@ body {
 }
 
 .tna-tree__nested-list--radios::before {
-  margin: -6px 0 0 calc(-2px + var(--directory-icon-width) / 2);
-  height: calc(100% + 8px);
+  margin: -2px 0 0 calc(-2px + var(--directory-icon-width) / 2);
+  height: calc(100% + 4px);
 }
 
 .tna-tree__node-item__container {
@@ -7350,6 +7349,7 @@ body {
   width: 24px;
   display: inline-block;
   align-self: baseline;
+  z-index: 1;
 }
 
 .tna-tree__expander {
@@ -7403,6 +7403,16 @@ body {
   left: 10px;
 }
 
+[role=treeitem]:hover {
+  cursor: pointer;
+}
+
+[role=treeitem]:focus {
+  background-color: rgba(210, 250, 249, 0.25);
+  outline: 3px solid rgb(210, 250, 249);
+  outline-offset: 1px;
+}
+
 .tna-tree [role=treeitem][aria-expanded=false] > ul {
   display: none;
 }
@@ -7411,39 +7421,58 @@ body {
   display: block;
 }
 
-.tna-tree .govuk-label govuk-checkboxes__label {
-  white-space: nowrap;
-}
-
 /*
- * Using same CSS as govuk-frontend checkboxes component:
- * https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/components/checkboxes/_index.scss#L128
- * Not including the IE8 stuff.
- * */
-[role=treeitem]:focus > .govuk-checkboxes__item > .govuk-label govuk-checkboxes__label::before,
-[role=treeitem]:focus > .tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-label govuk-checkboxes__label::before {
+* Using same CSS as govuk-frontend checkboxes component:
+* https: //github.com/alphagov/govuk-frontend/blob/main/package/govuk/components/checkboxes/_index.scss
+* Not including the IE8 stuff.
+* */
+[role=treeitem]:hover > div .govuk-checkboxes__input + .govuk-checkboxes__label:before,
+[role=treeitem]:focus > div .govuk-checkboxes__input + .govuk-checkboxes__label:before {
   border-width: 4px;
   outline: 3px solid transparent;
   outline-offset: 1px;
   box-shadow: 0 0 0 3px #ffdd00;
 }
 @media screen and (forced-colors: active), (-ms-high-contrast: active) {
-  [role=treeitem]:focus > .govuk-checkboxes__item > .govuk-label govuk-checkboxes__label::before,
-  [role=treeitem]:focus > .tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-label govuk-checkboxes__label::before {
+  [role=treeitem]:hover > div .govuk-checkboxes__input + .govuk-checkboxes__label:before,
+  [role=treeitem]:focus > div .govuk-checkboxes__input + .govuk-checkboxes__label:before {
     outline-color: Highlight;
   }
 }
 
-[role=treeitem][aria-selected=true] > .govuk-checkboxes__item > .govuk-checkboxes__label::after,
-[role=treeitem][aria-selected=true] > .tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-checkboxes__label::after {
-  opacity: 1;
+[role=treeitem]:hover > div .govuk-checkboxes__input + .govuk-checkboxes__label:before {
+  box-shadow: 0 0 0 3px #b1b4b6;
 }
 
 /*
- * Styles copied from this thread:
+* Using same CSS as govuk-frontend radio component:
+* https: //github.com/alphagov/govuk-frontend/blob/main/src/govuk/components/radios/_index.scss
+* */
+[role=treeitem]:focus > .govuk-radios__item .govuk-radios__input:not(:disabled) + .govuk-radios__label:before {
+  border-width: 4px;
+  outline: 3px solid transparent;
+  outline-offset: 1px;
+  box-shadow: 0 0 0 4px #ffdd00;
+}
+@media screen and (forced-colors: active), (-ms-high-contrast: active) {
+  [role=treeitem]:focus > .govuk-radios__item .govuk-radios__input:not(:disabled) + .govuk-radios__label:before {
+    outline-color: Highlight;
+  }
+}
+
+[role=treeitem]:hover > .govuk-radios__item .govuk-radios__input:not(:disabled) + .govuk-radios__label:before {
+  box-shadow: 0 0 0 10px #b1b4b6;
+}
+
+[role=treeitem]:hover > .govuk-radios__item .govuk-radios__input + .govuk-radios__label:before {
+  box-shadow: 0 0 0 4px #ffdd00, 0 0 0 10px #b1b4b6;
+}
+
+/*
+ * Styles copied from this thread for indeterminate/mixed checkbox state:
  * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
  * */
-[role=treeitem][aria-checked=mixed] > .govuk-checkboxes__item > .govuk-label govuk-checkboxes__label::after,
+[role=treeitem][aria-checked=mixed] > .govuk-checkboxes__item > .govuk-label .govuk-checkboxes__label::after,
 [role=treeitem][aria-checked=mixed] > .tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-checkboxes__label::after {
   transform: rotate(0);
   border: none;
@@ -7456,71 +7485,26 @@ body {
   opacity: 1;
 }
 
-.tna-tree [role=treeitem][aria-expanded=false] > ul {
-  display: none;
-}
-
-.tna-tree [role=treeitem][aria-expanded=true] > ul {
-  display: block;
-}
-
-.tna-tree .govuk-label govuk-radios__label {
-  white-space: nowrap;
-}
-
-/*
- * Using same CSS as govuk-frontend checkboxes component:
- * https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/components/checkboxes/_index.scss#L128
- * Not including the IE8 stuff.
- * */
-[role=treeitem]:focus > .govuk-radios__item > .govuk-label govuk-radios__label::before,
-[role=treeitem]:focus > .tna-tree__node-item__container > .govuk-radios__item > .govuk-label govuk-radios__label::before {
-  border-width: 4px;
-  outline: 3px solid transparent;
-  outline-offset: 1px;
-  box-shadow: 0 0 0 3px #ffdd00;
-}
-@media screen and (forced-colors: active), (-ms-high-contrast: active) {
-  [role=treeitem]:focus > .govuk-radios__item > .govuk-label govuk-radios__label::before,
-  [role=treeitem]:focus > .tna-tree__node-item__container > .govuk-radios__item > .govuk-label govuk-radios__label::before {
-    outline-color: Highlight;
-  }
-}
-
-[role=treeitem][aria-selected=true] > .govuk-radios__item > .govuk-radios__label::after,
-[role=treeitem][aria-selected=true] > .tna-tree__node-item__container > .govuk-radios__item > .govuk-radios__label::after {
-  opacity: 1;
-}
-
-/*
- * Styles copied from this thread:
- * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
- * */
-[role=treeitem][aria-checked=mixed] > .govuk-radios__item > .govuk-label govuk-radios__label::after,
-[role=treeitem][aria-checked=mixed] > .tna-tree__node-item__container > .govuk-radios__item > .govuk-radios__label::after {
-  transform: rotate(0);
-  border: none;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  height: 6px;
-  width: 22px;
-  background: currentcolor;
-  opacity: 1;
-}
-
-.tna-radios-directory {
+.tna-tree__radios-directory {
   display: flex;
   height: 100%;
 }
 
-.tna-radios-directory__label {
+.tna-tree__radios-directory__label {
   display: flex;
   gap: 10px;
-  padding: 8px 0 8px;
-  cursor: pointer;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
+  padding: 8px 36px 8px;
+  margin-bottom: 0;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAfCAYAAABtYXSPAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADRSURBVHgB7dbhDYIwEAXgp3EQNkA36AiM0BHYgBXYoG7QbqCO4AS6QdmgXk34Za9a0xBC7kteAiGlR68JBYTYqIHiKSGRB+WIynaZZ6FpGiilPh445zARujxRnlhA0FqHFGvtvEIXVHTAH7quQ9/3GMdR0a2lTAXDb5QzCrErE3nvYxtT++mXKBT6+tLYrhLGmHmsTk2YbRO3gaO2bd/tqilbTCyEvgZL2WNFpBiOFMORYjhSDEeK4ayqmBzu/FsjKjVh7q8dz7cD6rtTrhCigheLWbuwMSK7MAAAAABJRU5ErkJggg==");
+  background-repeat: no-repeat;
+  background-size: 35px 31px;
+  background-position: 0 4px;
+  z-index: 1;
+}
+
+[role=treeitem]:focus > div > .tna-tree__radios-directory .tna-tree__radios-directory__label,
+[role=treeitem]:hover > div > .tna-tree__radios-directory .tna-tree__radios-directory__label {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAfCAYAAABtYXSPAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJvSURBVHgB7ZfNbhJRFMf/d4BqQhewmdlOcVtEn0BM3UjBwhNIn6C4NU0A40dcMTHuYVNZMgQRF43BXV21byBbumJDIh3heu6UqTgfTYkDZcEvuQkzcy/8OPdjzmG4hkajEQlu3D3gnCc5oOKyzcuAAWdjoAljpOdyuZ5XR+Yu0VEDIV4lgSR8hjFWG1/8KrtJSfYbrfbXAynETxchIqAo56XQndPG5y8F+zP2r0inOOG8hCUhMVbK7D4twy4jIjLhEw1LZgK8yKVT2pWMWCNiauhjxOpU/3SEVlPHcDh0fIEsK3h5eIit2D34wGBijB6KNWTK6O1OldFczvbYS6egqiqSyaRjtK7rMAwD2oePkBUF/wtJdJ+lU4/ZNCo/7R2ETD6fR7VadZWhf4LteBxv3r2HH1B0okGEeBZzks1mUSgUoGka3r5+hfDm5o3HbsfvY2fnifNBcKMQDFAQOOanWCyaEfpxcjLXuG/Hx1Bk2ZSaJcDYI4lEHngNrNVq4pBybdFoFJVKRZwbN27WlPf7547f4gxqEDM7yI7XAhYkEglzunyDX8p4IkTcFvCikLBCrGW8WMt4sZbxQpzAPawGA0laERkKypk05vw7VgCSaUr4fbH0VNMVKmMkSpJEXdPFLSLKF5F2mi/KscH27TlwOBw2UwjR/EZR5NnLgaijTCnrjqhjaDFXrOvzfh/1+hH8JrYVQ2bvb+rhqA6uhFrtEtUyRSwJqtHKucxuybp2lLfTCAmhCBbHgCJStiLiKWMKUcVAiXqJpJ7DZ2gLd7kx2nertdl1A6dS2WnSLnLluaM1PeF7XJxndIyI3evV9w/wDAf+i+feDAAAAABJRU5ErkJggg==");
 }
 
 /* Accommodate for lack of button so alignment is ok */
