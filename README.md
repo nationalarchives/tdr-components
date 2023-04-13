@@ -4,7 +4,7 @@ This library contains custom components based on the [GovUK frontend](https://de
 
 We use [Storybook.js](https://storybook.js.org/docs/html/get-started/why-storybook) to render the components in various states and test for [interactions](https://storybook.js.org/docs/html/writing-tests/interaction-testing) and [accessibility](https://storybook.js.org/docs/html/writing-tests/accessibility-testing).
 
-The projec is divided into different directories
+The project is divided into different directories
 
 ## `.storybook/` - Storybook configuration
 
