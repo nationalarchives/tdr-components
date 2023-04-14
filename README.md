@@ -6,7 +6,7 @@ We use [Storybook.js](https://storybook.js.org/docs/html/get-started/why-storybo
 
 The project is divided into different directories
 
-## `.storybook/` - Storybook configuration
+## `.storybok/` - Storybook configuration
 
 Read documentation on how to [configure storybook](https://storybook.js.org/docs/html/configure/overview#configure-your-storybook-project).
 
