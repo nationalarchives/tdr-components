@@ -1,53 +1,5 @@
-// menu button in header (now 'Sign out' button)
-.govuk-header__menu-button::after {
-  display: none;
-}
-
-.govuk-header__tna-logo {
-  float: left;
-  width: 220px
-}
-
-.govuk-header__tna-logo-image {
-  width: 220px
-}
-
-.govuk-header__tna_link {
-  text-decoration: none
-}
-
-.govuk-header__tna_link:link,
-.govuk-header__tna_link:visited {
-  color: #fff
-}
-
-.govuk-header__tna_link:focus {
-  outline: 3px solid transparent;
-  color: #0b0c0c;
-  background-color: #fd0;
-  box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
-  text-decoration: none
-}
-
-.govuk-header__tna_link--homepage {
-  font-family: Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 700;
-  display: inline-block;
-  font-size: 30px;
-  line-height: 1
-}
-
-@media print {
-  .govuk-header__tna_link--homepage {
-    font-family: sans-serif
-  }
-}
-
-.govuk-header__tna_link--homepage:link,
-.govuk-header__tna_link--homepage:visited {
-  text-decoration: none
+.govuk-header__link svg {
+  vertical-align: top;
 }
 
 .govuk-header__content--nav-right nav {
