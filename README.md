@@ -8,7 +8,7 @@ The project is divided into different directories
 
 ## `.storybook/` - Storybook configuration
 
-Read documentation on how to [configure storybook](https://storybook.js.org/docs/html/configure/overview#configure-your-storybook-project).
+Read documentatio on how to [configure storybook](https://storybook.js.org/docs/html/configure/overview#configure-your-storybook-project).
 
 `.storybook/main.js` contains some custom config so that we can...
 
