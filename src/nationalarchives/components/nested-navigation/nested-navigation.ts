@@ -208,7 +208,10 @@ export class NestedNavigation {
     const input = li.querySelector("input");
     if (input) input.checked = !isSelected;
 
-    this.displaySelected(isSelected ? "" : (li.textContent?.trim() as string));
+    const label = li.querySelector("label");
+    this.displaySelected(
+      isSelected ? "" : (label!.firstChild?.textContent?.trim() as string)
+    );
 
     // If checkbox then we need to deselect a mixed state
     if (inputType === InputType.checkboxes) {

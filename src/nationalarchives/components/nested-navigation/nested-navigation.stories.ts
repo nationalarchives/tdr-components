@@ -1,4 +1,5 @@
 import "./_index.scss";
+import "./_tdr-tags.scss";
 import render from "./story.njk";
 import treeData from "./nested-navigation.yaml";
 import { NestedNavigation, InputType } from "./nested-navigation";
@@ -154,6 +155,23 @@ ExpandSelectAndFocus.play = async ({ canvasElement }) => {
   await expect(
     canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" })
   ).toHaveFocus();
+};
+
+
+export const ExpandSelectAndDisplaySelected = Template.bind({});
+ExpandSelectAndDisplaySelected.args = {
+  inputType: "radio",
+};
+// should expand the node when the expander is clicked
+ExpandSelectAndDisplaySelected.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(canvas.getAllByText("Expand")[1]);
+
+  await userEvent.click(canvas.getByRole("treeitem", { name: /^Mixing.xlsx/ }));
+
+  await expect(
+    canvas.getByText(/File selected/)
+  ).toContainHTML("Mixing.xlsx");
 };
 
 export const DefaultMultiple = Template.bind({});

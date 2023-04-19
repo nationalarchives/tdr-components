@@ -4,7 +4,7 @@
   {% set className = 'checkboxes' %}
 {% endif %}
 
-{% macro input(labelName, id, inputType, className) %}
+{% macro input(labelName, id, inputType, className, includeClosedTag) %}
   <div class="tna-tree__node-item__{{ inputType }} govuk-{{ className }}__item">
     <input
         class="govuk-{{ className }}__input"
@@ -13,9 +13,11 @@
         name="nested-navigation"/>
     <label class="govuk-label govuk-{{ className }}__label" for="{{ inputType }}-{{ id }}">
       {{labelName}}
-    </label>
-  </div>
-{% endmacro %}
+      {% if includeClosedTag %}
+        <strong class="tdr-tag tdr-tag--blue">closed</strong>{% endif%}
+      </label>
+    </div>
+  {% endmacro %}
 
 {% macro navigationItem(item, inputType, className, level, size, pos) %}
   {% if item.type == 'item' or item.children.length == 0 %}
@@ -26,7 +28,7 @@
       aria-level="{{level}}"
       aria-setsize="{{size}}"
       aria-posinset="{{pos}}">
-      {{ input(item.name, item.id, inputType, className) }}
+      {{ input(item.name, item.id, inputType, className, item.name == "Mixing.xlsx") }}
     </li>
   {% elif item.type == 'node' %}
     <li
