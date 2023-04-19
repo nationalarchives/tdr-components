@@ -50,5 +50,5 @@ module.exports = {
     interactionsDebugger: true,
     buildStoriesJson: true,
   },
-  staticDirs: ["../public"],
+  staticDirs: ["../public", "../assets"],
 };
