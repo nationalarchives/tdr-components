@@ -7495,7 +7495,7 @@ body {
   gap: 10px;
   padding: 8px 36px 8px;
   margin-bottom: 0;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAfCAYAAABtYXSPAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADRSURBVHgB7dbhDYIwEAXgp3EQNkA36AiM0BHYgBXYoG7QbqCO4AS6QdmgXk34Za9a0xBC7kteAiGlR68JBYTYqIHiKSGRB+WIynaZZ6FpGiilPh445zARujxRnlhA0FqHFGvtvEIXVHTAH7quQ9/3GMdR0a2lTAXDb5QzCrErE3nvYxtT++mXKBT6+tLYrhLGmHmsTk2YbRO3gaO2bd/tqilbTCyEvgZL2WNFpBiOFMORYjhSDEeK4ayqmBzu/FsjKjVh7q8dz7cD6rtTrhCigheLWbuwMSK7MAAAAABJRU5ErkJggg==");
+  background-image: url("/assets/images/folder.png");
   background-repeat: no-repeat;
   background-size: 35px 31px;
   background-position: 0 4px;
@@ -7504,7 +7504,7 @@ body {
 
 [role=treeitem]:focus > div > .tna-tree__radios-directory .tna-tree__radios-directory__label,
 [role=treeitem]:hover > div > .tna-tree__radios-directory .tna-tree__radios-directory__label {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAfCAYAAABtYXSPAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJvSURBVHgB7ZfNbhJRFMf/d4BqQhewmdlOcVtEn0BM3UjBwhNIn6C4NU0A40dcMTHuYVNZMgQRF43BXV21byBbumJDIh3heu6UqTgfTYkDZcEvuQkzcy/8OPdjzmG4hkajEQlu3D3gnCc5oOKyzcuAAWdjoAljpOdyuZ5XR+Yu0VEDIV4lgSR8hjFWG1/8KrtJSfYbrfbXAynETxchIqAo56XQndPG5y8F+zP2r0inOOG8hCUhMVbK7D4twy4jIjLhEw1LZgK8yKVT2pWMWCNiauhjxOpU/3SEVlPHcDh0fIEsK3h5eIit2D34wGBijB6KNWTK6O1OldFczvbYS6egqiqSyaRjtK7rMAwD2oePkBUF/wtJdJ+lU4/ZNCo/7R2ETD6fR7VadZWhf4LteBxv3r2HH1B0okGEeBZzks1mUSgUoGka3r5+hfDm5o3HbsfvY2fnifNBcKMQDFAQOOanWCyaEfpxcjLXuG/Hx1Bk2ZSaJcDYI4lEHngNrNVq4pBybdFoFJVKRZwbN27WlPf7547f4gxqEDM7yI7XAhYkEglzunyDX8p4IkTcFvCikLBCrGW8WMt4sZbxQpzAPawGA0laERkKypk05vw7VgCSaUr4fbH0VNMVKmMkSpJEXdPFLSLKF5F2mi/KscH27TlwOBw2UwjR/EZR5NnLgaijTCnrjqhjaDFXrOvzfh/1+hH8JrYVQ2bvb+rhqA6uhFrtEtUyRSwJqtHKucxuybp2lLfTCAmhCBbHgCJStiLiKWMKUcVAiXqJpJ7DZ2gLd7kx2nertdl1A6dS2WnSLnLluaM1PeF7XJxndIyI3evV9w/wDAf+i+feDAAAAABJRU5ErkJggg==");
+  background-image: url("/assets/images/folderHover.png");
 }
 
 /* Accommodate for lack of button so alignment is ok */
