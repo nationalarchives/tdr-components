@@ -1,6 +1,6 @@
 # TDR Components
 
-Thi library contains custom components based on the [GovUK frontend](https://design-system.service.gov.uk/).
+This library contains custom components based on the [GovUK frontend](https://design-system.service.gov.uk/).
 
 We use [Storybook.js](https://storybook.js.org/docs/html/get-started/why-storybook) to render the components in various states and test for [interactions](https://storybook.js.org/docs/html/writing-tests/interaction-testing) and [accessibility](https://storybook.js.org/docs/html/writing-tests/accessibility-testing).
 
