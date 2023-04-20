@@ -362,7 +362,7 @@ KeyboardNavigateOpenWithRightArrow.play = async ({ canvasElement }) => {
   await userEvent.keyboard("[ArrowRight]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Mixing.xlsx" })
+    canvas.getByRole("treeitem", { name: "Rising-agents.xlsx" })
   ).toBeVisible();
 };
 
@@ -381,7 +381,7 @@ KeyboardNavigateMoveDownWithRightArrow.play = async ({ canvasElement }) => {
   await userEvent.keyboard("[ArrowRight]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Mixing.xlsx" })
+    canvas.getByRole("treeitem", { name: /^Mixing.xlsx/ })
   ).toHaveFocus();
 };
 
