@@ -1,7 +1,9 @@
 name: Run unit & storybook tests
 on:
+  pull_request:
   push:
     branches-ignore:
+      - main
       - release-*
 permissions:
   id-token: write
