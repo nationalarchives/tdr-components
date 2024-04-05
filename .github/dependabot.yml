@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      npm-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
+    versioning-strategy: increase
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
