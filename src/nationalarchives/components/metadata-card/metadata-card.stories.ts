@@ -1,7 +1,7 @@
 import "../card/_index.scss";
 import render from "./story.njk";
-import { within, userEvent } from "@storybook/testing-library";
-import { expect } from "@storybook/jest";
+import { within, userEvent } from "@storybook/test";
+import { expect } from "@storybook/test";
 
 export default {
   title: "TDR/MetadataCard",
@@ -27,6 +27,11 @@ const Template = ({ ...args }) => {
   return createCard({ ...args });
 };
 
+// Function to emulate pausing between interactions
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export const Default = Template.bind({});
 
 export const Error = Template.bind({});
@@ -37,9 +42,9 @@ Error.args = {
 
 const open = async (canvas) => {
   await userEvent.click(
-    canvas.getByText("What descriptive metadata you can provide")
+    canvas.getByText("What descriptive metadata you can provide"),
   );
-
+  await sleep(1000);
   await expect(canvas.getByText("Description")).toBeVisible();
   await expect(canvas.getByText("Date of the record")).toBeVisible();
   await expect(canvas.getByText("Language")).toBeVisible();
@@ -57,7 +62,7 @@ OpenAndClosedDetails.play = async ({ canvasElement }) => {
   await open(canvas);
 
   await userEvent.click(
-    canvas.getByText("What descriptive metadata you can provide")
+    canvas.getByText("What descriptive metadata you can provide"),
   );
 
   await expect(canvas.getByText("Description")).not.toBeVisible();

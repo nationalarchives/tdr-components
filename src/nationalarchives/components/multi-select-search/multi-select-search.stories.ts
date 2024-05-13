@@ -8,8 +8,8 @@ import {
   waitFor,
   waitForElementToBeRemoved,
   getByDisplayValue,
-} from "@storybook/testing-library";
-import { expect } from "@storybook/jest";
+} from "@storybook/test";
+import { expect } from "@storybook/test";
 
 export default {
   title: "TDR/MultiSelectSearch",
@@ -94,10 +94,10 @@ Select.play = async ({ canvasElement }) => {
   // `nextElementSibling` is label so we're also checking the label is
   // present and working
   await userEvent.click(
-    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement
+    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement,
   );
   await userEvent.click(
-    canvas.getByLabelText("English").nextElementSibling as HTMLElement
+    canvas.getByLabelText("English").nextElementSibling as HTMLElement,
   );
   await expect(canvas.getByLabelText("Afar")).toBeChecked();
   await expect(canvas.getByLabelText("English")).toBeChecked();
@@ -125,7 +125,7 @@ SearchSelect.play = async ({ canvasElement }) => {
   // `nextElementSibling` is label so we're also checking the label is
   // present and working
   await userEvent.click(
-    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement
+    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement,
   );
   await expect(canvas.getByLabelText("Afar")).toBeChecked();
 };
@@ -139,7 +139,7 @@ SRIndicatorChangeOnFilter.play = async ({ canvasElement }) => {
 
   await waitFor(() => {
     expect(
-      canvas.queryByText("3 items displayed, 0 items selected")
+      canvas.queryByText("3 items displayed, 0 items selected"),
     ).toBeInTheDocument();
   });
 };
@@ -150,15 +150,15 @@ SRIndicatorChangeOnChecked.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(
-    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement
+    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement,
   );
   await userEvent.click(
-    canvas.getByLabelText("Abkhazian").nextElementSibling as HTMLElement
+    canvas.getByLabelText("Abkhazian").nextElementSibling as HTMLElement,
   );
 
   await waitFor(() => {
     expect(
-      canvas.queryByText("5 items displayed, 2 items selected")
+      canvas.queryByText("5 items displayed, 2 items selected"),
     ).toBeInTheDocument();
   });
 };
@@ -176,10 +176,10 @@ export const SelectedIndicatorChangeOnChecked = Template.bind({});
 SelectedIndicatorChangeOnChecked.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(
-    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement
+    canvas.getByLabelText("Afar").nextElementSibling as HTMLElement,
   );
   await userEvent.click(
-    canvas.getByLabelText("Abkhazian").nextElementSibling as HTMLElement
+    canvas.getByLabelText("Abkhazian").nextElementSibling as HTMLElement,
   );
   expect(await canvas.findByText("2 selected")).toBeVisible();
 };

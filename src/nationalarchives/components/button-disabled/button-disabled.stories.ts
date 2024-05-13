@@ -5,7 +5,8 @@ export default {
   title: "TDR/Button (disabled)",
   args: {
     label: "Continue",
-    reasonDisabled: "Your files are currently being checked. Once completed you can continue with your transfer"
+    reasonDisabled:
+      "Your files are currently being checked. Once completed you can continue with your transfer",
   },
   decorators: [
     (storyFn) => {
@@ -14,17 +15,25 @@ export default {
       const doc = parser.parseFromString(storyFn(), "text/html");
       wrapper.append(...doc.body.children);
 
-      document.addEventListener("DOMContentLoaded", (event) => {
-        const buttons : NodeListOf<HTMLElement> = wrapper.querySelectorAll('[data-tdr-module="button-disabled"]')
-        buttons.forEach((button)=>{
-          const buttonDisabled = new ButtonDisabled(button);
-          buttonDisabled.initialiseListeners();
-        })
-      }, { once : true });
+      document.addEventListener(
+        "DOMContentLoaded",
+        (event) => {
+          // new ButtonDisabled();
+          console.log("Dom content loaded, init")
+          let buttons = wrapper.querySelectorAll(
+            '[data-tdr-module="button-disabled"]'
+          );
+          buttons.forEach((button) => {
+            let buttonDisabled = new ButtonDisabled(button as HTMLElement);
+            buttonDisabled.initialiseListeners();
+          });
+        },
+        { once: true },
+      );
 
       return wrapper;
     },
-  ]
+  ],
 };
 
 const createButton = (args) => {
@@ -38,5 +47,4 @@ const Template = ({ label, ...args }) => {
 };
 
 export const Default = Template.bind({});
-Default.args = {
-};
+Default.args = {};
