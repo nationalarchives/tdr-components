@@ -1,6 +1,10 @@
-const path = require("path");
-
-module.exports = {
+/** @type { import('@storybook/html-webpack5').StorybookConfig } */
+const config = {
+  typescript: {
+    check: false,
+    checkOptions: {},
+    skipCompiler: false,
+  },
   webpackFinal: (config) => {
     config.module.rules.push({
       test: /\.njk$/,
@@ -32,23 +36,29 @@ module.exports = {
     return config;
   },
   stories: [
-    "../src/**/*.stories.mdx",
+    "../src/**/*.mdx",
     "../src/**/*.stories.@(js|jsx|ts|tsx)",
-    "../src/nationalarchives/components/**/*.stories.@(js|jsx|ts|tsx)",
+    "../src/nationalarchives/components/**/*.stories.@(js|jsx|ts|tsx)"
   ],
   addons: [
+    "@chromatic-com/storybook",
+    "@storybook/addon-webpack5-compiler-babel",
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
     "@storybook/addon-a11y",
+    "@storybook/addon-interactions",
   ],
-  framework: "@storybook/html",
-  core: {
-    builder: "@storybook/builder-webpack5",
+  framework: {
+    name: "@storybook/html-webpack5",
+    options: {},
   },
+  docs: {
+    autodocs: "tag",
+  },
+  staticDirs: ["../public", "../assets"],
   features: {
     interactionsDebugger: true,
     buildStoriesJson: true,
   },
-  staticDirs: ["../public", "../assets"],
 };
+export default config;
