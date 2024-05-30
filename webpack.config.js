@@ -9,7 +9,10 @@ module.exports = {
         test: /\.ts?$/,
         loader: "ts-loader",
         exclude: /node_modules/,
-        options: { onlyCompileBundledFiles: true }
+        options: {
+          configFile: "tsconfig.json",
+          onlyCompileBundledFiles: true
+        }
       },
     ],
   },

@@ -9,5 +9,5 @@
     "lib": ["dom", "es2017"],
     "strictNullChecks": true
   },
-  "include": ["src/nationalarchives/components/**/*.test.ts", "app/*.ts"]
+  "include": ["src/**/*.ts"]
 }

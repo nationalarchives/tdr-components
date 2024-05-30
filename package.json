@@ -1,13 +1,15 @@
 {
-  "name": "tdr-components-storybook-v8-webpack",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@nationalarchives/tdr-components",
+  "version": "2.0.0",
+  "description": "This library contains custom components based on the GovUK frontend",
+  "main": "index.ts",
   "scripts": {
     "test": "jest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test-storybook": "test-storybook"
+    "test-storybook": "test-storybook",
+    "test:lint": "prettier --check '{src,.storybook,tasks,.}/**/*.{ts,scss,json,html}' && stylelint 'src/**/*.scss' && eslint 'src/**/*.{ts,tjs}'",
+    "lint:fix": "prettier --write '{src,.storybook,tasks,.}/**/*.{ts,scss,json,html}' && stylelint --fix 'src/**/*.scss' && eslint -fix 'src/**/*.{ts,tjs}'"
   },
   "keywords": [],
   "author": "",
@@ -26,11 +28,17 @@
     "@storybook/test-runner": "^0.18.0",
     "axe-playwright": "^2.0.1",
     "css-loader": "^7.1.1",
+    "eslint": "^8.57.0",
+    "eslint-config-love": "^51.0.1",
+    "prettier": "^3.2.5",
     "sass": "^1.77.0",
     "sass-loader": "^14.2.1",
     "simple-nunjucks-loader": "^3.2.0",
     "storybook": "^8.0.10",
     "style-loader": "^4.0.0",
+    "stylelint": "^16.6.1",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-order": "^6.0.4",
     "yaml-loader": "^0.8.1"
   },
   "dependencies": {
