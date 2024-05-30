@@ -92,7 +92,7 @@ const createTree = (args):string => {
   });
 };
 
-const Template = (args: Record<string, any> ):void => {
+const Template = (args: Record<string, any> ):string => {
   if (args.dataSource === undefined || args.dataSource === null) {
     args.dataSource = "default";
   }
