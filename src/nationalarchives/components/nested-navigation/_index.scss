@@ -3,8 +3,7 @@
   --directory-icon-width: 24px;
   --item-expander-btn-width: 40px;
 
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow: auto auto;
   max-height: 70vh;
   margin-bottom: 1em;
 }
@@ -17,12 +16,12 @@
   background-image: linear-gradient(
     180deg,
     #f8f8f8 25%,
-    #ffffff 25%,
-    #ffffff 50%,
+    #fff 25%,
+    #fff 50%,
     #f8f8f8 50%,
     #f8f8f8 75%,
-    #ffffff 75%,
-    #ffffff 100%
+    #fff 75%,
+    #fff 100%
   );
   background-size: 100% 180px;
   background-position: 0 -2px;
@@ -93,9 +92,6 @@
   background-color: transparent;
   cursor: pointer;
   position: relative;
-}
-
-.tna-tree__expander {
   flex-basis: auto;
   width: var(--item-expander-btn-width);
   height: calc(var(--item-expander-btn-width) - 6px);
@@ -123,12 +119,6 @@
   @include govuk-shape-arrow($direction: down, $base: 20px);
 
   border-color: $govuk-link-colour;
-}
-
-.tna-tree
-  [role="treeitem"][aria-expanded="true"]
-  > .tna-tree__node-item__container
-  > .tna-tree__expander::before {
   left: 10px;
 }
 
@@ -137,8 +127,8 @@
 }
 
 [role="treeitem"]:focus {
-  background-color: rgba(210, 250, 249, 0.25);
-  outline: 3px solid rgb(210, 250, 249);
+  background-color: rgb(210 250 249 / 25%);
+  outline: 3px solid rgb(210 250 249);
   outline-offset: 1px;
 }
 
@@ -158,11 +148,11 @@
 [role="treeitem"]:hover
   > div
   .govuk-checkboxes__input
-  + .govuk-checkboxes__label:before,
+  + .govuk-checkboxes__label::before,
 [role="treeitem"]:focus
   > div
   .govuk-checkboxes__input
-  + .govuk-checkboxes__label:before {
+  + .govuk-checkboxes__label::before {
   border-width: 4px;
 
   // When colours are overridden, the yellow box-shadow becomes invisible
@@ -185,7 +175,7 @@
 [role="treeitem"]:hover
   > div
   .govuk-checkboxes__input
-  + .govuk-checkboxes__label:before {
+  + .govuk-checkboxes__label::before {
   box-shadow: 0 0 0 $govuk-focus-width $govuk-hover-colour;
 }
 
@@ -198,9 +188,8 @@
 [role="treeitem"]:focus
   > .govuk-radios__item
   .govuk-radios__input:not(:disabled)
-  + .govuk-radios__label:before {
+  + .govuk-radios__label::before {
   border-width: 4px;
-
   outline: $govuk-focus-width solid transparent;
   outline-offset: 1px;
 
@@ -215,7 +204,7 @@
 [role="treeitem"]:hover
   > .govuk-radios__item
   .govuk-radios__input:not(:disabled)
-  + .govuk-radios__label:before {
+  + .govuk-radios__label::before {
   box-shadow: 0 0 0 $govuk-hover-width $govuk-hover-colour;
 }
 
@@ -223,7 +212,7 @@
 [role="treeitem"]:hover
   > .govuk-radios__item
   .govuk-radios__input
-  + .govuk-radios__label:before {
+  + .govuk-radios__label::before {
   box-shadow:
     0 0 0 $govuk-focus-width + 1 $govuk-focus-colour,
     // 1
@@ -261,7 +250,7 @@
 .tna-tree__radios-directory__label {
   display: flex;
   gap: 10px;
-  padding: 8px 36px 8px;
+  padding: 8px 36px;
   margin-bottom: 0;
   background-image: url("/assets/images/folder.png");
   background-repeat: no-repeat;

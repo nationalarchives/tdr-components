@@ -1,8 +1,7 @@
 .tna-multi-select-search__list-container {
   position: relative;
   max-height: 225px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   background-color: #fff;
 }
 

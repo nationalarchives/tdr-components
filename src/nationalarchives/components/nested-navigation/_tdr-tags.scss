@@ -1,5 +1,6 @@
 .tdr-tag {
   display: inline-block;
+
   // When a user customises their colours often the background is removed,
   // by adding a outline we ensure that the tag component still keeps it's meaning.
   // https://accessibility.blog.gov.uk/2017/03/27/how-users-change-colours-on-websites/
@@ -11,10 +12,7 @@
   text-decoration: none;
   text-transform: uppercase;
   font-size: 12px;
-  padding-top: 3px;
-  padding-right: 8px;
-  padding-bottom: 2px;
-  padding-left: 8px;
+  padding: 3px 8px 2px;
 }
 
 // .tdr-tag--grey {
