@@ -21,12 +21,12 @@ export default {
       const wrapper = document.createElement("div");
       wrapper.classList.add("js-enabled");
       const parser = new DOMParser();
-      const doc = parser.parseFromString(storyFn(), "text/html");
+      const doc = parser.parseFromString(storyFn() as string, "text/html");
       wrapper.append(...doc.body.children);
 
-      var $header = wrapper.querySelector('[data-module="govuk-header"]');
-      if ($header) {
-        new Header($header).init();
+      const header = wrapper.querySelector('[data-module="govuk-header"]');
+      if (header !== null) {
+        new Header(header).init();
       }
 
       return wrapper;
@@ -34,13 +34,14 @@ export default {
   ],
 };
 
-const createHeader = (args) => {
+const createHeader = (args):string => {
   return render({
     params: { ...args },
   });
 };
 
-const Template = ({ label, ...args }) => {
+
+const Template = ({ label, ...args }):string => {
   return createHeader({ label, ...args });
 };
 

@@ -10,7 +10,7 @@ export class ButtonDisabled {
   };
 
   handleClick: (ev: Event) => void = (ev) => {
-    if (this.button.getAttribute("aria-disabled") == "true") {
+    if (this.button.getAttribute("aria-disabled") === "true") {
       ev.preventDefault();
     }
   };
