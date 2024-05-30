@@ -2,11 +2,7 @@ import "./_index.scss";
 import render from "./story.njk";
 import mssData from "./multi-select-search.yaml";
 import { MultiSelectSearch } from "./multi-select-search";
-import {
-  within,
-  userEvent,
-  waitFor,
-  expect } from "@storybook/test";
+import { within, userEvent, waitFor, expect } from "@storybook/test";
 
 export default {
   title: "TDR/MultiSelectSearch",
@@ -58,13 +54,13 @@ export default {
   },
 };
 
-const findExampleByName = (name, examples):any => {
+const findExampleByName = (name, examples): any => {
   return examples.find((ex) => {
     return ex.name === name;
   });
 };
 
-const createMSS = (args):string => {
+const createMSS = (args): string => {
   const exampleData = findExampleByName(args.dataSource, mssData.examples);
   args.items = exampleData.data.items;
 
@@ -73,7 +69,7 @@ const createMSS = (args):string => {
   });
 };
 
-const Template = (args: Record<string, any> ):string => {
+const Template = (args: Record<string, any>): string => {
   if (args.dataSource === undefined || args.dataSource === null) {
     args.dataSource = "default";
   }
@@ -108,16 +104,24 @@ Filter.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 
   await userEvent.click(canvas.getByLabelText("Filter items"));
   await userEvent.type(canvas.getByLabelText("Filter items"), "Afar");
-  
+
   await waitFor(async () => {
-    await expect(canvas.queryByLabelText("English")?.parentElement).not.toBeVisible();
-  }).catch(error => {console.error(error)});
+    await expect(
+      canvas.queryByLabelText("English")?.parentElement,
+    ).not.toBeVisible();
+  }).catch((error) => {
+    console.error(error);
+  });
 
   await expect(canvas.getByLabelText("Afar").parentElement).toBeVisible();
 };
 
 export const SearchSelect = Template.bind({});
-SearchSelect.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+SearchSelect.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   // await userEvent.click(canvas.getByLabelText("Filter items"));
   await userEvent.type(canvas.getByLabelText("Filter items"), "Afar");
@@ -131,20 +135,31 @@ SearchSelect.play = async ({ canvasElement }: { canvasElement: HTMLElement }) =>
 
 // it should change the filtered count when text is input into filter
 export const SRIndicatorChangeOnFilter = Template.bind({});
-SRIndicatorChangeOnFilter.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+SRIndicatorChangeOnFilter.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.type(canvas.getByLabelText("Filter", { exact: false }), "b");
 
   await waitFor(async () => {
-    await expect(canvas.queryByText("3 items displayed, 0 items selected")).toBeInTheDocument();
-  }).catch(error => {console.error(error)});
-
+    await expect(
+      canvas.queryByText("3 items displayed, 0 items selected"),
+    ).toBeInTheDocument();
+  }).catch((error) => {
+    console.error(error);
+  });
 };
 
 // it should change the filtered count when text is input into filter
 export const SRIndicatorChangeOnChecked = Template.bind({});
-SRIndicatorChangeOnChecked.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+SRIndicatorChangeOnChecked.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(
@@ -155,14 +170,21 @@ SRIndicatorChangeOnChecked.play = async ({ canvasElement }: { canvasElement: HTM
   );
 
   await waitFor(async () => {
-    await expect(canvas.queryByText("5 items displayed, 2 items selected")).toBeInTheDocument();
-  }).catch(error => {console.error(error)});
-
+    await expect(
+      canvas.queryByText("5 items displayed, 2 items selected"),
+    ).toBeInTheDocument();
+  }).catch((error) => {
+    console.error(error);
+  });
 };
 
 // it should change the filtered count when checkbox is checked
 export const SelectedIndicatorIsVisible = Template.bind({});
-SelectedIndicatorIsVisible.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+SelectedIndicatorIsVisible.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   // wait for appearance and return the element
   void expect(await canvas.findByText("0 selected")).toBeVisible();
@@ -170,7 +192,11 @@ SelectedIndicatorIsVisible.play = async ({ canvasElement }: { canvasElement: HTM
 
 // it should change the filtered count when checkbox is checked
 export const SelectedIndicatorChangeOnChecked = Template.bind({});
-SelectedIndicatorChangeOnChecked.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+SelectedIndicatorChangeOnChecked.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await userEvent.click(
     canvas.getByLabelText("Afar").nextElementSibling as HTMLElement,
@@ -178,12 +204,20 @@ SelectedIndicatorChangeOnChecked.play = async ({ canvasElement }: { canvasElemen
   await userEvent.click(
     canvas.getByLabelText("Abkhazian").nextElementSibling as HTMLElement,
   );
-  await expect(canvas.findByText("2 selected")).resolves.toBeVisible().catch(error => { console.error(error) });
+  await expect(canvas.findByText("2 selected"))
+    .resolves.toBeVisible()
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 // it should change the filtered count when text is input into filter
 export const KeyboardSelect = Template.bind({});
-KeyboardSelect.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+KeyboardSelect.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();

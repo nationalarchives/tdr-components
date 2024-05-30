@@ -36,13 +36,13 @@ export default {
   ],
 };
 
-const createButton = (args):string => {
+const createButton = (args): string => {
   return render({
     params: { ...args },
   });
 };
 
-const Template = ({ label, ...args }):string => {
+const Template = ({ label, ...args }): string => {
   return createButton({ label, ...args });
 };
 

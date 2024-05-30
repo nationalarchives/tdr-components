@@ -34,14 +34,13 @@ export default {
   ],
 };
 
-const createHeader = (args):string => {
+const createHeader = (args): string => {
   return render({
     params: { ...args },
   });
 };
 
-
-const Template = ({ label, ...args }):string => {
+const Template = ({ label, ...args }): string => {
   return createHeader({ label, ...args });
 };
 

@@ -1,6 +1,6 @@
 import "../card/_index.scss";
 import render from "./story.njk";
-import { within, userEvent , expect } from "@storybook/test";
+import { within, userEvent, expect } from "@storybook/test";
 
 export default {
   title: "TDR/MetadataCard",
@@ -16,18 +16,18 @@ export default {
   },
 };
 
-const createCard = (args):string => {
+const createCard = (args): string => {
   return render({
     params: { ...args },
   });
 };
 
-const Template = ({ ...args }):string  => {
+const Template = ({ ...args }): string => {
   return createCard({ ...args });
 };
 
 // Function to emulate pausing between interactions
-async function sleep(ms: number): Promise<void>  {
+async function sleep(ms: number): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -41,7 +41,7 @@ Error.args = {
 
 const open = async (canvas): Promise<void> => {
   await userEvent.click(
-    canvas.getByText("What descriptive metadata you can provide") as Element
+    canvas.getByText("What descriptive metadata you can provide") as Element,
   );
   await sleep(1000);
   await expect(canvas.getByText("Description")).toBeVisible();
@@ -50,13 +50,21 @@ const open = async (canvas): Promise<void> => {
 };
 
 export const OpenDetails = Template.bind({});
-OpenDetails.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+OpenDetails.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await open(canvas);
 };
 
 export const OpenAndClosedDetails = Template.bind({});
-OpenAndClosedDetails.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+OpenAndClosedDetails.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await open(canvas);
 

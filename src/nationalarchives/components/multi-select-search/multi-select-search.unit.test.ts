@@ -27,7 +27,7 @@ const createInputElement: (
   if (isChecked !== undefined) {
     input.checked = isChecked;
   }
-  if (id  !== null) input.id = id;
+  if (id !== null) input.id = id;
   return input;
 };
 
@@ -47,7 +47,6 @@ const createListOfInputs: (
     label.textContent = labelsArray[i];
     label.setAttribute("for", i.toString());
     li.appendChild(label);
-
 
     if (!inputsVisibleArray[i]) {
       li.classList.add("is-hidden");

@@ -17,20 +17,13 @@ export class MultiSelectSearch {
 
   constructor(rootElement: HTMLElement) {
     this.container = rootElement.querySelector(".js-container");
-    if(this.container === null) return;
+    if (this.container === null) return;
     this.list = rootElement.querySelector("ul") as HTMLElement;
     this.inputs = rootElement.querySelectorAll("input[type=checkbox]");
-    this.filter = rootElement.querySelector(
-      "input[type=text]",
-    );
-    this.filterCount = rootElement.querySelector(
-      ".js-filter-count",
-    );
-    this.selectedCount = rootElement.querySelector(
-      ".js-selected-count",
-    );
+    this.filter = rootElement.querySelector("input[type=text]");
+    this.filterCount = rootElement.querySelector(".js-filter-count");
+    this.selectedCount = rootElement.querySelector(".js-selected-count");
 
-    
     this.config = {
       // Adding spaces here to avoid multiple spaces when there is empty values
       copySingle: rootElement.dataset.copySingle?.trim() ?? "",
@@ -59,8 +52,10 @@ export class MultiSelectSearch {
 
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
-    if(this.selectedCount !== null) this.updateSelectedCount(this.selectedCount, numChecked);
-    if(this.filterCount !== null) this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    if (this.selectedCount !== null)
+      this.updateSelectedCount(this.selectedCount, numChecked);
+    if (this.filterCount !== null)
+      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
 
     // Will not use for now because it requires using
     // inline styles for setting up height.
@@ -145,7 +140,7 @@ export class MultiSelectSearch {
   };
 
   setupHeight: () => void = () => {
-    if(this.container === null) return;
+    if (this.container === null) return;
     const containerHeight: number = this.container.clientHeight;
     const listHeight: number = this.getAbsoluteHeight(this.list);
 
@@ -158,7 +153,7 @@ export class MultiSelectSearch {
     // Resize to cut last item cleanly in half
     const visibleItems: HTMLElement[] = this.getInViewport(this.list.children);
     const lastVisibleItem: HTMLElement | undefined = visibleItems.pop();
-    if(lastVisibleItem !== undefined){
+    if (lastVisibleItem !== undefined) {
       const position = lastVisibleItem?.offsetTop;
       const height = position + lastVisibleItem.clientHeight / 1.5;
       this.container.style.height = height + "px";
@@ -174,7 +169,7 @@ export class MultiSelectSearch {
   };
 
   isInViewport: (listItem: HTMLElement) => boolean = (listItem) => {
-    if(this.container === null) return false;
+    if (this.container === null) return false;
     const containerHeight = this.container.clientHeight;
     const containerOffsetTop = this.container.getBoundingClientRect().top;
     const distanceFromTopOfContainer = listItem.getBoundingClientRect().top;
@@ -197,9 +192,7 @@ export class MultiSelectSearch {
     const visibleItems: number[] = [];
     for (let i = 0; i < this.list.children.length; i++) {
       if (
-        !(this.list.children[i] as HTMLElement).classList.contains(
-          "is-hidden",
-        )
+        !(this.list.children[i] as HTMLElement).classList.contains("is-hidden")
       ) {
         visibleItems.push(i);
       }
@@ -209,12 +202,12 @@ export class MultiSelectSearch {
   };
 
   private readonly processKeyUpTimeout: (ev?: Event) => void = (ev) => {
-    if(this.filter === null) return;
+    if (this.filter === null) return;
     this.filterItems(this.filter.value, this.list.children);
 
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
-    if(this.filterCount !== null) {
+    if (this.filterCount !== null) {
       this.updateFilteredCount(this.filterCount, numChecked, numVisible);
     }
   };
@@ -222,7 +215,9 @@ export class MultiSelectSearch {
   private readonly processInputChange: (ev: KeyboardEvent) => void = (ev) => {
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
-    if(this.selectedCount !== null) this.updateSelectedCount(this.selectedCount, numChecked);
-    if(this.filterCount !== null) this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    if (this.selectedCount !== null)
+      this.updateSelectedCount(this.selectedCount, numChecked);
+    if (this.filterCount !== null)
+      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
   };
 }

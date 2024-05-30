@@ -67,9 +67,7 @@ export class NestedNavigation {
 
     this.tree.querySelectorAll("[role=treeitem]").forEach((treeItem, _, __) => {
       // We do not want the radio buttons directories to be selectable.
-      if (
-        inputType === InputType.radios && treeItem.id.includes("folder")
-      ){
+      if (inputType === InputType.radios && treeItem.id.includes("folder")) {
         return;
       }
       if (treeItem.id.includes(inputType)) {
@@ -180,13 +178,14 @@ export class NestedNavigation {
       li.setAttribute("aria-expanded", "false");
       expanded.splice(expanded.indexOf(id));
     }
-    if (this.rememberExpanded){
+    if (this.rememberExpanded) {
       localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
     }
   };
 
   displaySelected: (filename: string) => void = (filename) => {
-    this.fileSelected = this.fileSelected ?? document.getElementById(`${this.tree.id}-selected`);
+    this.fileSelected =
+      this.fileSelected ?? document.getElementById(`${this.tree.id}-selected`);
 
     filename = filename === "" ? "No file selected" : filename;
     if (this.fileSelected !== null) {
@@ -199,7 +198,10 @@ export class NestedNavigation {
     inputType,
   ) => {
     // If this is a radio directory do not select, toggle instead
-    if (li.querySelectorAll("ul").length > 0 && inputType === InputType.radios) {
+    if (
+      li.querySelectorAll("ul").length > 0 &&
+      inputType === InputType.radios
+    ) {
       this.toggleNode(li, li.id, InputType.radios);
       return;
     }
@@ -218,7 +220,7 @@ export class NestedNavigation {
     } else {
       this.displaySelected("");
     }
-    
+
     // If checkbox then we need to deselect a mixed state
     if (inputType === InputType.checkboxes) {
       li.setAttribute("aria-checked", !isSelected ? "true" : "false");
@@ -248,9 +250,7 @@ export class NestedNavigation {
           for (const child of children) {
             child.setAttribute("aria-selected", !isSelected ? "true" : "false");
             child.setAttribute("aria-checked", !isSelected ? "true" : "false");
-            const itemCheckbox = child.getElementsByTagName(
-              "input",
-            )[0];
+            const itemCheckbox = child.getElementsByTagName("input")[0];
             if (itemCheckbox !== null) itemCheckbox.checked = !isSelected;
           }
         }
@@ -322,7 +322,7 @@ export class NestedNavigation {
   setFocusToPreviousItem: (input: HTMLLIElement | null) => void = (input) => {
     if (input !== null) {
       const li: HTMLLIElement | null = input.closest("li");
-        if(li !== null){
+      if (li !== null) {
         // Do you have a sibling
         if (li.previousElementSibling !== null) {
           this.setFocusToLastExpandedChild(
@@ -339,7 +339,7 @@ export class NestedNavigation {
   setFocusToNextParent: (ul: HTMLUListElement) => void = (ul) => {
     if (ul.getAttribute("role") !== "tree") {
       const parent: HTMLLIElement | null = ul.closest("li");
-      if(parent !== null){
+      if (parent !== null) {
         if (parent.nextElementSibling !== null) {
           this.setFocusToItem(parent.nextElementSibling as HTMLLIElement);
         } else {
@@ -388,7 +388,7 @@ export class NestedNavigation {
       case "Enter":
       case " ":
         // Check or uncheck checkbox
-        if(this.currentFocus !== null) {
+        if (this.currentFocus !== null) {
           this.setSelected(this.currentFocus, inputType);
           this.setFocusToItem(this.currentFocus);
         }

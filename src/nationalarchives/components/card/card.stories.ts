@@ -10,13 +10,13 @@ export default {
   argTypes: {},
 };
 
-const createCard = (args):string => {
+const createCard = (args): string => {
   return render({
     params: { ...args },
   });
 };
 
-const Template = ({ ...args }):string => {
+const Template = ({ ...args }): string => {
   return createCard({ ...args });
 };
 
