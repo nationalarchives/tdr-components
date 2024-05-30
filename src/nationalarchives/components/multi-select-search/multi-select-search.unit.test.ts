@@ -20,14 +20,14 @@ const createKeyboardEvent: (key: string) => KeyboardEvent = (key) => {
 
 const createInputElement: (
   checked: boolean,
-  id?: string,
+  id: string | null,
 ) => HTMLInputElement = (isChecked = false, id: string) => {
   const input: HTMLInputElement = document.createElement("input");
   input.setAttribute("type", "checkbox");
   if (isChecked !== undefined) {
     input.checked = isChecked;
   }
-  if (id) input.id = id;
+  if (id  !== null) input.id = id;
   return input;
 };
 
@@ -37,18 +37,19 @@ const createListOfInputs: (
   labels?: string[],
 ) => HTMLUListElement = (inputsChecked, inputsVisible, labels) => {
   const ul: HTMLUListElement = document.createElement("ul");
+  const inputsVisibleArray = inputsVisible ?? [];
+  const labelsArray = labels ?? [];
 
   inputsChecked.forEach((checked, i) => {
     const li: HTMLLIElement = document.createElement("li");
 
-    if (labels && labels[i]) {
-      const label: HTMLLabelElement = document.createElement("label");
-      label.textContent = labels[i];
-      label.setAttribute("for", i.toString());
-      li.appendChild(label);
-    }
+    const label: HTMLLabelElement = document.createElement("label");
+    label.textContent = labelsArray[i];
+    label.setAttribute("for", i.toString());
+    li.appendChild(label);
 
-    if (inputsVisible && inputsVisible[i] === false) {
+
+    if (!inputsVisibleArray[i]) {
       li.classList.add("is-hidden");
     }
 
