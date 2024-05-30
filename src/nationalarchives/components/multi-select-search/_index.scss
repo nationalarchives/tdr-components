@@ -10,7 +10,8 @@
   display: none;
 }
 
-.tna-multi-select-search[data-module-active=true] .tna-multi-select-search__filter {
+.tna-multi-select-search[data-module-active="true"]
+  .tna-multi-select-search__filter {
   display: block;
 }
 

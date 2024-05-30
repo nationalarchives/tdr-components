@@ -20,13 +20,13 @@ export class MultiSelectSearch {
     this.list = rootElement.querySelector("ul") as HTMLElement;
     this.inputs = rootElement.querySelectorAll("input[type=checkbox]");
     this.filter = rootElement.querySelector(
-      "input[type=text]"
+      "input[type=text]",
     ) as HTMLInputElement;
     this.filterCount = rootElement.querySelector(
-      ".js-filter-count"
+      ".js-filter-count",
     ) as HTMLElement;
     this.selectedCount = rootElement.querySelector(
-      ".js-selected-count"
+      ".js-selected-count",
     ) as HTMLElement;
 
     this.config = {
@@ -42,7 +42,7 @@ export class MultiSelectSearch {
     this.labels = [];
     for (let i = 0; i < this.list.children.length; i++) {
       this.labels.push(
-        this.cleanString(this.list.children[i].textContent || "")
+        this.cleanString(this.list.children[i].textContent || ""),
       );
     }
 
@@ -89,7 +89,7 @@ export class MultiSelectSearch {
 
   filterItems: (filterBy: string, listItems: HTMLCollection) => void = (
     filterText,
-    listItems
+    listItems,
   ) => {
     const filterBy = this.cleanString(filterText);
     const visibleItems = this.getSelectedItems();
@@ -108,7 +108,7 @@ export class MultiSelectSearch {
     // Show checked and found by filter
     for (i = 0; i < visibleItems.length; i++) {
       (this.list.children[visibleItems[i]] as HTMLElement).classList.remove(
-        "is-hidden"
+        "is-hidden",
       );
     }
   };
@@ -118,7 +118,7 @@ export class MultiSelectSearch {
    */
   updateSelectedCount: (el: HTMLElement, numChecked: number) => void = (
     el,
-    numChecked
+    numChecked,
   ) => {
     if (el) el.textContent = `${numChecked} selected`;
   };
@@ -129,7 +129,7 @@ export class MultiSelectSearch {
   updateFilteredCount: (
     el: HTMLElement,
     numChecked: number,
-    numVisible: number
+    numVisible: number,
   ) => void = (el, numChecked, numVisible) => {
     const displayedCopy =
       numVisible === 1
@@ -196,7 +196,7 @@ export class MultiSelectSearch {
     for (let i = 0; i < this.list.children.length; i++) {
       if (
         (this.list.children[i] as HTMLElement).classList.contains(
-          "is-hidden"
+          "is-hidden",
         ) === false
       ) {
         visibleItems.push(i);

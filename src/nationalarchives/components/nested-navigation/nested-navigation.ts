@@ -44,7 +44,7 @@ export class NestedNavigation {
     // A checkbox directory li/row has two functions, select and open so the
     // expander has to have it's own event listener for opening.
     const buttons = this.tree.querySelectorAll(
-      `.js-tree__expander--${InputType.checkboxes}`
+      `.js-tree__expander--${InputType.checkboxes}`,
     );
     Array.from(buttons).forEach((expander, _, __) => {
       (expander as HTMLElement).addEventListener("click", (ev) => {
@@ -101,7 +101,7 @@ export class NestedNavigation {
 
   removeFocusFromInputs: (inputType: InputType) => void = (inputType) => {
     const inputs: NodeListOf<HTMLInputElement> = this.tree.querySelectorAll(
-      `input[type=${InputTypeHtmlAttrValue[inputType]}]`
+      `input[type=${InputTypeHtmlAttrValue[inputType]}]`,
     );
 
     inputs.forEach((input) => {
@@ -120,7 +120,7 @@ export class NestedNavigation {
 
   updateExpanded: (value: HTMLInputElement, inputType: InputType) => void = (
     value,
-    inputType
+    inputType,
   ) => {
     const id = value.getAttribute("id");
     if (id !== null) {
@@ -128,7 +128,7 @@ export class NestedNavigation {
       if (!expanded.includes(id.replace("node-group", "list"))) {
         (value.parentNode as HTMLElement).setAttribute(
           "aria-expanded",
-          "false"
+          "false",
         );
       }
     }
@@ -145,11 +145,11 @@ export class NestedNavigation {
 
   allChildren: (
     ul: HTMLUListElement,
-    elements: HTMLLIElement[]
+    elements: HTMLLIElement[],
   ) => HTMLLIElement[] = (ul, elements) => {
     for (let i = ul.children.length - 1; i >= 0; i--) {
       const item: HTMLLIElement | null = ul.children.item(
-        i
+        i,
       ) as HTMLLIElement | null;
       if (item !== null) {
         if (item.nodeName === "LI") {
@@ -167,7 +167,7 @@ export class NestedNavigation {
   toggleNode: (li: HTMLLIElement, id: string, inputType: InputType) => void = (
     li,
     id,
-    inputType
+    inputType,
   ) => {
     const expanded = this.getExpanded(inputType);
 
@@ -194,7 +194,7 @@ export class NestedNavigation {
 
   setSelected: (li: HTMLLIElement, inputType: InputType) => void = (
     li,
-    inputType
+    inputType,
   ) => {
     // If this is a radio directory do not select, toggle instead
     if (li.querySelectorAll("ul").length > 0 && inputType == InputType.radios) {
@@ -210,7 +210,7 @@ export class NestedNavigation {
 
     const label = li.querySelector("label");
     this.displaySelected(
-      isSelected ? "" : (label?.firstChild?.textContent?.trim() as string)
+      isSelected ? "" : (label?.firstChild?.textContent?.trim() as string),
     );
 
     // If checkbox then we need to deselect a mixed state
@@ -235,7 +235,7 @@ export class NestedNavigation {
       // If this is a node with children, traverse down
       if (li.querySelectorAll("ul").length > 0) {
         const childrenGroup: HTMLUListElement | null = document.querySelector(
-          `#${inputType}-node-group-${li.id.replace(`${inputType}-list-`, "")}`
+          `#${inputType}-node-group-${li.id.replace(`${inputType}-list-`, "")}`,
         );
         if (childrenGroup != null) {
           const children = this.allChildren(childrenGroup, []);
@@ -243,7 +243,7 @@ export class NestedNavigation {
             child.setAttribute("aria-selected", !isSelected ? "true" : "false");
             child.setAttribute("aria-checked", !isSelected ? "true" : "false");
             const itemCheckbox = child.getElementsByTagName(
-              "input"
+              "input",
             )[0] as HTMLInputElement;
             if (itemCheckbox) itemCheckbox.checked = !isSelected;
           }
@@ -260,7 +260,7 @@ export class NestedNavigation {
     if (ul !== null) {
       const all = this.allChildren(ul, []);
       const countChecked = all.filter(
-        (a) => a.getAttribute("aria-selected") === "true"
+        (a) => a.getAttribute("aria-selected") === "true",
       ).length;
       const parentLI: HTMLLIElement | undefined | null =
         ul.parentNode as HTMLLIElement;
@@ -304,7 +304,7 @@ export class NestedNavigation {
     // Does last child have children?
     if (li && li.getAttribute("aria-expanded") === "true") {
       const lastChild: HTMLLIElement | null = li.querySelector(
-        ":scope > ul > li:last-child"
+        ":scope > ul > li:last-child",
       );
       this.setFocusToLastExpandedChild(lastChild);
     } else if (li) {
@@ -319,7 +319,7 @@ export class NestedNavigation {
       // Do you have a sibling
       if (li?.previousElementSibling != null) {
         this.setFocusToLastExpandedChild(
-          li.previousElementSibling as HTMLLIElement
+          li.previousElementSibling as HTMLLIElement,
         );
       } else if (li?.parentElement != null) {
         // Go to parent
@@ -366,7 +366,7 @@ export class NestedNavigation {
 
   handleKeyDown: (ev: KeyboardEvent, inputType: InputType) => void = (
     ev,
-    inputType
+    inputType,
   ) => {
     let doPrevent = false;
 
@@ -436,7 +436,7 @@ export class NestedNavigation {
 
   private readonly processArrowLeftEvent: (
     ev: KeyboardEvent,
-    inputType: InputType
+    inputType: InputType,
   ) => void = (ev, inputType) => {
     if (this.currentFocus?.getAttribute("aria-expanded") === "true") {
       // When focus is on an open node, closes the node.
@@ -453,7 +453,7 @@ export class NestedNavigation {
 
   private readonly processArrowRightEvent: (
     ev: KeyboardEvent,
-    inputType: InputType
+    inputType: InputType,
   ) => void = (ev, inputType) => {
     if (this.currentFocus?.getAttribute("aria-expanded") === "false") {
       // When focus is on a closed node, opens the node; focus does not move.
@@ -468,11 +468,11 @@ export class NestedNavigation {
 
   handleExpanders: (target: Element, inputType: InputType) => void = (
     target: Element,
-    inputType
+    inputType,
   ) => {
     const newId = target.id.replace("expander-", "node-group-");
     const nodeGroup: HTMLUListElement | null = this.tree.querySelector(
-      `#${newId}`
+      `#${newId}`,
     );
 
     if (nodeGroup !== null) {

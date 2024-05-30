@@ -19,9 +19,9 @@ export default {
         "DOMContentLoaded",
         (event) => {
           // new ButtonDisabled();
-          console.log("Dom content loaded, init")
+          console.log("Dom content loaded, init");
           let buttons = wrapper.querySelectorAll(
-            '[data-tdr-module="button-disabled"]'
+            '[data-tdr-module="button-disabled"]',
           );
           buttons.forEach((button) => {
             let buttonDisabled = new ButtonDisabled(button as HTMLElement);

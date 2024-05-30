@@ -7,7 +7,7 @@ const createKeyboardEvent: (key: string) => KeyboardEvent = (key) => {
 };
 
 const createInputElement: (checked?: boolean) => HTMLInputElement = (
-  checked
+  checked,
 ) => {
   const id = "2a209671-7d21-42ae-9ded-b2e8fb64133a";
   const input: HTMLInputElement = document.createElement("input");
@@ -20,7 +20,7 @@ const createInputElement: (checked?: boolean) => HTMLInputElement = (
 };
 
 const createListElement: (ariaExpanded: string) => HTMLLIElement = (
-  ariaExpanded
+  ariaExpanded,
 ) => {
   const li: HTMLLIElement | null = document.createElement("li");
   const id = (Math.random() + 1).toString(36).substring(7);
@@ -33,7 +33,7 @@ const createListElement: (ariaExpanded: string) => HTMLLIElement = (
 const createNestedNavigation: (
   navOption: Partial<NestedNavigation>,
   element?: HTMLLIElement | undefined,
-  tree?: HTMLUListElement | undefined
+  tree?: HTMLUListElement | undefined,
 ) => NestedNavigation = (navOption, element, tree) => {
   const el = tree != null ? tree : document.createElement("ul");
   const navigation = new NestedNavigation(el);
@@ -91,7 +91,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
 
         const nestedNavigation = createNestedNavigation(
           { setFocusToPreviousItem },
-          li
+          li,
         );
         const event = createKeyboardEvent("ArrowUp");
         nestedNavigation.handleKeyDown(event, classNameValue);
@@ -105,7 +105,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
 
         const nestedNavigation = createNestedNavigation(
           { setFocusToNextItem },
-          li
+          li,
         );
 
         const event = createKeyboardEvent("ArrowDown");
@@ -134,7 +134,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
 
         const nestedNavigation = createNestedNavigation(
           { setFocusToNextItem },
-          li
+          li,
         );
 
         const event = createKeyboardEvent("ArrowRight");
@@ -205,7 +205,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const nestedNavigation = createNestedNavigation(
           { setFocusToItem, toggleNode },
           li,
-          tree
+          tree,
         );
         const input = createInputElement();
         const ul = document.createElement("ul");
@@ -217,7 +217,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         expect(toggleNode).toHaveBeenCalledWith(
           li,
           input.id.replace("expander-", ""),
-          classNameValue
+          classNameValue,
         );
         expect(setFocusToItem).toHaveBeenCalledWith(li);
       });
@@ -396,20 +396,20 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const nestedNavigation = createNestedNavigation(
           { getExpanded },
           undefined,
-          tree
+          tree,
         );
         const spy = jest.spyOn(Storage.prototype, "setItem");
 
         nestedNavigation.toggleNode(
           li,
           input.id.replace("expander-", ""),
-          classNameValue
+          classNameValue,
         );
 
         const expectedResult = JSON.stringify({ expanded: [] });
         expect(spy).toHaveBeenCalledWith(
           `${classNameValue}-state`,
-          expectedResult
+          expectedResult,
         );
         expect(li.getAttribute("aria-expanded")).toEqual("false");
       });
@@ -424,7 +424,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const nestedNavigation = createNestedNavigation(
           { getExpanded },
           undefined,
-          tree
+          tree,
         );
         const spy = jest.spyOn(Storage.prototype, "setItem");
 
@@ -432,7 +432,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const expectedResult = JSON.stringify({ expanded: [id] });
         expect(spy).toHaveBeenCalledWith(
           `${classNameValue}-state`,
-          expectedResult
+          expectedResult,
         );
         expect(li.getAttribute("aria-expanded")).toEqual("true");
       });
@@ -536,7 +536,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         const nestedNavigation = createNestedNavigation(
           { updateExpanded },
           undefined,
-          tree
+          tree,
         );
         nestedNavigation.initialiseFormListeners(classNameValue);
 
@@ -574,7 +574,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         expect(setFocusToItem).toHaveBeenCalledWith(li);
       });
     });
-  }
+  },
 );
 
 describe.each([true, false])("setSelected", (state) => {
@@ -615,16 +615,16 @@ describe.each([true, false])("setSelected", (state) => {
 
     expect(li.getAttribute("aria-checked")).toEqual(state.toString());
     expect(childCheckboxOne.getAttribute("aria-checked")).toEqual(
-      state.toString()
+      state.toString(),
     );
     expect(childCheckboxOne.getAttribute("aria-selected")).toEqual(
-      state.toString()
+      state.toString(),
     );
     expect(childCheckboxTwo.getAttribute("aria-checked")).toEqual(
-      state.toString()
+      state.toString(),
     );
     expect(childCheckboxTwo.getAttribute("aria-selected")).toEqual(
-      state.toString()
+      state.toString(),
     );
 
     document.body.removeChild(li);

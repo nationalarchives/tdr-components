@@ -21,7 +21,7 @@
   position: relative;
 }
 
-.tdr-card__content>*:last-child {
+.tdr-card__content > *:last-child {
   margin: 0;
 }
 
@@ -32,5 +32,5 @@
 }
 
 .tdr-card--metadata__inset-text {
-  color: $govuk-secondary-text-colour
+  color: $govuk-secondary-text-colour;
 }

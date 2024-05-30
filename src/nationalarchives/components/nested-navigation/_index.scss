@@ -14,7 +14,16 @@
 }
 
 .tna-tree__root-list {
-  background-image: linear-gradient(180deg, #F8F8F8 25%, #ffffff 25%, #ffffff 50%, #F8F8F8 50%, #F8F8F8 75%, #ffffff 75%, #ffffff 100%);
+  background-image: linear-gradient(
+    180deg,
+    #f8f8f8 25%,
+    #ffffff 25%,
+    #ffffff 50%,
+    #f8f8f8 50%,
+    #f8f8f8 75%,
+    #ffffff 75%,
+    #ffffff 100%
+  );
   background-size: 100% 180px;
   background-position: 0 -2px;
 }
@@ -62,7 +71,7 @@
   align-items: flex-start;
 }
 
-.tna-tree__node-item__container>* {
+.tna-tree__node-item__container > * {
   flex-shrink: 0;
 }
 
@@ -107,13 +116,19 @@
   border-color: $govuk-link-colour;
 }
 
-.tna-tree [role="treeitem"][aria-expanded="true"]>.tna-tree__node-item__container>.tna-tree__expander::before {
+.tna-tree
+  [role="treeitem"][aria-expanded="true"]
+  > .tna-tree__node-item__container
+  > .tna-tree__expander::before {
   @include govuk-shape-arrow($direction: down, $base: 20px);
 
   border-color: $govuk-link-colour;
 }
 
-.tna-tree [role="treeitem"][aria-expanded="true"]>.tna-tree__node-item__container>.tna-tree__expander::before {
+.tna-tree
+  [role="treeitem"][aria-expanded="true"]
+  > .tna-tree__node-item__container
+  > .tna-tree__expander::before {
   left: 10px;
 }
 
@@ -127,11 +142,11 @@
   outline-offset: 1px;
 }
 
-.tna-tree [role="treeitem"][aria-expanded="false"]>ul {
+.tna-tree [role="treeitem"][aria-expanded="false"] > ul {
   display: none;
 }
 
-.tna-tree [role="treeitem"][aria-expanded="true"]>ul {
+.tna-tree [role="treeitem"][aria-expanded="true"] > ul {
   display: block;
 }
 
@@ -140,8 +155,14 @@
 * https: //github.com/alphagov/govuk-frontend/blob/main/package/govuk/components/checkboxes/_index.scss
 * Not including the IE8 stuff.
 * */
-[role="treeitem"]:hover > div .govuk-checkboxes__input + .govuk-checkboxes__label:before,
-[role="treeitem"]:focus > div .govuk-checkboxes__input + .govuk-checkboxes__label:before {
+[role="treeitem"]:hover
+  > div
+  .govuk-checkboxes__input
+  + .govuk-checkboxes__label:before,
+[role="treeitem"]:focus
+  > div
+  .govuk-checkboxes__input
+  + .govuk-checkboxes__label:before {
   border-width: 4px;
 
   // When colours are overridden, the yellow box-shadow becomes invisible
@@ -153,8 +174,7 @@
 
   // When in an explicit forced-color mode, we can use the Highlight system
   // color for the outline to better match focus states of native controls
-  @media screen and (forced-colors: active),
-  (-ms-high-contrast: active) {
+  @media screen and (forced-colors: active), (-ms-high-contrast: active) {
     outline-color: Highlight;
   }
 
@@ -162,7 +182,10 @@
 }
 
 // Hover state for checkboxes.
-[role="treeitem"]:hover>div .govuk-checkboxes__input+.govuk-checkboxes__label:before {
+[role="treeitem"]:hover
+  > div
+  .govuk-checkboxes__input
+  + .govuk-checkboxes__label:before {
   box-shadow: 0 0 0 $govuk-focus-width $govuk-hover-colour;
 }
 
@@ -172,14 +195,16 @@
 * */
 
 // Focus state for small radios.
-[role="treeitem"]:focus > .govuk-radios__item .govuk-radios__input:not(:disabled) + .govuk-radios__label:before {
+[role="treeitem"]:focus
+  > .govuk-radios__item
+  .govuk-radios__input:not(:disabled)
+  + .govuk-radios__label:before {
   border-width: 4px;
 
   outline: $govuk-focus-width solid transparent;
   outline-offset: 1px;
 
-  @media screen and (forced-colors: active),
-  (-ms-high-contrast: active) {
+  @media screen and (forced-colors: active), (-ms-high-contrast: active) {
     outline-color: Highlight;
   }
 
@@ -187,14 +212,21 @@
 }
 
 // Hover state for small radios.
-[role="treeitem"]:hover > .govuk-radios__item .govuk-radios__input:not(:disabled) + .govuk-radios__label:before {
+[role="treeitem"]:hover
+  > .govuk-radios__item
+  .govuk-radios__input:not(:disabled)
+  + .govuk-radios__label:before {
   box-shadow: 0 0 0 $govuk-hover-width $govuk-hover-colour;
 }
 
 // Because we've overridden the border-shadow provided by the focus state,
-[role="treeitem"]:hover > .govuk-radios__item .govuk-radios__input + .govuk-radios__label:before {
+[role="treeitem"]:hover
+  > .govuk-radios__item
+  .govuk-radios__input
+  + .govuk-radios__label:before {
   box-shadow:
-    0 0 0 $govuk-focus-width+1 $govuk-focus-colour, // 1
+    0 0 0 $govuk-focus-width + 1 $govuk-focus-colour,
+    // 1
     0 0 0 $govuk-hover-width $govuk-hover-colour; // 2
 }
 
@@ -202,8 +234,14 @@
  * Styles copied from this thread for indeterminate/mixed checkbox state:
  * https://github.com/alphagov/govuk-frontend/issues/1453#issue-455823968
  * */
-[role="treeitem"][aria-checked="mixed"] > .govuk-checkboxes__item > .govuk-label .govuk-checkboxes__label::after,
-[role="treeitem"][aria-checked="mixed"] > .tna-tree__node-item__container > .govuk-checkboxes__item > .govuk-checkboxes__label::after {
+[role="treeitem"][aria-checked="mixed"]
+  > .govuk-checkboxes__item
+  > .govuk-label
+  .govuk-checkboxes__label::after,
+[role="treeitem"][aria-checked="mixed"]
+  > .tna-tree__node-item__container
+  > .govuk-checkboxes__item
+  > .govuk-checkboxes__label::after {
   transform: rotate(0);
   border: none;
   top: 0;
@@ -225,20 +263,26 @@
   gap: 10px;
   padding: 8px 36px 8px;
   margin-bottom: 0;
-  background-image: url('/assets/images/folder.png');
+  background-image: url("/assets/images/folder.png");
   background-repeat: no-repeat;
   background-size: 35px 31px;
   background-position: 0 4px;
   z-index: 1;
 }
 
-[role="treeitem"]:focus>div>.tna-tree__radios-directory .tna-tree__radios-directory__label,
-[role="treeitem"]:hover>div>.tna-tree__radios-directory .tna-tree__radios-directory__label {
-  background-image: url('/assets/images/folderHover.png');
+[role="treeitem"]:focus
+  > div
+  > .tna-tree__radios-directory
+  .tna-tree__radios-directory__label,
+[role="treeitem"]:hover
+  > div
+  > .tna-tree__radios-directory
+  .tna-tree__radios-directory__label {
+  background-image: url("/assets/images/folderHover.png");
 }
 
 /* Accommodate for lack of button so alignment is ok */
-.tna-tree__item>.govuk-checkboxes__item {
+.tna-tree__item > .govuk-checkboxes__item {
   margin-left: calc(var(--item-expander-btn-width));
 }
 
