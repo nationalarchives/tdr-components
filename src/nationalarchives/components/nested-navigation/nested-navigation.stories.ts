@@ -3,8 +3,24 @@ import "./_tdr-tags.scss";
 import render from "./story.njk";
 import treeData from "./nested-navigation.yaml";
 import { NestedNavigation, InputType } from "./nested-navigation";
-import { within, userEvent, waitFor } from "@storybook/test";
-import { expect } from "@storybook/test";
+import { within, userEvent, expect } from "@storybook/test";
+
+interface Example<T = any> {
+  name: string;
+  description: string;
+  data: T;
+}
+
+interface TreeDataItem<T = any> {
+  name: string;
+  type: string;
+  id: string;
+  children?: Array<TreeDataItem<T>>;
+}
+
+interface TreeData<T = any> {
+  items: Array<TreeDataItem<T>>;
+}
 
 export default {
   title: "TDR/Tree View",
@@ -15,7 +31,7 @@ export default {
       const wrapper = document.createElement("div");
       wrapper.style.margin = "0 3em";
       const parser = new DOMParser();
-      const doc = parser.parseFromString(storyFn(), "text/html");
+      const doc = parser.parseFromString(storyFn() as string, "text/html");
       wrapper.append(...doc.body.children);
 
       document.addEventListener(
@@ -53,24 +69,33 @@ export default {
   },
 };
 
-const findExampleByName = (name, examples) => {
+const findExampleByName = <T>(
+  name: string,
+  examples: Array<Example<T>>
+): Example<T> | undefined => {
   return examples.find((ex) => {
-    return ex.name == name;
+    return ex.name === name;
   });
 };
 
-const createTree = (args) => {
-  const exampleData = findExampleByName(args.dataSource, treeData.examples);
+const createTree = (args):string => {
+  // const exampleData = findExampleByName(args.dataSource, treeData.examples);
+  const exampleData = findExampleByName(args.dataSource as string, treeData.examples as Example[]);
+  if (exampleData === null) {
+    throw new Error(`Example with name '${args.dataSource}' not found`);
+  }
   return render({
     params: {
-      items: exampleData.data.items,
-      inputType: args.inputType || "checkbox",
+      items: (exampleData?.data as TreeData).items,
+      inputType: typeof args.inputType === 'string' ? args.inputType : "checkbox",
     },
   });
 };
 
-const Template = ({ ...args }) => {
-  if (!args.dataSource) args.dataSource = "default";
+const Template = (args: Record<string, any> ):void => {
+  if (args.dataSource === undefined || args.dataSource === null) {
+    args.dataSource = "default";
+  }
   return createTree({ ...args });
 };
 
@@ -78,7 +103,7 @@ export const DefaultSingle = Template.bind({});
 DefaultSingle.args = {
   inputType: "radio",
 };
-DefaultSingle.play = async ({ canvasElement }) => {
+DefaultSingle.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   // should load the page with the directories collapsed, i.e. children invisible
@@ -93,7 +118,7 @@ ExpandNodeAndFocus.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-ExpandNodeAndFocus.play = async ({ canvasElement }) => {
+ExpandNodeAndFocus.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(
     canvas.getByRole("treeitem", { name: /^Directory - Old recipes/ }),
@@ -112,7 +137,7 @@ export const ClickItemAndFocus = Template.bind({});
 ClickItemAndFocus.args = {
   inputType: "radio",
 };
-ClickItemAndFocus.play = async ({ canvasElement }) => {
+ClickItemAndFocus.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(
     canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ }),
@@ -127,7 +152,7 @@ export const ClickItemAndUpdateFileSelected = Template.bind({});
 ClickItemAndUpdateFileSelected.args = {
   inputType: "radio",
 };
-ClickItemAndUpdateFileSelected.play = async ({ canvasElement }) => {
+ClickItemAndUpdateFileSelected.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(
     canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ }),
@@ -147,7 +172,7 @@ ExpandSelectAndFocus.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-ExpandSelectAndFocus.play = async ({ canvasElement }) => {
+ExpandSelectAndFocus.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(canvas.getAllByText("Expand")[0]);
 
@@ -163,7 +188,7 @@ ExpandSelectAndDisplaySelected.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-ExpandSelectAndDisplaySelected.play = async ({ canvasElement }) => {
+ExpandSelectAndDisplaySelected.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(canvas.getAllByText("Expand")[1]);
 
@@ -181,9 +206,7 @@ export const MultipleSelectChildSetsParentToIndeterminate = Template.bind({});
 MultipleSelectChildSetsParentToIndeterminate.args = {
   inputType: "checkbox",
 };
-MultipleSelectChildSetsParentToIndeterminate.play = async ({
-  canvasElement,
-}) => {
+MultipleSelectChildSetsParentToIndeterminate.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   // Expand arrow for Cupcakes
@@ -210,7 +233,7 @@ export const MultipleSelectParentSelectsAllChildren = Template.bind({});
 MultipleSelectParentSelectsAllChildren.args = {
   inputType: "checkbox",
 };
-MultipleSelectParentSelectsAllChildren.play = async ({ canvasElement }) => {
+MultipleSelectParentSelectsAllChildren.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   // Expand arrow for Cupcakes
@@ -245,7 +268,7 @@ KeyboardNavigateDown.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-KeyboardNavigateDown.play = async ({ canvasElement }) => {
+KeyboardNavigateDown.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();
@@ -262,7 +285,7 @@ KeyboardNavigateSelect.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-KeyboardNavigateSelect.play = async ({ canvasElement }) => {
+KeyboardNavigateSelect.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();
@@ -280,7 +303,7 @@ ClickSelectAndKeyboardDeselect.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-ClickSelectAndKeyboardDeselect.play = async ({ canvasElement }) => {
+ClickSelectAndKeyboardDeselect.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(
@@ -311,7 +334,7 @@ KeyboardOpenFolder.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-KeyboardOpenFolder.play = async ({ canvasElement }) => {
+KeyboardOpenFolder.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
   await userEvent.tab();
   await userEvent.keyboard("[Space]");
@@ -327,7 +350,7 @@ KeyboardNavigateSelectAndDeselect.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-KeyboardNavigateSelectAndDeselect.play = async ({ canvasElement }) => {
+KeyboardNavigateSelectAndDeselect.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();
@@ -350,7 +373,7 @@ export const KeyboardNavigateOpenWithRightArrow = Template.bind({});
 KeyboardNavigateOpenWithRightArrow.args = {
   inputType: "radio",
 };
-KeyboardNavigateOpenWithRightArrow.play = async ({ canvasElement }) => {
+KeyboardNavigateOpenWithRightArrow.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();
@@ -369,7 +392,7 @@ export const KeyboardNavigateMoveDownWithRightArrow = Template.bind({});
 KeyboardNavigateMoveDownWithRightArrow.args = {
   inputType: "radio",
 };
-KeyboardNavigateMoveDownWithRightArrow.play = async ({ canvasElement }) => {
+KeyboardNavigateMoveDownWithRightArrow.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(
@@ -388,7 +411,7 @@ export const KeyboardNavigateMoveUpWithLeftArrow = Template.bind({});
 KeyboardNavigateMoveUpWithLeftArrow.args = {
   inputType: "radio",
 };
-KeyboardNavigateMoveUpWithLeftArrow.play = async ({ canvasElement }) => {
+KeyboardNavigateMoveUpWithLeftArrow.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByText("Cake Basics"));
@@ -405,7 +428,7 @@ export const KeyboardNavigateCloseWithLeftArrow = Template.bind({});
 KeyboardNavigateCloseWithLeftArrow.args = {
   inputType: "radio",
 };
-KeyboardNavigateCloseWithLeftArrow.play = async ({ canvasElement }) => {
+KeyboardNavigateCloseWithLeftArrow.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByText("Cake Basics"));
@@ -419,7 +442,7 @@ export const KeyboardNavigateToEnd = Template.bind({});
 KeyboardNavigateToEnd.args = {
   inputType: "radio",
 };
-KeyboardNavigateToEnd.play = async ({ canvasElement }) => {
+KeyboardNavigateToEnd.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByText("Cupcakes"));
@@ -435,7 +458,7 @@ export const KeyboardNavigateToHome = Template.bind({});
 KeyboardNavigateToHome.args = {
   inputType: "radio",
 };
-KeyboardNavigateToHome.play = async ({ canvasElement }) => {
+KeyboardNavigateToHome.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByText("Cupcakes"));

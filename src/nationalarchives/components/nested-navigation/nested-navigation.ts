@@ -13,13 +13,13 @@ export class NestedNavigation {
   private readonly treeItems: NodeListOf<HTMLElement>;
   private currentFocus: HTMLLIElement | null;
   private fileSelected: HTMLElement | null;
-  private rememberExpanded: Boolean = false;
+  private readonly rememberExpanded: boolean = false;
 
   constructor(tree: HTMLUListElement) {
     this.tree = tree;
     this.treeItems = this.tree.querySelectorAll("[role=treeitem]");
     this.currentFocus = null;
-    this.rememberExpanded = tree.dataset.rememberExpanded == "true";
+    this.rememberExpanded = tree.dataset.rememberExpanded === "true";
   }
 
   getCurrentFocus: () => HTMLLIElement | null = () => {
@@ -49,7 +49,7 @@ export class NestedNavigation {
     Array.from(buttons).forEach((expander, _, __) => {
       (expander as HTMLElement).addEventListener("click", (ev) => {
         let el: HTMLElement = ev.currentTarget as HTMLElement;
-        if (el.id.includes("expander") === false) {
+        if (!el.id.includes("expander")) {
           el = el.previousElementSibling as HTMLElement;
         }
         this.handleExpanders(el, inputType);
@@ -68,10 +68,10 @@ export class NestedNavigation {
     this.tree.querySelectorAll("[role=treeitem]").forEach((treeItem, _, __) => {
       // We do not want the radio buttons directories to be selectable.
       if (
-        inputType == InputType.radios &&
-        treeItem.id.includes("folder") === true
-      )
+        inputType === InputType.radios && treeItem.id.includes("folder")
+      ){
         return;
+      }
       if (treeItem.id.includes(inputType)) {
         treeItem.addEventListener("click", (ev) => {
           if (
@@ -93,7 +93,7 @@ export class NestedNavigation {
     // Set the first item as focusable
     const firstSelected: HTMLLIElement | null =
       this.tree.querySelector("[role=treeitem]");
-    if (firstSelected) {
+    if (firstSelected !== null) {
       firstSelected.tabIndex = 0;
       this.currentFocus = firstSelected;
     }
@@ -180,16 +180,18 @@ export class NestedNavigation {
       li.setAttribute("aria-expanded", "false");
       expanded.splice(expanded.indexOf(id));
     }
-    if (this.rememberExpanded == true)
+    if (this.rememberExpanded){
       localStorage.setItem(`${inputType}-state`, JSON.stringify({ expanded }));
+    }
   };
 
   displaySelected: (filename: string) => void = (filename) => {
-    this.fileSelected =
-      this.fileSelected || document.getElementById(`${this.tree.id}-selected`);
+    this.fileSelected = this.fileSelected ?? document.getElementById(`${this.tree.id}-selected`);
 
     filename = filename === "" ? "No file selected" : filename;
-    if (this.fileSelected != null) this.fileSelected.textContent = filename;
+    if (this.fileSelected !== null) {
+      this.fileSelected.textContent = filename;
+    }
   };
 
   setSelected: (li: HTMLLIElement, inputType: InputType) => void = (
@@ -197,8 +199,8 @@ export class NestedNavigation {
     inputType,
   ) => {
     // If this is a radio directory do not select, toggle instead
-    if (li.querySelectorAll("ul").length > 0 && inputType == InputType.radios) {
-      this.toggleNode(li as HTMLLIElement, li.id, InputType.radios);
+    if (li.querySelectorAll("ul").length > 0 && inputType === InputType.radios) {
+      this.toggleNode(li, li.id, InputType.radios);
       return;
     }
 
@@ -206,13 +208,17 @@ export class NestedNavigation {
     const isSelected: boolean = li.getAttribute("aria-selected") === "true";
     li.setAttribute("aria-selected", !isSelected ? "true" : "false");
     const input = li.querySelector("input");
-    if (input) input.checked = !isSelected;
+    if (input !== null) input.checked = !isSelected;
 
     const label = li.querySelector("label");
-    this.displaySelected(
-      isSelected ? "" : (label?.firstChild?.textContent?.trim() as string),
-    );
-
+    if (label?.firstChild?.textContent !== null) {
+      this.displaySelected(
+        isSelected ? "" : label?.firstChild?.textContent?.trim() ?? "",
+      );
+    } else {
+      this.displaySelected("");
+    }
+    
     // If checkbox then we need to deselect a mixed state
     if (inputType === InputType.checkboxes) {
       li.setAttribute("aria-checked", !isSelected ? "true" : "false");
@@ -225,7 +231,7 @@ export class NestedNavigation {
         if (el.id !== li.id) {
           el.setAttribute("aria-selected", "false");
           const input = el.querySelector("input");
-          if (input) input.checked = false;
+          if (input !== null) input.checked = false;
         }
       });
     }
@@ -244,8 +250,8 @@ export class NestedNavigation {
             child.setAttribute("aria-checked", !isSelected ? "true" : "false");
             const itemCheckbox = child.getElementsByTagName(
               "input",
-            )[0] as HTMLInputElement;
-            if (itemCheckbox) itemCheckbox.checked = !isSelected;
+            )[0];
+            if (itemCheckbox !== null) itemCheckbox.checked = !isSelected;
           }
         }
       }
@@ -291,7 +297,7 @@ export class NestedNavigation {
 
   setFocusToItem: (element?: HTMLLIElement | null) => void = (element) => {
     Array.from(this.treeItems).forEach((item) => {
-      (item as HTMLElement).tabIndex = -1;
+      item.tabIndex = -1;
     });
     if (element != null) {
       element.tabIndex = 0;
@@ -302,43 +308,51 @@ export class NestedNavigation {
 
   setFocusToLastExpandedChild: (li: HTMLLIElement | null) => void = (li) => {
     // Does last child have children?
-    if (li && li.getAttribute("aria-expanded") === "true") {
+    if (li !== null && li.getAttribute("aria-expanded") === "true") {
       const lastChild: HTMLLIElement | null = li.querySelector(
         ":scope > ul > li:last-child",
       );
       this.setFocusToLastExpandedChild(lastChild);
-    } else if (li) {
+    } else if (li !== null) {
       // Set to this li
       this.setFocusToItem(li);
     }
   };
 
   setFocusToPreviousItem: (input: HTMLLIElement | null) => void = (input) => {
-    if (input != null) {
+    if (input !== null) {
       const li: HTMLLIElement | null = input.closest("li");
-      // Do you have a sibling
-      if (li?.previousElementSibling != null) {
-        this.setFocusToLastExpandedChild(
-          li.previousElementSibling as HTMLLIElement,
-        );
-      } else if (li?.parentElement != null) {
-        // Go to parent
-        this.setFocusToItem(li.parentElement.closest("li") as HTMLLIElement);
+        if(li !== null){
+        // Do you have a sibling
+        if (li.previousElementSibling !== null) {
+          this.setFocusToLastExpandedChild(
+            li.previousElementSibling as HTMLLIElement,
+          );
+        } else if (li.parentElement !== null) {
+          // Go to parent
+          this.setFocusToItem(li.parentElement.closest("li"));
+        }
       }
     }
   };
 
   setFocusToNextParent: (ul: HTMLUListElement) => void = (ul) => {
-    if (ul.getAttribute("role") != "tree") {
-      const parent: HTMLLIElement = ul.closest("li") as HTMLLIElement;
-      if (parent?.nextElementSibling != null) {
-        this.setFocusToItem(parent.nextElementSibling as HTMLLIElement);
-      } else {
-        this.setFocusToNextParent(parent.parentElement as HTMLUListElement);
+    if (ul.getAttribute("role") !== "tree") {
+      const parent: HTMLLIElement | null = ul.closest("li");
+      if(parent !== null){
+        if (parent.nextElementSibling !== null) {
+          this.setFocusToItem(parent.nextElementSibling as HTMLLIElement);
+        } else {
+          this.setFocusToNextParent(parent.parentElement as HTMLUListElement);
+        }
       }
     }
   };
 
+  // const nextParent = parent.parentElement?.closest("li") as HTMLLIElement | null;
+  // if (nextParent !== null) {
+  //   this.setFocusToNextParent(nextParent.parentElement as HTMLUListElement);
+  // }
   setFocusToNextItem: (input: HTMLLIElement | null) => void = (input) => {
     if (input != null) {
       const li: HTMLLIElement | null = input.closest("li");
@@ -374,8 +388,10 @@ export class NestedNavigation {
       case "Enter":
       case " ":
         // Check or uncheck checkbox
-        this.setSelected(this.currentFocus as HTMLLIElement, inputType);
-        this.setFocusToItem(this.currentFocus);
+        if(this.currentFocus !== null) {
+          this.setSelected(this.currentFocus, inputType);
+          this.setFocusToItem(this.currentFocus);
+        }
         doPrevent = true;
         break;
 
@@ -417,7 +433,7 @@ export class NestedNavigation {
         break;
     }
 
-    if (doPrevent === true) {
+    if (doPrevent) {
       ev.preventDefault();
       ev.stopPropagation();
     }
@@ -445,7 +461,7 @@ export class NestedNavigation {
       // When focus is on a child node that is also either an end node or a closed node, moves focus to its parent node.
       const parent = this.currentFocus?.parentElement;
       if (parent != null) {
-        this.setFocusToItem(parent.closest("li") as HTMLLIElement);
+        this.setFocusToItem(parent.closest("li"));
       }
     }
     ev.preventDefault();

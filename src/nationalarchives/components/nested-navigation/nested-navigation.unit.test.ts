@@ -32,10 +32,10 @@ const createListElement: (ariaExpanded: string) => HTMLLIElement = (
 
 const createNestedNavigation: (
   navOption: Partial<NestedNavigation>,
-  element?: HTMLLIElement | undefined,
-  tree?: HTMLUListElement | undefined,
+  element?: HTMLLIElement,
+  tree?: HTMLUListElement,
 ) => NestedNavigation = (navOption, element, tree) => {
-  const el = tree != null ? tree : document.createElement("ul");
+  const el = tree ?? document.createElement("ul");
   const navigation = new NestedNavigation(el);
   if (element != null) {
     navigation.setFocusToItem(element);
