@@ -25,7 +25,7 @@ const createListElement: (ariaExpanded: string) => HTMLLIElement = (
   const li: HTMLLIElement | null = document.createElement("li");
   const id = (Math.random() + 1).toString(36).substring(7);
   li.setAttribute("aria-expanded", ariaExpanded);
-  li.setAttribute("role", "node");
+  li.setAttribute("role", "treeitem");
   li.setAttribute("id", id);
   return li;
 };
@@ -594,19 +594,24 @@ describe.each([true, false])("setSelected", (state) => {
   });
 
   it(`should set itself and child checkboxes to ${state.toString()} for an open node`, () => {
+    
     const li = createListElement("true");
     li.setAttribute("aria-selected", (!state).toString());
-    const setParentState = jest.fn();
+
     const childUl = document.createElement("ul");
     childUl.id = `checkboxes-node-group-${li.id}`;
+    
     li.appendChild(childUl);
-    document.body.appendChild(li);
-    const childCheckboxOne = createInputElement();
-    const childCheckboxTwo = createInputElement();
+    document.body.appendChild(li);    
+    const childCheckboxOne = createListElement("false")
+    const childCheckboxTwo = createListElement("false")
+    childCheckboxOne.appendChild(createInputElement());
+    childCheckboxTwo.appendChild(createInputElement());
+
     const allChildren = jest
       .fn()
       .mockImplementation(() => [childCheckboxOne, childCheckboxTwo]);
-
+    const setParentState = jest.fn();
     const nestedNavigation = createNestedNavigation({
       setParentState,
       allChildren,
