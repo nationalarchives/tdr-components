@@ -4,7 +4,6 @@
   "description": "This library contains custom components based on the GovUK frontend",
   "main": "index.ts",
   "scripts": {
-    "test": "jest",
     "start": "npm run compile:sass-govuk && npm run start:storybook",
     "start:storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build -o storybook --webpack-stats-json",
