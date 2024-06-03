@@ -27,6 +27,9 @@ const config = {
     skipCompiler: false,
   },
   webpackFinal: (config) => {
+    // Override browserslist settings here
+    // config.target = ["web", "es5"];
+
     config.module.rules.push({
       test: /\.njk$/,
       use: "simple-nunjucks-loader",

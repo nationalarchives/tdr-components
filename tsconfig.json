@@ -2,11 +2,8 @@
   "compilerOptions": {
     "declaration": true,
     "esModuleInterop": true,
-    "target": "es2017",
     "skipLibCheck": true,
     "outDir": "package/dist",
-    "moduleResolution": "Node",
-    "lib": ["dom", "es2017"],
     "strictNullChecks": true
   },
   "include": ["src/**/*.ts"]

@@ -7,7 +7,9 @@
     "test": "jest",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
+    "compile:scripts": "webpack --mode production",
     "lint:fix": "prettier --write '{src,.storybook,tasks,.}/**/*.{ts,scss,json,html}' && stylelint --fix 'src/**/*.scss' && eslint --fix 'src/**/*.{ts,tjs}'",
+    "test:all": "npm run test:lint && npm run test:unit && npm run test:storybook",
     "test:lint": "prettier --check '{src,.storybook,tasks,.}/**/*.{ts,scss,json,html}' && stylelint 'src/**/*.scss' && eslint 'src/**/*.{ts,tjs}'",
     "test:unit": "jest",
     "test:storybook": "test-storybook"
@@ -46,6 +48,8 @@
     "stylelint": "^16.6.1",
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-order": "^6.0.4",
+    "ts-loader": "^9.5.1",
+    "webpack-cli": "^5.1.4",
     "yaml-loader": "^0.8.1"
   },
   "dependencies": {
