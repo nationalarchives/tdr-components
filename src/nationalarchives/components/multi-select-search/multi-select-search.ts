@@ -53,7 +53,6 @@ export class MultiSelectSearch {
     if (this.selectedCount !== null) {
       this.updateSelectedCount(this.selectedCount, numChecked);
     }
-    console.log(this.filterCount);
 
     if (this.filterCount !== null) {
       this.updateFilteredCount(this.filterCount, numChecked, numVisible);
