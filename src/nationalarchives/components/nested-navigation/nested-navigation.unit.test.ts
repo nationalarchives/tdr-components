@@ -594,17 +594,16 @@ describe.each([true, false])("setSelected", (state) => {
   });
 
   it(`should set itself and child checkboxes to ${state.toString()} for an open node`, () => {
-    
     const li = createListElement("true");
     li.setAttribute("aria-selected", (!state).toString());
 
     const childUl = document.createElement("ul");
     childUl.id = `checkboxes-node-group-${li.id}`;
-    
+
     li.appendChild(childUl);
-    document.body.appendChild(li);    
-    const childCheckboxOne = createListElement("false")
-    const childCheckboxTwo = createListElement("false")
+    document.body.appendChild(li);
+    const childCheckboxOne = createListElement("false");
+    const childCheckboxTwo = createListElement("false");
     childCheckboxOne.appendChild(createInputElement());
     childCheckboxTwo.appendChild(createInputElement());
 

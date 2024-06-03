@@ -166,7 +166,7 @@ describe("Multi Select Search", () => {
   describe("updateSelectedCount", () => {
     it("should update selected count element", () => {
       const root = document.createElement("div");
-      
+
       const jsSelectedCount = document.createElement("div");
       jsSelectedCount.classList.add("js-selected-count");
       root.appendChild(jsSelectedCount);
