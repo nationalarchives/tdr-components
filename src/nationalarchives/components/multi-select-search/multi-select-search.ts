@@ -17,13 +17,11 @@ export class MultiSelectSearch {
 
   constructor(rootElement: HTMLElement) {
     this.container = rootElement.querySelector(".js-container");
-    if (this.container === null) return;
     this.list = rootElement.querySelector("ul") as HTMLElement;
     this.inputs = rootElement.querySelectorAll("input[type=checkbox]");
     this.filter = rootElement.querySelector("input[type=text]");
     this.filterCount = rootElement.querySelector(".js-filter-count");
     this.selectedCount = rootElement.querySelector(".js-selected-count");
-
     this.config = {
       // Adding spaces here to avoid multiple spaces when there is empty values
       copySingle: rootElement.dataset.copySingle?.trim() ?? "",
@@ -52,10 +50,14 @@ export class MultiSelectSearch {
 
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
-    if (this.selectedCount !== null)
-      {this.updateSelectedCount(this.selectedCount, numChecked);}
-    if (this.filterCount !== null)
-      {this.updateFilteredCount(this.filterCount, numChecked, numVisible);}
+    if (this.selectedCount !== null) {
+      this.updateSelectedCount(this.selectedCount, numChecked);
+    }
+    console.log(this.filterCount);
+
+    if (this.filterCount !== null) {
+      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    }
 
     // Will not use for now because it requires using
     // inline styles for setting up height.
@@ -207,6 +209,7 @@ export class MultiSelectSearch {
 
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
+
     if (this.filterCount !== null) {
       this.updateFilteredCount(this.filterCount, numChecked, numVisible);
     }
@@ -215,9 +218,11 @@ export class MultiSelectSearch {
   private readonly processInputChange: (ev: KeyboardEvent) => void = (ev) => {
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
-    if (this.selectedCount !== null)
-      {this.updateSelectedCount(this.selectedCount, numChecked);}
-    if (this.filterCount !== null)
-      {this.updateFilteredCount(this.filterCount, numChecked, numVisible);}
+    if (this.selectedCount !== null) {
+      this.updateSelectedCount(this.selectedCount, numChecked);
+    }
+    if (this.filterCount !== null) {
+      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    }
   };
 }

@@ -5,7 +5,6 @@ const createMultiSelectSearch: (
   options?: Partial<MultiSelectSearch>,
 ) => MultiSelectSearch = (root, options) => {
   const multiSelectSearch = new MultiSelectSearch(root);
-
   for (const key in options) {
     multiSelectSearch[key] = options[key];
   }
@@ -126,6 +125,10 @@ describe("Multi Select Search", () => {
   describe("updateFilteredCount", () => {
     it("should update filtered count element", () => {
       const root = document.createElement("div");
+      const jsFilterCount = document.createElement("div");
+      jsFilterCount.classList.add("js-filter-count");
+      root.appendChild(jsFilterCount);
+
       // no checked and 2 visible
       const ul: HTMLUListElement = createListOfInputs(
         [false, false, false, false, false],
@@ -156,7 +159,7 @@ describe("Multi Select Search", () => {
       const mss = createMultiSelectSearch(root);
       mss.initialise();
 
-      expect(filterCountEl.textContent).toEqual("2 displayed, 0 selected");
+      expect(filterCountEl.textContent).toEqual("2  displayed, 0  selected");
     });
   });
 
