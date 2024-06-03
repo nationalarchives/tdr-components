@@ -9,7 +9,7 @@
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
     "test:lint": "prettier --check '{src,.storybook,tasks,.}/**/*.{ts,scss,json,html}' && stylelint 'src/**/*.scss' && eslint 'src/**/*.{ts,tjs}'",
-    "lint:fix": "prettier --write '{src,.storybook,tasks,.}/**/*.{ts,scss,json,html}' && stylelint --fix 'src/**/*.scss' && eslint -fix 'src/**/*.{ts,tjs}'"
+    "lint:fix": "prettier --write '{src,.storybook,tasks,.}/**/*.{ts,scss,json,html}' && stylelint --fix 'src/**/*.scss' && eslint --fix 'src/**/*.{ts,tjs}'"
   },
   "keywords": [],
   "author": "",

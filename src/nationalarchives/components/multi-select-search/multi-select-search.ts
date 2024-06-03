@@ -53,9 +53,9 @@ export class MultiSelectSearch {
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
     if (this.selectedCount !== null)
-      this.updateSelectedCount(this.selectedCount, numChecked);
+      {this.updateSelectedCount(this.selectedCount, numChecked);}
     if (this.filterCount !== null)
-      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+      {this.updateFilteredCount(this.filterCount, numChecked, numVisible);}
 
     // Will not use for now because it requires using
     // inline styles for setting up height.
@@ -216,8 +216,8 @@ export class MultiSelectSearch {
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
     if (this.selectedCount !== null)
-      this.updateSelectedCount(this.selectedCount, numChecked);
+      {this.updateSelectedCount(this.selectedCount, numChecked);}
     if (this.filterCount !== null)
-      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+      {this.updateFilteredCount(this.filterCount, numChecked, numVisible);}
   };
 }
