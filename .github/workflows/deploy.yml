@@ -1,4 +1,4 @@
-name: TDR Deploy Components
+name: Deploy to NPM
 on:
   workflow_dispatch:
 

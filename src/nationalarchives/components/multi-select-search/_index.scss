@@ -1,1 +1,24 @@
-@import "multi-select-search";
+.tna-multi-select-search__list-container {
+  position: relative;
+  max-height: 225px;
+  overflow: hidden auto;
+  background-color: #fff;
+}
+
+.tna-multi-select-search__filter {
+  display: none;
+}
+
+.tna-multi-select-search[data-module-active="true"]
+  .tna-multi-select-search__filter {
+  display: block;
+}
+
+.tna-multi-select-search__list {
+  padding: 0;
+  margin: 10px 0;
+}
+
+li.is-hidden {
+  display: none;
+}

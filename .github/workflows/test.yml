@@ -1,4 +1,4 @@
-name: Run unit & storybook tests
+name: Run all tests
 on:
   pull_request:
   push:
@@ -20,19 +20,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Lint
+      - name: Run code style and lint tests
         uses: ./.github/actions/lint
 
   unit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Tests
+      - name: Run unit tests
         uses: ./.github/actions/tests
 
   storybook-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Tests
+      - name: Run interaction and accessibility test
         uses: ./.github/actions/storybook-tests

@@ -1,1 +1,39 @@
-@import "card";
+.tdr-card {
+  border: 1px solid $govuk-border-colour;
+
+  @include govuk-responsive-padding(5);
+  @include govuk-responsive-padding(6, "right");
+  @include govuk-responsive-padding(6, "left");
+  @include govuk-responsive-margin(6, "bottom");
+}
+
+.tdr-card--error {
+  border: 2px solid $govuk-error-colour;
+
+  @include govuk-responsive-padding(4, "left");
+}
+
+.tdr-card--error .tdr-card__content {
+  padding-left: 15px;
+  border-left: 5px solid #d4351c;
+
+  @include govuk-responsive-padding(4, "left");
+}
+
+.tdr-card__content {
+  position: relative;
+}
+
+.tdr-card__content > *:last-child {
+  margin: 0;
+}
+
+.tdr-card--metadata__state {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.tdr-card--metadata__inset-text {
+  color: $govuk-secondary-text-colour;
+}
