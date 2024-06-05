@@ -10,6 +10,7 @@ permissions:
   contents: read
 jobs:
   unit-tests:
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'xxxx' }}
     uses: nationalarchives/tdr-github-actions/.github/workflows/tdr_test.yml@main
     with:
       repo-name: tdr-components
@@ -19,6 +20,7 @@ jobs:
     secrets:
       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   interaction-and-accessibility:
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'xxxx' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
