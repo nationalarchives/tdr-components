@@ -1,7 +1,4 @@
-.govuk-header__link svg {
-  vertical-align: top;
-}
-
-.govuk-header__content--nav-right nav {
-  float: right;
-}
+@import "govuk-frontend/govuk/settings/all";
+@import "govuk-frontend/govuk/tools/all";
+@import "govuk-frontend/govuk/helpers/all";
+@import "index";
