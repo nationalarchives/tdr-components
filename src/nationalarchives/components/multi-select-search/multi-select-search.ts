@@ -1,48 +1,37 @@
-type MultiSelectConfig = {
+interface MultiSelectConfig {
   copySingle?: string;
   copyMultiple?: string;
-};
+}
 
 export class MultiSelectSearch {
-  private readonly container: HTMLElement;
+  private readonly container: HTMLElement | null;
   private readonly list: HTMLElement;
   private readonly inputs: NodeListOf<HTMLInputElement>;
-  private readonly filter: HTMLInputElement;
-  private readonly filterCount: HTMLElement;
-  private readonly selectedCount: HTMLElement;
-  private config: MultiSelectConfig;
+  private readonly filter: HTMLInputElement | null;
+  private readonly filterCount: HTMLElement | null;
+  private readonly selectedCount: HTMLElement | null;
+  private readonly config: MultiSelectConfig;
 
   private timeoutId: null | ReturnType<typeof setTimeout> = null;
-  private labels: string[];
+  private readonly labels: string[];
 
   constructor(rootElement: HTMLElement) {
-    this.container = rootElement.querySelector(".js-container") as HTMLElement;
+    this.container = rootElement.querySelector(".js-container");
     this.list = rootElement.querySelector("ul") as HTMLElement;
     this.inputs = rootElement.querySelectorAll("input[type=checkbox]");
-    this.filter = rootElement.querySelector(
-      "input[type=text]"
-    ) as HTMLInputElement;
-    this.filterCount = rootElement.querySelector(
-      ".js-filter-count"
-    ) as HTMLElement;
-    this.selectedCount = rootElement.querySelector(
-      ".js-selected-count"
-    ) as HTMLElement;
-
+    this.filter = rootElement.querySelector("input[type=text]");
+    this.filterCount = rootElement.querySelector(".js-filter-count");
+    this.selectedCount = rootElement.querySelector(".js-selected-count");
     this.config = {
       // Adding spaces here to avoid multiple spaces when there is empty values
-      copySingle: rootElement.dataset.copySingle
-        ? `${rootElement.dataset.copySingle} `
-        : "",
-      copyMultiple: rootElement.dataset.copyMultiple
-        ? `${rootElement.dataset.copyMultiple} `
-        : "",
+      copySingle: rootElement.dataset.copySingle?.trim() ?? "",
+      copyMultiple: rootElement.dataset.copyMultiple?.trim() ?? "",
     };
 
     this.labels = [];
     for (let i = 0; i < this.list.children.length; i++) {
       this.labels.push(
-        this.cleanString(this.list.children[i].textContent || "")
+        this.cleanString(this.list.children[i].textContent ?? ""),
       );
     }
 
@@ -61,8 +50,13 @@ export class MultiSelectSearch {
 
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
-    this.updateSelectedCount(this.selectedCount, numChecked);
-    this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    if (this.selectedCount !== null) {
+      this.updateSelectedCount(this.selectedCount, numChecked);
+    }
+
+    if (this.filterCount !== null) {
+      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    }
 
     // Will not use for now because it requires using
     // inline styles for setting up height.
@@ -89,7 +83,7 @@ export class MultiSelectSearch {
 
   filterItems: (filterBy: string, listItems: HTMLCollection) => void = (
     filterText,
-    listItems
+    listItems,
   ) => {
     const filterBy = this.cleanString(filterText);
     const visibleItems = this.getSelectedItems();
@@ -108,7 +102,7 @@ export class MultiSelectSearch {
     // Show checked and found by filter
     for (i = 0; i < visibleItems.length; i++) {
       (this.list.children[visibleItems[i]] as HTMLElement).classList.remove(
-        "is-hidden"
+        "is-hidden",
       );
     }
   };
@@ -118,9 +112,9 @@ export class MultiSelectSearch {
    */
   updateSelectedCount: (el: HTMLElement, numChecked: number) => void = (
     el,
-    numChecked
+    numChecked,
   ) => {
-    if (el) el.textContent = `${numChecked} selected`;
+    el.textContent = `${numChecked} selected`;
   };
 
   /*
@@ -129,24 +123,25 @@ export class MultiSelectSearch {
   updateFilteredCount: (
     el: HTMLElement,
     numChecked: number,
-    numVisible: number
+    numVisible: number,
   ) => void = (el, numChecked, numVisible) => {
     const displayedCopy =
       numVisible === 1
-        ? `${this.config.copySingle}displayed`
-        : `${this.config.copyMultiple}displayed`;
+        ? `${this.config.copySingle} displayed`
+        : `${this.config.copyMultiple} displayed`;
 
     const selectedCopy =
       numChecked === 1
-        ? `${this.config.copySingle}selected`
-        : `${this.config.copyMultiple}selected`;
+        ? `${this.config.copySingle} selected`
+        : `${this.config.copyMultiple} selected`;
 
     const output = `${numVisible} ${displayedCopy}, ${numChecked} ${selectedCopy}`;
 
-    if (el) el.innerHTML = output;
+    el.innerHTML = output;
   };
 
   setupHeight: () => void = () => {
+    if (this.container === null) return;
     const containerHeight: number = this.container.clientHeight;
     const listHeight: number = this.getAbsoluteHeight(this.list);
 
@@ -158,10 +153,12 @@ export class MultiSelectSearch {
 
     // Resize to cut last item cleanly in half
     const visibleItems: HTMLElement[] = this.getInViewport(this.list.children);
-    const lastVisibleItem: HTMLElement = visibleItems.pop() as HTMLElement;
-    const position = lastVisibleItem.offsetTop;
-    const height = position + lastVisibleItem.clientHeight / 1.5;
-    this.container.style.height = height + "px";
+    const lastVisibleItem: HTMLElement | undefined = visibleItems.pop();
+    if (lastVisibleItem !== undefined) {
+      const position = lastVisibleItem?.offsetTop;
+      const height = position + lastVisibleItem.clientHeight / 1.5;
+      this.container.style.height = height + "px";
+    }
   };
 
   getAbsoluteHeight: (el: HTMLElement) => number = (el) => {
@@ -173,6 +170,7 @@ export class MultiSelectSearch {
   };
 
   isInViewport: (listItem: HTMLElement) => boolean = (listItem) => {
+    if (this.container === null) return false;
     const containerHeight = this.container.clientHeight;
     const containerOffsetTop = this.container.getBoundingClientRect().top;
     const distanceFromTopOfContainer = listItem.getBoundingClientRect().top;
@@ -186,7 +184,7 @@ export class MultiSelectSearch {
   getSelectedItems: () => number[] = () => {
     const selectedIndexes: number[] = [];
     Array.from(this.inputs).forEach((input, i) => {
-      if (input.checked == true) selectedIndexes.push(i);
+      if (input.checked) selectedIndexes.push(i);
     });
     return selectedIndexes;
   };
@@ -195,9 +193,7 @@ export class MultiSelectSearch {
     const visibleItems: number[] = [];
     for (let i = 0; i < this.list.children.length; i++) {
       if (
-        (this.list.children[i] as HTMLElement).classList.contains(
-          "is-hidden"
-        ) === false
+        !(this.list.children[i] as HTMLElement).classList.contains("is-hidden")
       ) {
         visibleItems.push(i);
       }
@@ -207,17 +203,25 @@ export class MultiSelectSearch {
   };
 
   private readonly processKeyUpTimeout: (ev?: Event) => void = (ev) => {
+    if (this.filter === null) return;
     this.filterItems(this.filter.value, this.list.children);
 
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
-    this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+
+    if (this.filterCount !== null) {
+      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    }
   };
 
   private readonly processInputChange: (ev: KeyboardEvent) => void = (ev) => {
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
-    this.updateSelectedCount(this.selectedCount, numChecked);
-    this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    if (this.selectedCount !== null) {
+      this.updateSelectedCount(this.selectedCount, numChecked);
+    }
+    if (this.filterCount !== null) {
+      this.updateFilteredCount(this.filterCount, numChecked, numVisible);
+    }
   };
 }

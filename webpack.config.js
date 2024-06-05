@@ -1,5 +1,4 @@
-const path = require("path")
-const fs = require("fs")
+const path = require("path");
 
 module.exports = {
   entry: "./src/nationalarchives/index.ts",
@@ -9,9 +8,12 @@ module.exports = {
         test: /\.ts?$/,
         loader: "ts-loader",
         exclude: /node_modules/,
-        options: { onlyCompileBundledFiles: true }
+        options: {
+          configFile: "tsconfig.json", // Use tsconfig.json for TypeScript compilation options
+          onlyCompileBundledFiles: true, // Only compile files referenced by the entry file
+        },
       },
-    ],
+    ]
   },
   resolve: {
     extensions: [".ts", ".js"]
@@ -19,6 +21,6 @@ module.exports = {
   output: {
     filename: "index.js",
     libraryTarget: "umd",
-    path: path.resolve(__dirname, "package", "dist"),
+    path: path.resolve(__dirname, "package", "dist")
   },
-}
+};

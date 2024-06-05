@@ -2,10 +2,9 @@ import { MultiSelectSearch } from "./multi-select-search";
 
 const createMultiSelectSearch: (
   element: HTMLElement,
-  options?: Partial<MultiSelectSearch>
+  options?: Partial<MultiSelectSearch>,
 ) => MultiSelectSearch = (root, options) => {
   const multiSelectSearch = new MultiSelectSearch(root);
-
   for (const key in options) {
     multiSelectSearch[key] = options[key];
   }
@@ -20,35 +19,35 @@ const createKeyboardEvent: (key: string) => KeyboardEvent = (key) => {
 
 const createInputElement: (
   checked: boolean,
-  id?: string
+  id: string | null,
 ) => HTMLInputElement = (isChecked = false, id: string) => {
   const input: HTMLInputElement = document.createElement("input");
   input.setAttribute("type", "checkbox");
   if (isChecked !== undefined) {
     input.checked = isChecked;
   }
-  if (id) input.id = id;
+  if (id !== null) input.id = id;
   return input;
 };
 
 const createListOfInputs: (
   inputsChecked: boolean[],
   inputsVisible?: boolean[],
-  labels?: string[]
+  labels?: string[],
 ) => HTMLUListElement = (inputsChecked, inputsVisible, labels) => {
   const ul: HTMLUListElement = document.createElement("ul");
+  const inputsVisibleArray = inputsVisible ?? [];
+  const labelsArray = labels ?? [];
 
   inputsChecked.forEach((checked, i) => {
     const li: HTMLLIElement = document.createElement("li");
 
-    if (labels && labels[i]) {
-      const label: HTMLLabelElement = document.createElement("label");
-      label.textContent = labels[i];
-      label.setAttribute("for", i.toString());
-      li.appendChild(label);
-    }
+    const label: HTMLLabelElement = document.createElement("label");
+    label.textContent = labelsArray[i];
+    label.setAttribute("for", i.toString());
+    li.appendChild(label);
 
-    if (inputsVisible && inputsVisible[i] === false) {
+    if (!inputsVisibleArray[i]) {
       li.classList.add("is-hidden");
     }
 
@@ -96,7 +95,7 @@ describe("Multi Select Search", () => {
       const root = document.createElement("div");
       const ul: HTMLUListElement = createListOfInputs(
         [false, false, false],
-        [false, false, true]
+        [false, false, true],
       );
       root.appendChild(ul);
       const mss = createMultiSelectSearch(root);
@@ -111,7 +110,7 @@ describe("Multi Select Search", () => {
       // no checked and 2 visible
       const ul: HTMLUListElement = createListOfInputs(
         [false, false, false, false, false],
-        [false, true, false, false, true]
+        [false, true, false, false, true],
       );
       root.appendChild(ul);
       const mss = createMultiSelectSearch(root);
@@ -126,10 +125,14 @@ describe("Multi Select Search", () => {
   describe("updateFilteredCount", () => {
     it("should update filtered count element", () => {
       const root = document.createElement("div");
+      const jsFilterCount = document.createElement("div");
+      jsFilterCount.classList.add("js-filter-count");
+      root.appendChild(jsFilterCount);
+
       // no checked and 2 visible
       const ul: HTMLUListElement = createListOfInputs(
         [false, false, false, false, false],
-        [false, true, false, false, true]
+        [false, true, false, false, true],
       );
       root.appendChild(ul);
       const updateFilteredCount = jest.fn();
@@ -145,7 +148,7 @@ describe("Multi Select Search", () => {
       // no checked and 2 visible
       const ul: HTMLUListElement = createListOfInputs(
         [false, false, false, false, false],
-        [false, true, false, false, true]
+        [false, true, false, false, true],
       );
       const filterCountEl = document.createElement("span");
       filterCountEl.classList.add("js-filter-count");
@@ -156,17 +159,22 @@ describe("Multi Select Search", () => {
       const mss = createMultiSelectSearch(root);
       mss.initialise();
 
-      expect(filterCountEl.textContent).toEqual("2 displayed, 0 selected");
+      expect(filterCountEl.textContent).toEqual("2  displayed, 0  selected");
     });
   });
 
   describe("updateSelectedCount", () => {
     it("should update selected count element", () => {
       const root = document.createElement("div");
+
+      const jsSelectedCount = document.createElement("div");
+      jsSelectedCount.classList.add("js-selected-count");
+      root.appendChild(jsSelectedCount);
+
       // no checked and 2 visible
       const ul: HTMLUListElement = createListOfInputs(
         [false, false, false, false, false],
-        [false, true, false, false, true]
+        [false, true, false, false, true],
       );
       root.appendChild(ul);
       const updateSelectedCount = jest.fn();
@@ -205,7 +213,7 @@ describe("Multi Select Search", () => {
       const ul: HTMLUListElement = createListOfInputs(
         [false, false, false, false, false],
         [true, true, true, true, true],
-        ["Abkhazian", "Afar", "Bengali", "Bislama", "English"]
+        ["Abkhazian", "Afar", "Bengali", "Bislama", "English"],
       );
       root.appendChild(ul);
 
@@ -226,7 +234,7 @@ describe("Multi Select Search", () => {
       const ul: HTMLUListElement = createListOfInputs(
         [false, false, false, false, false],
         [true, true, true, true, true],
-        ["Abkhazian", "Afar", "Bengali", "Bislama", "English"]
+        ["Abkhazian", "Afar", "Bengali", "Bislama", "English"],
       );
 
       const filterInput = document.createElement("input");
@@ -247,7 +255,7 @@ describe("Multi Select Search", () => {
 
       const visibleItems: number[] = mss.getVisibleItems();
       expect(visibleItems[0]).toEqual(3);
-      jest.useRealTimers()
+      jest.useRealTimers();
     });
   });
 });

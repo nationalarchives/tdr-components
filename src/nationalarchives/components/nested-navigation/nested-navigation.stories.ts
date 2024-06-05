@@ -3,8 +3,24 @@ import "./_tdr-tags.scss";
 import render from "./story.njk";
 import treeData from "./nested-navigation.yaml";
 import { NestedNavigation, InputType } from "./nested-navigation";
-import { within, userEvent, waitFor } from "@storybook/testing-library";
-import { expect } from "@storybook/jest";
+import { within, userEvent, expect } from "@storybook/test";
+
+interface Example<T = any> {
+  name: string;
+  description: string;
+  data: T;
+}
+
+interface TreeDataItem<T = any> {
+  name: string;
+  type: string;
+  id: string;
+  children?: Array<TreeDataItem<T>>;
+}
+
+interface TreeData<T = any> {
+  items: Array<TreeDataItem<T>>;
+}
 
 export default {
   title: "TDR/Tree View",
@@ -15,22 +31,26 @@ export default {
       const wrapper = document.createElement("div");
       wrapper.style.margin = "0 3em";
       const parser = new DOMParser();
-      const doc = parser.parseFromString(storyFn(), "text/html");
+      const doc = parser.parseFromString(storyFn() as string, "text/html");
       wrapper.append(...doc.body.children);
 
-      document.addEventListener("DOMContentLoaded", (event) => {
-        // Also use this wrapper element to init the MSS js.
-        const trees: NodeListOf<HTMLUListElement> =
-          wrapper.querySelectorAll("[role=tree]");
-        trees.forEach((tree) => {
-          const nestedNavigation = new NestedNavigation(tree);
-          if (tree.hasAttribute("aria-multiselectable")) {
-            nestedNavigation.initialiseFormListeners(InputType.checkboxes);
-          } else {
-            nestedNavigation.initialiseFormListeners(InputType.radios);
-          }
-        });
-      }, { once : true });
+      document.addEventListener(
+        "DOMContentLoaded",
+        (event) => {
+          // Also use this wrapper element to init the MSS js.
+          const trees: NodeListOf<HTMLUListElement> =
+            wrapper.querySelectorAll("[role=tree]");
+          trees.forEach((tree) => {
+            const nestedNavigation = new NestedNavigation(tree);
+            if (tree.hasAttribute("aria-multiselectable")) {
+              nestedNavigation.initialiseFormListeners(InputType.checkboxes);
+            } else {
+              nestedNavigation.initialiseFormListeners(InputType.radios);
+            }
+          });
+        },
+        { once: true },
+      );
 
       return wrapper;
     },
@@ -49,24 +69,37 @@ export default {
   },
 };
 
-const findExampleByName = (name, examples) => {
+const findExampleByName = <T>(
+  name: string,
+  examples: Array<Example<T>>,
+): Example<T> | undefined => {
   return examples.find((ex) => {
-    return ex.name == name;
+    return ex.name === name;
   });
 };
 
-const createTree = (args) => {
-  const exampleData = findExampleByName(args.dataSource, treeData.examples);
+const createTree = (args): string => {
+  // const exampleData = findExampleByName(args.dataSource, treeData.examples);
+  const exampleData = findExampleByName(
+    args.dataSource as string,
+    treeData.examples as Example[],
+  );
+  if (exampleData === null) {
+    throw new Error(`Example with name '${args.dataSource}' not found`);
+  }
   return render({
     params: {
-      items: exampleData.data.items,
-      inputType: args.inputType || "checkbox",
+      items: (exampleData?.data as TreeData).items,
+      inputType:
+        typeof args.inputType === "string" ? args.inputType : "checkbox",
     },
   });
 };
 
-const Template = ({ ...args }) => {
-  if (!args.dataSource) args.dataSource = "default";
+const Template = (args: Record<string, any>): string => {
+  if (args.dataSource === undefined || args.dataSource === null) {
+    args.dataSource = "default";
+  }
   return createTree({ ...args });
 };
 
@@ -74,7 +107,11 @@ export const DefaultSingle = Template.bind({});
 DefaultSingle.args = {
   inputType: "radio",
 };
-DefaultSingle.play = async ({ canvasElement }) => {
+DefaultSingle.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   // should load the page with the directories collapsed, i.e. children invisible
@@ -89,18 +126,22 @@ ExpandNodeAndFocus.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-ExpandNodeAndFocus.play = async ({ canvasElement }) => {
+ExpandNodeAndFocus.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await userEvent.click(
-    canvas.getByRole("treeitem", { name: /^Directory - Old recipes/ })
+    canvas.getByRole("treeitem", { name: /^Directory - Old recipes/ }),
   );
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" })
+    canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" }),
   ).toBeVisible();
 
   await expect(
-    canvas.getByRole("treeitem", { name: /^Directory - Old recipes/ })
+    canvas.getByRole("treeitem", { name: /^Directory - Old recipes/ }),
   ).toHaveFocus();
 };
 
@@ -108,14 +149,18 @@ export const ClickItemAndFocus = Template.bind({});
 ClickItemAndFocus.args = {
   inputType: "radio",
 };
-ClickItemAndFocus.play = async ({ canvasElement }) => {
+ClickItemAndFocus.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await userEvent.click(
-    canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ })
+    canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ }),
   );
 
   await expect(
-    canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ })
+    canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ }),
   ).toHaveFocus();
 };
 
@@ -123,22 +168,23 @@ export const ClickItemAndUpdateFileSelected = Template.bind({});
 ClickItemAndUpdateFileSelected.args = {
   inputType: "radio",
 };
-ClickItemAndUpdateFileSelected.play = async ({ canvasElement }) => {
+ClickItemAndUpdateFileSelected.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await userEvent.click(
-    canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ })
+    canvas.getByRole("treeitem", { name: /Baking-powder Nov 2020/ }),
   );
 
-  const allTexts = canvas.getAllByText(/Baking-powder Nov 2020/)
-  await expect(
-    allTexts.length
-  ).toBeGreaterThan(1)
+  const allTexts = canvas.getAllByText(/Baking-powder Nov 2020/);
+  await expect(allTexts.length).toBeGreaterThan(1);
 
   // Last item should be the 'File Selected' component
-  await expect(
-    allTexts.pop()?.textContent
-  ).toEqual("Baking-powder Nov 2020.docx")
-
+  await expect(allTexts.pop()?.textContent).toEqual(
+    "Baking-powder Nov 2020.docx",
+  );
 };
 
 export const ExpandSelectAndFocus = Template.bind({});
@@ -146,32 +192,37 @@ ExpandSelectAndFocus.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-ExpandSelectAndFocus.play = async ({ canvasElement }) => {
+ExpandSelectAndFocus.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await userEvent.click(canvas.getAllByText("Expand")[0]);
 
   await userEvent.click(canvas.getByLabelText("Vanilla cake.xlsx"));
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" })
+    canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" }),
   ).toHaveFocus();
 };
-
 
 export const ExpandSelectAndDisplaySelected = Template.bind({});
 ExpandSelectAndDisplaySelected.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-ExpandSelectAndDisplaySelected.play = async ({ canvasElement }) => {
+ExpandSelectAndDisplaySelected.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await userEvent.click(canvas.getAllByText("Expand")[1]);
 
   await userEvent.click(canvas.getByRole("treeitem", { name: /^Mixing.xlsx/ }));
 
-  await expect(
-    canvas.getByText(/File selected/)
-  ).toContainHTML("Mixing.xlsx");
+  await expect(canvas.getByText(/File selected/)).toContainHTML("Mixing.xlsx");
 };
 
 export const DefaultMultiple = Template.bind({});
@@ -185,6 +236,8 @@ MultipleSelectChildSetsParentToIndeterminate.args = {
 };
 MultipleSelectChildSetsParentToIndeterminate.play = async ({
   canvasElement,
+}: {
+  canvasElement: HTMLElement;
 }) => {
   const canvas = within(canvasElement);
 
@@ -199,11 +252,11 @@ MultipleSelectChildSetsParentToIndeterminate.play = async ({
   // aria-checked incorrectly. It needs to be on the checkbox not the
   // parent tree element. When completed use `expect().toBePartiallyChecked()`
   await expect(
-    canvas.getByRole("treeitem", { name: /^Non dairy/ })
+    canvas.getByRole("treeitem", { name: /^Non dairy/ }),
   ).toHaveAttribute("aria-checked", "mixed");
 
   await expect(
-    canvas.getByRole("treeitem", { name: /^Cupcakes/ })
+    canvas.getByRole("treeitem", { name: /^Cupcakes/ }),
   ).toHaveAttribute("aria-checked", "mixed");
 };
 
@@ -212,7 +265,11 @@ export const MultipleSelectParentSelectsAllChildren = Template.bind({});
 MultipleSelectParentSelectsAllChildren.args = {
   inputType: "checkbox",
 };
-MultipleSelectParentSelectsAllChildren.play = async ({ canvasElement }) => {
+MultipleSelectParentSelectsAllChildren.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   // Expand arrow for Cupcakes
@@ -222,22 +279,22 @@ MultipleSelectParentSelectsAllChildren.play = async ({ canvasElement }) => {
   await userEvent.click(canvas.getByText("Cupcakes") as Element);
 
   await expect(
-    canvas.getByRole("treeitem", { name: /^Red velvet.pptx/ })
+    canvas.getByRole("treeitem", { name: /^Red velvet.pptx/ }),
   ).toBeChecked();
   await expect(
-    canvas.getByRole("treeitem", { name: /^Non dairy/ })
+    canvas.getByRole("treeitem", { name: /^Non dairy/ }),
   ).toBeChecked();
   await expect(
-    canvas.getByRole("treeitem", { name: /^Carrot cake.pptx/ })
+    canvas.getByRole("treeitem", { name: /^Carrot cake.pptx/ }),
   ).toBeChecked();
   await expect(
-    canvas.getByRole("treeitem", { name: /^Vegan banana.png/ })
+    canvas.getByRole("treeitem", { name: /^Vegan banana.png/ }),
   ).toBeChecked();
   await expect(
-    canvas.getByRole("treeitem", { name: /^Lemon and poppyseed gf.json/ })
+    canvas.getByRole("treeitem", { name: /^Lemon and poppyseed gf.json/ }),
   ).toBeChecked();
   await expect(
-    canvas.getByRole("treeitem", { name: /^Coffee and walnut.gif/ })
+    canvas.getByRole("treeitem", { name: /^Coffee and walnut.gif/ }),
   ).toBeChecked();
 };
 
@@ -247,14 +304,18 @@ KeyboardNavigateDown.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-KeyboardNavigateDown.play = async ({ canvasElement }) => {
+KeyboardNavigateDown.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();
   await userEvent.keyboard("[ArrowDown]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" }),
   ).toHaveFocus();
 };
 
@@ -264,7 +325,11 @@ KeyboardNavigateSelect.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-KeyboardNavigateSelect.play = async ({ canvasElement }) => {
+KeyboardNavigateSelect.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();
@@ -272,7 +337,7 @@ KeyboardNavigateSelect.play = async ({ canvasElement }) => {
   await userEvent.keyboard("[Space]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" }),
   ).toHaveAttribute("aria-selected", "true");
 };
 
@@ -282,28 +347,32 @@ ClickSelectAndKeyboardDeselect.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-ClickSelectAndKeyboardDeselect.play = async ({ canvasElement }) => {
+ClickSelectAndKeyboardDeselect.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(
-    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" }),
   );
 
   // Currently treeitems are not recognised by Testing Library as having a
   // selected state so can't use `await expect.toBeChecked();`. Maybe a bug.
   await expect(
-    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" }),
   ).toHaveAttribute("aria-selected", "true");
 
   await userEvent.keyboard("[ArrowDown]");
   await userEvent.keyboard("[Space]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" }),
   ).not.toHaveAttribute("aria-selected", "true");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Baking-powder Nov 2020.docx" })
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 2020.docx" }),
   ).toHaveAttribute("aria-selected", "true");
 };
 
@@ -313,13 +382,17 @@ KeyboardOpenFolder.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-KeyboardOpenFolder.play = async ({ canvasElement }) => {
+KeyboardOpenFolder.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
   await userEvent.tab();
   await userEvent.keyboard("[Space]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" })
+    canvas.getByRole("treeitem", { name: "Vanilla cake.xlsx" }),
   ).toBeVisible();
 };
 
@@ -329,7 +402,11 @@ KeyboardNavigateSelectAndDeselect.args = {
   inputType: "radio",
 };
 // should expand the node when the expander is clicked
-KeyboardNavigateSelectAndDeselect.play = async ({ canvasElement }) => {
+KeyboardNavigateSelectAndDeselect.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();
@@ -337,13 +414,13 @@ KeyboardNavigateSelectAndDeselect.play = async ({ canvasElement }) => {
   await userEvent.keyboard("[Space]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" }),
   ).toHaveAttribute("aria-selected", "true");
 
   await userEvent.keyboard("[Enter]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" })
+    canvas.getByRole("treeitem", { name: "Baking-powder Nov 1999.docx" }),
   ).not.toHaveAttribute("aria-selected", "true");
 };
 
@@ -352,7 +429,11 @@ export const KeyboardNavigateOpenWithRightArrow = Template.bind({});
 KeyboardNavigateOpenWithRightArrow.args = {
   inputType: "radio",
 };
-KeyboardNavigateOpenWithRightArrow.play = async ({ canvasElement }) => {
+KeyboardNavigateOpenWithRightArrow.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.tab();
@@ -362,7 +443,7 @@ KeyboardNavigateOpenWithRightArrow.play = async ({ canvasElement }) => {
   await userEvent.keyboard("[ArrowRight]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Rising-agents.xlsx" })
+    canvas.getByRole("treeitem", { name: "Rising-agents.xlsx" }),
   ).toBeVisible();
 };
 
@@ -371,17 +452,21 @@ export const KeyboardNavigateMoveDownWithRightArrow = Template.bind({});
 KeyboardNavigateMoveDownWithRightArrow.args = {
   inputType: "radio",
 };
-KeyboardNavigateMoveDownWithRightArrow.play = async ({ canvasElement }) => {
+KeyboardNavigateMoveDownWithRightArrow.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(
-    canvas.getByText("Cake Basics").parentElement as Element
+    canvas.getByText("Cake Basics").parentElement as Element,
   );
 
   await userEvent.keyboard("[ArrowRight]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: /^Mixing.xlsx/ })
+    canvas.getByRole("treeitem", { name: /^Mixing.xlsx/ }),
   ).toHaveFocus();
 };
 
@@ -390,7 +475,11 @@ export const KeyboardNavigateMoveUpWithLeftArrow = Template.bind({});
 KeyboardNavigateMoveUpWithLeftArrow.args = {
   inputType: "radio",
 };
-KeyboardNavigateMoveUpWithLeftArrow.play = async ({ canvasElement }) => {
+KeyboardNavigateMoveUpWithLeftArrow.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByText("Cake Basics"));
@@ -398,7 +487,7 @@ KeyboardNavigateMoveUpWithLeftArrow.play = async ({ canvasElement }) => {
   await userEvent.keyboard("[ArrowLeft]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: /Cake Basics/ })
+    canvas.getByRole("treeitem", { name: /Cake Basics/ }),
   ).toHaveFocus();
 };
 
@@ -407,7 +496,11 @@ export const KeyboardNavigateCloseWithLeftArrow = Template.bind({});
 KeyboardNavigateCloseWithLeftArrow.args = {
   inputType: "radio",
 };
-KeyboardNavigateCloseWithLeftArrow.play = async ({ canvasElement }) => {
+KeyboardNavigateCloseWithLeftArrow.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByText("Cake Basics"));
@@ -421,14 +514,18 @@ export const KeyboardNavigateToEnd = Template.bind({});
 KeyboardNavigateToEnd.args = {
   inputType: "radio",
 };
-KeyboardNavigateToEnd.play = async ({ canvasElement }) => {
+KeyboardNavigateToEnd.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByText("Cupcakes"));
   await userEvent.keyboard("[End]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: "Carrot cake.pptx" })
+    canvas.getByRole("treeitem", { name: "Carrot cake.pptx" }),
   ).toHaveFocus();
 };
 
@@ -437,16 +534,20 @@ export const KeyboardNavigateToHome = Template.bind({});
 KeyboardNavigateToHome.args = {
   inputType: "radio",
 };
-KeyboardNavigateToHome.play = async ({ canvasElement }) => {
+KeyboardNavigateToHome.play = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
   await userEvent.click(canvas.getByText("Cupcakes"));
   await userEvent.click(
-    canvas.getByRole("treeitem", { name: "Carrot cake.pptx" })
+    canvas.getByRole("treeitem", { name: "Carrot cake.pptx" }),
   );
   await userEvent.keyboard("[Home]");
 
   await expect(
-    canvas.getByRole("treeitem", { name: /Old recipes/ })
+    canvas.getByRole("treeitem", { name: /Old recipes/ }),
   ).toHaveFocus();
 };

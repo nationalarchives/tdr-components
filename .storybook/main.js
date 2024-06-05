@@ -1,7 +1,35 @@
-const path = require("path");
-
-module.exports = {
+/** @type { import('@storybook/html-webpack5').StorybookConfig } */
+const config = {
+  stories: [
+    "../src/**/*.mdx",
+    "../src/**/*.stories.@(js|jsx|ts|tsx)"
+  ],
+  addons: [
+    "@chromatic-com/storybook",
+    "@storybook/addon-webpack5-compiler-babel",
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-a11y",
+    "@storybook/addon-interactions",
+  ],
+  framework: {
+    name: "@storybook/html-webpack5",
+    options: {},
+  },
+  staticDirs: ["../public", "../assets"],
+  features: {
+    interactionsDebugger: true,
+    buildStoriesJson: true,
+  },
+  typescript: {
+    check: false,
+    checkOptions: {},
+    skipCompiler: false,
+  },
   webpackFinal: (config) => {
+    // Override browserslist settings here
+    // config.target = ["web", "es5"];
+
     config.module.rules.push({
       test: /\.njk$/,
       use: "simple-nunjucks-loader",
@@ -31,24 +59,8 @@ module.exports = {
 
     return config;
   },
-  stories: [
-    "../src/**/*.stories.mdx",
-    "../src/**/*.stories.@(js|jsx|ts|tsx)",
-    "../src/nationalarchives/components/**/*.stories.@(js|jsx|ts|tsx)",
-  ],
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "@storybook/addon-a11y",
-  ],
-  framework: "@storybook/html",
-  core: {
-    builder: "@storybook/builder-webpack5",
+  docs: {
+    autodocs: "tag",
   },
-  features: {
-    interactionsDebugger: true,
-    buildStoriesJson: true,
-  },
-  staticDirs: ["../public", "../assets"],
 };
+export default config;
