@@ -1,0 +1,76 @@
+{# 
+  Adapted from ONS Digital Icon
+  https://github.com/ONSdigital/design-system/blob/main/src/components/icon/_macro.njk
+#}
+
+{%- if params.classes -%}
+  {% set iconClasses = ' ' + params.classes %}
+{%- endif -%}
+
+{# Function icons A-Z #}
+{%- if params.iconType == "cross" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M15.854 12.854 11 8l4.854-4.854a.503.503 0 0 0 0-.707L13.561.146a.499.499 0 0 0-.707 0L8 5 3.146.146a.5.5 0 0 0-.707 0L.146 2.439a.499.499 0 0 0 0 .707L5 8 .146 12.854a.5.5 0 0 0 0 .707l2.293 2.293a.499.499 0 0 0 .707 0L8 11l4.854 4.854a.5.5 0 0 0 .707 0l2.293-2.293a.499.499 0 0 0 0-.707"/>
+  </svg>
+{%- elif params.iconType == "check" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M14.35,3.9l-.71-.71a.5.5,0,0,0-.71,0h0L5.79,10.34,3.07,7.61a.51.51,0,0,0-.71,0l-.71.71a.51.51,0,0,0,0,.71l3.78,3.78a.5.5,0,0,0,.71,0h0L14.35,4.6A.5.5,0,0,0,14.35,3.9Z" transform="translate(-1.51 -3.04)"/>
+  </svg>
+{%- elif params.iconType == "chevron" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 8 13" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z" transform="translate(-5.02 -1.59)"/>
+  </svg>
+{%- elif params.iconType == "download" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M5.6 9a.48.48 0 0 0 .7 0l3-3.2a.48.48 0 0 0 0-.7C9.3 5 9.2 5 9 5H7.5V.5A.47.47 0 0 0 7 0H5a.47.47 0 0 0-.5.5V5H3a.47.47 0 0 0-.5.5.37.37 0 0 0 .1.3Z" />
+    <path d="M11.5 9H11a.47.47 0 0 0-.5.5v1h-9v-1A.47.47 0 0 0 1 9H.5a.47.47 0 0 0-.5.5v2a.47.47 0 0 0 .5.5h11a.47.47 0 0 0 .5-.5v-2a.47.47 0 0 0-.5-.5Z" />
+  </svg>
+{%- elif params.iconType == "exit" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M13.85,7.65l-2.5-2.5a.5.5,0,0,0-.71,0,.48.48,0,0,0-.15.36V7h-3a.5.5,0,0,0-.5.5v1a.5.5,0,0,0,.5.5h3v1.5A.49.49,0,0,0,11,11a.48.48,0,0,0,.34-.14l2.51-2.5a.49.49,0,0,0,0-.68Z" transform="translate(-2 -2)"/>
+    <path d="M8.5,14h-6a.5.5,0,0,1-.5-.5V2.5A.5.5,0,0,1,2.5,2h6a.5.5,0,0,1,.5.5V3a.5.5,0,0,1-.5.5h-5v9h5A.5.5,0,0,1,9,13v.5A.5.5,0,0,1,8.5,14Z" transform="translate(-2 -2)"/>
+  </svg>
+{%- elif params.iconType == "external-link" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden=true role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M13.5,9H13a.5.5,0,0,0-.5.5v3h-9v-9h3A.5.5,0,0,0,7,3V2.5A.5.5,0,0,0,6.5,2h-4a.5.5,0,0,0-.5.5v11a.5.5,0,0,0,.5.5h11a.5.5,0,0,0,.5-.5v-4A.5.5,0,0,0,13.5,9Z" transform="translate(-2 -1.99)"/>
+    <path d="M8.83,7.88a.51.51,0,0,0,.71,0l2.31-2.32,1.28,1.28A.51.51,0,0,0,14,6.49v-4a.52.52,0,0,0-.5-.5h-4A.51.51,0,0,0,9,2.52a.58.58,0,0,0,.14.33l1.28,1.28L8.12,6.46a.51.51,0,0,0,0,.71Z" transform="translate(-2 -1.99)"/>
+  </svg>
+{%- elif params.iconType == "info" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9 2 12t.788-3.9 2.137-3.175T8.1 2.788 12 2t3.9.788 3.175 2.137T21.213 8.1 22 12t-.788 3.9-2.137 3.175-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4 6.325 6.325 4 12t2.325 5.675T12 20m0-8"/>
+  </svg>
+{%- elif params.iconType == "lock" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 10 13" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M12.25,6h-.72V4.49a3.5,3.5,0,0,0-7,0V6H3.75A.77.77,0,0,0,3,6.75v6.5a.77.77,0,0,0,.75.75h8.5a.77.77,0,0,0,.75-.75V6.75A.77.77,0,0,0,12.25,6ZM5.54,4.49a2.5,2.5,0,1,1,5,0V6h-5ZM9,11.66a.3.3,0,0,1-.26.34H7.29A.29.29,0,0,1,7,11.69v0l.39-1.82a1,1,0,1,1,1.4-.18.77.77,0,0,1-.18.18Z" transform="translate(-3 -0.99)"/>
+  </svg>
+{%- elif params.iconType == "person" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M7,9H9a5,5,0,0,1,5,5H2A5,5,0,0,1,7,9Z" transform="translate(-2 -2)"/>
+    <circle cx="6" cy="3" r="3"/>
+  </svg>
+{%- elif params.iconType == "quote" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 14 10" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-{{ params.iconType}}" id="da-icon-{{ params.iconType}}">
+    <path d="M13.44.77h-3l-2 4v6h6v-6h-3l2-4zm-8 0h-3l-2 4v6h6v-6h-3l2-4z" transform="translate(-0.44 -0.77)"/>
+  </svg>
+{%- elif params.iconType == "search" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-search">
+    <path d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0 0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z"/>
+  </svg>
+{%- elif params.iconType == "sort-sprite" -%}
+  <svg id="sort-sprite{% if params.id %}-{{ params.id | lower }}{% endif %}" class="da-icon{{ iconClasses }}" viewBox="0 0 12 19" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-sort-sprite">
+    <path d="M6 0l6 7.2H0L6 0zm0 18.6l6-7.2H0l6 7.2zm0 3.6l6 7.2H0l6-7.2z"/>
+    <path d="M6 18.6l6-7.2H0l6 7.2zm0 3.6l6 7.2H0l6-7.2z"/>
+  </svg>
+{%- elif params.iconType == "warning" -%}
+  <svg class="{% if params.iconSize %}da-icon da-icon--{{ params.iconSize }}{% else %}da-icon{% endif %}{{ iconClasses }}" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="{{params.fill|d("currentColor", true)}}" role="img" title="da-icon-warning">
+    <g clip-path="url(#a)">
+      <path d="M11.5 0C17.851 0 23 5.149 23 11.5S17.851 23 11.5 23 0 17.851 0 11.5 5.149 0 11.5 0Zm0 2.3a9.2 9.2 0 1 0 0 18.4 9.2 9.2 0 0 0 0-18.4Z"/>
+      <path d="M11.5 4c-.208 0-.414.046-.605.135-.19.09-.362.221-.502.385-.141.164-.248.358-.315.568-.066.21-.09.434-.072.655l.6 7.01a.982.982 0 0 0 .293.613.87.87 0 0 0 .602.246.87.87 0 0 0 .602-.246.982.982 0 0 0 .293-.612l.598-7.011a1.697 1.697 0 0 0-.072-.654 1.623 1.623 0 0 0-.314-.568 1.506 1.506 0 0 0-.502-.385A1.421 1.421 0 0 0 11.5 4Zm0 14c.35 0 .684-.148.93-.41.246-.263.385-.619.385-.99s-.139-.727-.385-.99a1.274 1.274 0 0 0-.93-.41c-.348 0-.682.148-.928.41a1.448 1.448 0 0 0-.385.99c0 .371.138.727.385.99.246.262.58.41.929.41Z"/>
+    </g>
+    <defs>
+      <clipPath>
+        <path fill="#fff" d="M0 0h23v23H0z"/>
+      </clipPath>
+    </defs>
+  </svg>
+{% endif -%}

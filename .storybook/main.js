@@ -11,6 +11,7 @@ const config = {
     "@storybook/addon-essentials",
     "@storybook/addon-a11y",
     "@storybook/addon-interactions",
+    "@whitespace/storybook-addon-html",
   ],
   framework: {
     name: "@storybook/html-webpack5",
@@ -50,6 +51,9 @@ const config = {
           options: {
             additionalData: `
               @import "node_modules/govuk-frontend/govuk/base";
+              @import "node_modules/govuk-frontend/govuk/settings/all";
+              @import "node_modules/govuk-frontend/govuk/tools/all";
+              @import "node_modules/govuk-frontend/govuk/helpers/all";
             `,
             implementation: require("sass"),
           },
