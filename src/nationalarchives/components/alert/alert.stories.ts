@@ -33,8 +33,6 @@ export default {
   },
 };
 
-console.log({ ...iconStory.argTypes.iconType });
-
 const create = (args): string => {
   return render({
     test: "something",
