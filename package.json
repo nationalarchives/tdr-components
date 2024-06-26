@@ -36,6 +36,7 @@
     "@storybook/html-webpack5": "^8.0.10",
     "@storybook/test": "^8.0.10",
     "@storybook/test-runner": "^0.18.0",
+    "@whitespace/storybook-addon-html": "^6.1.1",
     "axe-playwright": "^2.0.1",
     "babel-jest": "^29.7.0",
     "css-loader": "^7.1.1",

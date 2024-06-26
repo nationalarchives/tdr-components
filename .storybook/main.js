@@ -11,6 +11,7 @@ const config = {
     "@storybook/addon-essentials",
     "@storybook/addon-a11y",
     "@storybook/addon-interactions",
+    "@whitespace/storybook-addon-html",
   ],
   framework: {
     name: "@storybook/html-webpack5",
