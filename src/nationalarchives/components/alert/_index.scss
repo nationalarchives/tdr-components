@@ -1,5 +1,3 @@
-// @import "node_modules/govuk-frontend/govuk/components/inset-text";
-
 .da-alert {
   @include govuk-text-colour;
 
@@ -22,7 +20,6 @@
     margin-bottom: 0;
   }
 
-  // @extend .govuk-inset-text;
   border-color: #2b8cc4;
   background-color: #dbeff9;
 
