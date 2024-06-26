@@ -40,13 +40,6 @@ export default {
   },
 };
 
-// export const Default = {
-//   args: {
-//     iconType: 'check',
-//     iconSize: 'xl'
-//   },
-// };
-
 const createCard = (args): string => {
   return render({
     params: { ...args },
