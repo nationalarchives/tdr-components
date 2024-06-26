@@ -3,11 +3,11 @@
  * https://github.com/ONSdigital/design-system/blob/main/src/components/icon/_macro.njk
  */
 
- span.da-icon {
+span.da-icon {
   display: inline-block;
- }
+}
 
- .da-icon {
+.da-icon {
   height: 1rem;
   vertical-align: middle;
   width: 1rem;
@@ -66,7 +66,7 @@
     height: 0.7rem;
     width: 0.7rem;
   }
-  
+
   &--success {
     fill: green;
   }

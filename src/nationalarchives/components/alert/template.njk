@@ -1,0 +1,27 @@
+{% macro icon(params) %}
+  {%- include "src/nationalarchives/components/icon/template.njk" -%}
+{% endmacro %}
+
+{% if params.headingSize == 'l' %}
+  {% set iconSize = 'xxl' %}
+{% else %}
+  {% set iconSize = 'm' %}
+{% endif %}
+
+<div class="da-alert {% if params.alertType %}da-alert--{{params.alertType}}{% endif %} {% if params.withIcon %}da-alert--with-icon{% endif %}">
+  {% if params.withIcon %}
+  <div class="da-alert__icon">
+    <div aria-hidden="true">
+      {{- icon({"iconType": params.iconType, iconSize: iconSize}) -}}
+    </div>
+  </div>
+  {% endif %}
+  <div class="da-alert__content">
+    {% if params.headingText %}
+    <h2 class="da-alert__heading {% if params.headingSize %}da-alert__heading--{{params.headingSize}}{% endif %}">
+      {{params.headingText|d("Your review is in progress")}}
+    </h2>
+    {% endif %}
+    <p>{{params.bodyText|d("When the review is complete you will receive an email to <strong>jesse@ons.gov.uk</strong> with further instructions.")|safe}}</p>
+  </div>
+</div>
