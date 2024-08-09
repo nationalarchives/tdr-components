@@ -26,7 +26,11 @@ export default {
 
       const header = wrapper.querySelector('[data-module="govuk-header"]');
       if (header !== null) {
-        new Header(header).init();
+        try {
+          new Header(header).init();
+        } catch (error) {
+          console.log(error.message);
+        }
       }
 
       return wrapper;
