@@ -215,7 +215,7 @@ export class NestedNavigation {
     const label = li.querySelector("label");
     if (label?.firstChild?.textContent !== null) {
       this.displaySelected(
-        isSelected ? "" : label?.firstChild?.textContent?.trim() ?? "",
+        isSelected ? "" : (label?.firstChild?.textContent?.trim() ?? ""),
       );
     } else {
       this.displaySelected("");
