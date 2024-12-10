@@ -1,8 +1,10 @@
-const eslintConfigLove = require('eslint-config-love');
+const eslint = require('@eslint/js');
+const tseslint = require('typescript-eslint');
 
-module.exports = [
-    {
-      ...eslintConfigLove,
-      files: [ 'src/**/*.ts' ]
-    }
-  ]
+module.exports = tseslint.config(
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  {
+    files: ['src/**/*.ts'],
+  }
+);

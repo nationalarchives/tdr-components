@@ -474,7 +474,7 @@ describe.each([InputType.checkboxes, InputType.radios])(
         ];
         jest
           .spyOn(Storage.prototype, "getItem")
-          .mockImplementation((_) => JSON.stringify({ expanded: ids }));
+          .mockImplementation(() => JSON.stringify({ expanded: ids }));
         const nestedNavigation = createNestedNavigation({});
         const expanded = nestedNavigation.getExpanded(classNameValue);
 
