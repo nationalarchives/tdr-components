@@ -24,9 +24,9 @@ export default {
       wrapper.append(...doc.body.children);
       const header = wrapper.querySelector('[data-module="govuk-header"]');
       if (header !== null) {
-        // Necessary because of the order in which decorators are 
-        // applied. If the timeout isn't present Header() will not 
-        // find any navigation items.  
+        // Necessary because of the order in which decorators are
+        // applied. If the timeout isn't present Header() will not
+        // find any navigation items.
         setTimeout(() => {
           new Header(header);
         }, 0);
