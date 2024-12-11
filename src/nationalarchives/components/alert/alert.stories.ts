@@ -1,4 +1,3 @@
-// import "govuk-frontend/govuk/components/inset-text";
 import "../icon/_index.scss";
 import "./_index.scss";
 import iconStory from "../icon/icon.stories";

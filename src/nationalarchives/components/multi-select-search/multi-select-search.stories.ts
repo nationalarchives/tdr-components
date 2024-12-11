@@ -4,6 +4,7 @@ import mssData from "./multi-select-search.yaml";
 import { MultiSelectSearch } from "./multi-select-search";
 import { within, userEvent, waitFor, expect } from "@storybook/test";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default {
   title: "TDR/MultiSelectSearch",
   args: {

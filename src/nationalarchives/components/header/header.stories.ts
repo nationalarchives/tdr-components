@@ -19,14 +19,17 @@ export default {
     (storyFn) => {
       // Create an element that centres element with margin.
       const wrapper = document.createElement("div");
-      wrapper.classList.add("js-enabled");
       const parser = new DOMParser();
       const doc = parser.parseFromString(storyFn() as string, "text/html");
       wrapper.append(...doc.body.children);
-
       const header = wrapper.querySelector('[data-module="govuk-header"]');
       if (header !== null) {
-        new Header(header).init();
+        // Necessary because of the order in which decorators are
+        // applied. If the timeout isn't present Header() will not
+        // find any navigation items.
+        setTimeout(() => {
+          new Header(header);
+        }, 0);
       }
 
       return wrapper;

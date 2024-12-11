@@ -5,6 +5,7 @@ import treeData from "./nested-navigation.yaml";
 import { NestedNavigation, InputType } from "./nested-navigation";
 import { within, userEvent, expect } from "@storybook/test";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface Example<T = any> {
   name: string;
   description: string;
@@ -36,7 +37,7 @@ export default {
 
       document.addEventListener(
         "DOMContentLoaded",
-        (event) => {
+        () => {
           // Also use this wrapper element to init the MSS js.
           const trees: NodeListOf<HTMLUListElement> =
             wrapper.querySelectorAll("[role=tree]");

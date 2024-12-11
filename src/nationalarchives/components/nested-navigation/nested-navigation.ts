@@ -46,7 +46,7 @@ export class NestedNavigation {
     const buttons = this.tree.querySelectorAll(
       `.js-tree__expander--${InputType.checkboxes}`,
     );
-    Array.from(buttons).forEach((expander, _, __) => {
+    Array.from(buttons).forEach((expander) => {
       (expander as HTMLElement).addEventListener("click", (ev) => {
         let el: HTMLElement = ev.currentTarget as HTMLElement;
         if (!el.id.includes("expander")) {
@@ -59,13 +59,13 @@ export class NestedNavigation {
     });
 
     // All nodes start open so need hiding on first load.
-    this.tree.querySelectorAll('[role="group"]').forEach((value, _, __) => {
+    this.tree.querySelectorAll('[role="group"]').forEach((value) => {
       if (value.id.includes(inputType)) {
         this.updateExpanded(value as HTMLInputElement, inputType);
       }
     });
 
-    this.tree.querySelectorAll("[role=treeitem]").forEach((treeItem, _, __) => {
+    this.tree.querySelectorAll("[role=treeitem]").forEach((treeItem) => {
       // We do not want the radio buttons directories to be selectable.
       if (inputType === InputType.radios && treeItem.id.includes("folder")) {
         return;
@@ -215,7 +215,7 @@ export class NestedNavigation {
     const label = li.querySelector("label");
     if (label?.firstChild?.textContent !== null) {
       this.displaySelected(
-        isSelected ? "" : label?.firstChild?.textContent?.trim() ?? "",
+        isSelected ? "" : (label?.firstChild?.textContent?.trim() ?? ""),
       );
     } else {
       this.displaySelected("");
