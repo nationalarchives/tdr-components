@@ -17,7 +17,7 @@ export default {
 
       document.addEventListener(
         "DOMContentLoaded",
-        (event) => {
+        () => {
           // new ButtonDisabled();
           console.log("Dom content loaded, init");
           const buttons = wrapper.querySelectorAll(

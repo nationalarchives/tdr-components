@@ -202,7 +202,7 @@ export class MultiSelectSearch {
     return visibleItems;
   };
 
-  private readonly processKeyUpTimeout: (ev?: Event) => void = (ev) => {
+  private readonly processKeyUpTimeout: () => void = () => {
     if (this.filter === null) return;
     this.filterItems(this.filter.value, this.list.children);
 
@@ -214,7 +214,7 @@ export class MultiSelectSearch {
     }
   };
 
-  private readonly processInputChange: (ev: KeyboardEvent) => void = (ev) => {
+  private readonly processInputChange: () => void = () => {
     const numChecked: number = this.getSelectedItems().length;
     const numVisible: number = this.getVisibleItems().length;
     if (this.selectedCount !== null) {
