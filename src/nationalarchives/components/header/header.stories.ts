@@ -14,7 +14,7 @@ export default {
   argTypes: {
     showSignIn: {
       description: "Show or hide the 'Sign in' link",
-    }
+    },
   },
   decorators: [
     (storyFn) => {
@@ -32,8 +32,10 @@ export default {
           new Header(header);
         }, 0);
       }
-     
-      const serviceNavigation = wrapper.querySelector('[data-module="govuk-service-navigation"]');
+
+      const serviceNavigation = wrapper.querySelector(
+        '[data-module="govuk-service-navigation"]',
+      );
       if (serviceNavigation !== null) {
         // Necessary because of the order in which decorators are
         // applied. If the timeout isn't present Header() will not
@@ -76,9 +78,10 @@ WithMenuItemsInMainHeader.args = {
 
 WithMenuItemsInMainHeader.argTypes = {
   menuItems: {
-    description: "If there is any menu items, we hide the menu on smaller viewports",
-    control: "array",   
-  }
+    description:
+      "If there is any menu items, we hide the menu on smaller viewports",
+    control: "array",
+  },
 };
 
 export const WithExtraServiceMenu = Template.bind({});
@@ -89,4 +92,3 @@ WithExtraServiceMenu.args = {
   showExtraServiceMenu: true,
   menuItems: ["Account", "Transfers", "Guidance"], // Default list of values
 };
-
