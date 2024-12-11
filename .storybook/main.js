@@ -50,10 +50,10 @@ const config = {
           loader: "sass-loader",
           options: {
             additionalData: `
-              @import "govuk-frontend/govuk/base";
-              @import "govuk-frontend/govuk/settings/all";
-              @import "govuk-frontend/govuk/tools/all";
-              @import "govuk-frontend/govuk/helpers/all";
+              @import "govuk-frontend/dist/govuk/base";
+              @import "govuk-frontend/dist/govuk/settings/all";
+              @import "govuk-frontend/dist/govuk/tools/all";
+              @import "govuk-frontend/dist/govuk/helpers/all";
             `,
             implementation: require("sass"),
           },

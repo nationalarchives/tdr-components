@@ -11,4 +11,13 @@ const preview = {
   },
 };
 
+// Add the required GOV.UK Frontend classes to the body
+if (typeof window !== 'undefined' && document.body) {
+  document.body.className +=
+    ' js-enabled' +
+    ('noModule' in HTMLScriptElement.prototype
+      ? ' govuk-frontend-supported'
+      : '');
+}
+
 export default preview;
