@@ -1,6 +1,6 @@
 import "./_index.scss";
 import render from "./story.njk";
-import { Header } from "govuk-frontend";
+import { Header, ServiceNavigation } from "govuk-frontend";
 
 export default {
   title: "TDR/Header",
@@ -8,12 +8,13 @@ export default {
     layout: "fullscreen",
   },
   args: {
-    isSignedIn: false,
+    showSignIn: false,
+    showMenu: false,
   },
   argTypes: {
-    isSignedIn: {
-      description: "Is the header showing the signed-in menu items?",
-    },
+    showSignIn: {
+      description: "Show or hide the 'Sign in' link",
+    }
   },
   decorators: [
     (storyFn) => {
@@ -29,6 +30,17 @@ export default {
         // find any navigation items.
         setTimeout(() => {
           new Header(header);
+        }, 0);
+      }
+     
+      const serviceNavigation = wrapper.querySelector('[data-module="govuk-service-navigation"]');
+      if (serviceNavigation !== null) {
+        // Necessary because of the order in which decorators are
+        // applied. If the timeout isn't present Header() will not
+        // find any navigation items.
+        setTimeout(() => {
+          new ServiceNavigation(serviceNavigation);
+          // createAll(ServiceNavigation, undefined, serviceNavigation)
         }, 0);
       }
 
@@ -48,19 +60,33 @@ const Template = ({ label, ...args }): string => {
 };
 
 export const Default = Template.bind({});
-export const SignedIn = Template.bind({});
-SignedIn.args = {
-  isSignedIn: true,
+export const SignInOnly = Template.bind({});
+SignInOnly.args = {
+  showMenu: false,
+  showSignIn: true,
 };
 
-export const WithHiddenMenu = Template.bind({});
-WithHiddenMenu.args = {
-  isSignedIn: true,
-  withHiddenMenu: true,
+export const WithMenuItemsInMainHeader = Template.bind({});
+
+WithMenuItemsInMainHeader.args = {
+  showSignIn: true,
+  showMenu: true,
+  menuItems: ["Account", "Transfers"], // Default list of values
 };
-WithHiddenMenu.argTypes = {
-  withHiddenMenu: {
-    description:
-      "If there is more than one menu item, use the hidden menu feature",
-  },
+
+WithMenuItemsInMainHeader.argTypes = {
+  menuItems: {
+    description: "If there is any menu items, we hide the menu on smaller viewports",
+    control: "array",   
+  }
 };
+
+export const WithExtraServiceMenu = Template.bind({});
+
+WithExtraServiceMenu.args = {
+  showSignIn: true,
+  showMenu: false,
+  showExtraServiceMenu: true,
+  menuItems: ["Account", "Transfers", "Guidance"], // Default list of values
+};
+
