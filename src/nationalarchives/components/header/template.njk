@@ -17,7 +17,7 @@
     </div>
     <div class="govuk-header__content{% if params.withHiddenMenu == false %} govuk-header__content--nav-right{% endif %}">
       <a href="/" class="govuk-header__link govuk-header__service-name">
-          Transfer Digital Records
+          {{ params.serviceName }}
       </a>
       
       <nav aria-label="Menu" class="govuk-header__navigation {% if params.showSignIn and not params.showMenu %}govuk-header__navigation--top-right{% endif %} govuk-header__navigation--end">

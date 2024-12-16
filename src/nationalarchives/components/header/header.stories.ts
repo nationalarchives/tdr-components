@@ -8,6 +8,7 @@ export default {
     layout: "fullscreen",
   },
   args: {
+    serviceName: "Transfer Digital Records",
     showSignIn: false,
     showMenu: false,
   },
