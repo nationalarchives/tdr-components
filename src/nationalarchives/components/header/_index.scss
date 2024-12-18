@@ -1,6 +1,3 @@
-.govuk-header__container {
-  display: flex;
-}
 
 .govuk-header__logo {
   margin-bottom: 0;
@@ -18,9 +15,10 @@
 .govuk-header__link {
   display: block;
   padding-right: 0;
-  margin-bottom: 0;
+  align-self: flex-start;
 }
 
+.govuk-header__link--homepage:focus,
 .govuk-header__link--homepage:hover,
 .govuk-header__link--homepage:active {
   text-decoration: none;
@@ -42,12 +40,24 @@
 .govuk-header__content {
   width: 100%;
   float: none;
-  display: flex;
   justify-content: space-between;
+}
+
+.govuk-header__navigation {
+  align-self: flex-end;
 }
 
 .govuk-header__navigation--top-right {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+@include govuk-media-query($from: desktop) {
+  .govuk-header__container {
+    display: flex;
+  }
+  .govuk-header__content {
+    display: flex;
+  }
 }
