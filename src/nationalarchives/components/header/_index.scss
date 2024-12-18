@@ -1,18 +1,24 @@
+.govuk-header__container {
+  display: flex;
+}
+
 .govuk-header__logo {
-  margin-right: 15px;
   margin-bottom: 0;
   padding: 0;
+  flex: none;
+  float: none;
   height: 5rem;
   width: 5rem;
 }
 
-.govuk-header__link:has(> svg) {
+.govuk-header__link svg {
   font-size: 0;
 }
 
 .govuk-header__link {
   display: block;
   padding-right: 0;
+  margin-bottom: 0;
 }
 
 .govuk-header__link--homepage:hover,
@@ -34,8 +40,10 @@
 }
 
 .govuk-header__content {
-  width: auto;
+  width: 100%;
   float: none;
+  display: flex;
+  justify-content: space-between;
 }
 
 .govuk-header__navigation--top-right {
