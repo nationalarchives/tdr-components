@@ -10,7 +10,6 @@ export default {
   args: {
     serviceName: "Transfer Digital Records",
     showSignIn: false,
-    showMenu: false,
   },
   argTypes: {
     showSignIn: {
@@ -65,7 +64,6 @@ const Template = ({ label, ...args }): string => {
 export const Default = Template.bind({});
 export const SignInOnly = Template.bind({});
 SignInOnly.args = {
-  showMenu: false,
   showSignIn: true,
 };
 
