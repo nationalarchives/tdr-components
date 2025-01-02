@@ -19,11 +19,9 @@
       <a href="/" class="govuk-header__link govuk-header__service-name">
           {{ params.serviceName }}
       </a>
-      {% if not params.showExtraServiceMenu %}
-      <nav aria-label="Menu" class="govuk-header__navigation {% if params.showSignIn and not params.showMenu %}govuk-header__navigation--top-right{% endif %} govuk-header__navigation--end">
+      <nav aria-label="Menu" class="govuk-header__navigation govuk-header__navigation--end">
         <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu" hidden>Menu</button>
         <ul id="navigation" class="govuk-header__navigation-list">
-          {% if params.showExtraServiceMenu != true %}
             {% if params.showMenu %}
               {% for menuItem in params.menuItems %}
               <li class="govuk-header__navigation-item">
@@ -33,7 +31,6 @@
               </li>
               {% endfor %}
             {% endif %}
-          {% endif %}
           {% if params.showSignIn %}
             <li class="govuk-header__navigation-item">
               <a class="govuk-header__link" href="#">
@@ -43,7 +40,6 @@
           {% endif %}
         </ul>
       </nav>
-      {% endif %}
     </div>
   </div>
 </header>
