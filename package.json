@@ -46,7 +46,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "nunjucks": "^3.2.4",
     "prettier": "^3.4.2",
-    "sass": "^1.83.0",
+    "sass": "^1.83.1",
     "sass-loader": "^16.0.4",
     "simple-nunjucks-loader": "^3.2.0",
     "storybook": "^8.0.10",
