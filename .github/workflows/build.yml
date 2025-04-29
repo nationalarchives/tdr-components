@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' && !contains(github.event.pull_request.labels.*.name, 'Version bump') }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - run: gh workflow run deploy.yml
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_PAT }}
@@ -17,8 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' && !contains(github.event.pull_request.labels.*.name, 'Version bump') }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: .nvmrc
       - name: Install dependencies
@@ -29,6 +29,6 @@ jobs:
           npm run compile:sass
           npm run build:storybook --quiet
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@6c2d9db40f9296374acc17b90404b6e8864128c8
         with:
           folder: storybook # The folder the action should deploy.
