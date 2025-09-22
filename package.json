@@ -61,6 +61,6 @@
     "yaml-loader": "^0.8.1"
   },
   "dependencies": {
-    "govuk-frontend": "^5.7.1"
+    "govuk-frontend": "^5.11.2"
   }
 }
