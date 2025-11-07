@@ -16,6 +16,13 @@ permissions:
 
 
 jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/dependency-review-action@40c09b7dc99638e5ddb0bfd91c1673effc064d8a # v4.8.1
+        if: github.event_name == 'pull_request'
+        with:
+          fail-on-severity: critical
   lint:
     runs-on: ubuntu-latest
     steps:
