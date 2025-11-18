@@ -62,4 +62,5 @@
   },
   "dependencies": {
     "govuk-frontend": "5.13.0"
-  }}
+  }
+}
