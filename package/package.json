@@ -20,6 +20,6 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "govuk-frontend": "^5.7.1"
+    "govuk-frontend": "5.10.2"
   }
 }
