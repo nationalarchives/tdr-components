@@ -36,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_PAT }}
       - name: Send success message
-        uses: nationalarchives/tdr-github-actions/.github/actions/slack-send@c130d20af544843b70e2a0e1a44759d4fabf3a5d # v0.0.37
+        uses: nationalarchives/tdr-github-actions/.github/actions/slack-send@e7b57a3bdf7863c951cd203101c6d566986376e3 # v0.0.38
         with:
           message: ":white_check_mark: TDR Components ${{ steps.deploy-npm.outputs.set-npm-version }} has been published to npm"
           slack-url: ${{ secrets.SLACK_WEBHOOK }}
