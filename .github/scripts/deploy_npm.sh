@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 npm config set //registry.npmjs.org/:_authToken=$1
 npm ci
 npm run build
