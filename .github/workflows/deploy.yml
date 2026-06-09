@@ -28,14 +28,19 @@ jobs:
           git config --global user.name tna-da-bot
           git checkout -b $BRANCH_NAME
           git push -u origin $BRANCH_NAME
-      - run: |
+      - name: Get NPM version
+        id: get-npm-version
+        run: echo "version=$(awk '/version/{gsub(/("|",)/,"",$2);print $2}' package.json)" >> $GITHUB_OUTPUT
+      - name: Deploy NPM script
+        run: |
           ./.github/scripts/deploy_npm.sh ${{ secrets.NPM_TOKEN }}
         id: deploy-npm
       - name: Send failure message
+        id: failure-message
         if: failure()
         uses: nationalarchives/tdr-github-actions/.github/actions/slack-send@1c56dd1e838340ab53c7dc55dbbb974a062a6ae9 # v0.0.6
         with:
-          message: ":x: NPM publish script has failed ${{ steps.deploy-npm.outputs.set-npm-version }}"
+          message: ":x: NPM publish script ${{ steps.get-npm-version.outputs.version }} has failed in repo ${{ github.action_repository }}"
           slack-url: ${{ secrets.SLACK_WEBHOOK }}
       - name: Create Pull Request
         run: gh pr create --label 'Version bump' -t "Version bump ${{ steps.deploy-npm.outputs.set-npm-version }}" -b "Version bump ${{ steps.deploy-npm.outputs.set-npm-version }}"
