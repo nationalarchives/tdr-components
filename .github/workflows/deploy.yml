@@ -40,7 +40,7 @@ jobs:
         if: failure()
         uses: nationalarchives/tdr-github-actions/.github/actions/slack-send@1c56dd1e838340ab53c7dc55dbbb974a062a6ae9 # v0.0.6
         with:
-          message: ":x: NPM publish script has failed to publish NPM version ${{ steps.get-npm-version.outputs.version }} has failed in repo ${{ github.action_repository }}"
+          message: ":x: NPM publish script has failed to publish NPM version ${{ steps.get-npm-version.outputs.version }} in repo ${{ github.event.repository.name }}"
           slack-url: ${{ secrets.SLACK_WEBHOOK }}
       - name: Create Pull Request
         run: gh pr create --label 'Version bump' -t "Version bump ${{ steps.deploy-npm.outputs.set-npm-version }}" -b "Version bump ${{ steps.deploy-npm.outputs.set-npm-version }}"
