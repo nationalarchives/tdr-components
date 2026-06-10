@@ -38,7 +38,7 @@ jobs:
       - name: Send failure message
         id: failure-message
         if: failure()
-        uses: nationalarchives/tdr-github-actions/.github/actions/slack-send@1c56dd1e838340ab53c7dc55dbbb974a062a6ae9 # v0.0.6
+        uses: nationalarchives/tdr-github-actions/.github/actions/slack-send@e7b57a3bdf7863c951cd203101c6d566986376e3 # v0.0.38
         with:
           message: ":x: NPM publish failed for version ${{ steps.get-npm-version.outputs.version }} in repo ${{ github.event.repository.name }}"
           slack-url: ${{ secrets.SLACK_WEBHOOK }}
