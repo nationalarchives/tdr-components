@@ -10,7 +10,7 @@ The project is divided into different directories.
 
 Read documentation on how to [configure storybook](https://storybook.js.org/docs/html/configure/overview#configure-your-storybook-project).
 
-`.storybook/main.js` contains some custom config so that we can...
+`.storybook/main.js` contains some custom config so that we can:
 
 - use nunjucks for our templating
 - additionally load the Govuk base sass file into all our sass modules
