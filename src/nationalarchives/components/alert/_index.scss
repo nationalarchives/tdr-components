@@ -47,12 +47,12 @@
   }
 
   &__heading {
-    @include govuk-typography-responsive(24);
+    @include govuk-font-size(24);
     @include govuk-responsive-margin(3, "bottom");
   }
 
   &__heading--s {
-    @include govuk-typography-responsive(19);
+    @include govuk-font-size(19);
     @include govuk-responsive-margin(2, "bottom");
   }
 
@@ -85,7 +85,7 @@
 
 .da-alert__content {
   > p {
-    @include govuk-typography-responsive(19);
+    @include govuk-font-size(19);
   }
 
   > *:first-child {

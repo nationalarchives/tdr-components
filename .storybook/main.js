@@ -51,9 +51,9 @@ const config = {
           options: {
             additionalData: `
               @import "govuk-frontend/dist/govuk/base";
-              @import "govuk-frontend/dist/govuk/settings/all";
-              @import "govuk-frontend/dist/govuk/tools/all";
-              @import "govuk-frontend/dist/govuk/helpers/all";
+              @import "govuk-frontend/dist/govuk/settings/index";
+              @import "govuk-frontend/dist/govuk/tools/index";
+              @import "govuk-frontend/dist/govuk/helpers/index";
             `,
             implementation: require("sass"),
           },
