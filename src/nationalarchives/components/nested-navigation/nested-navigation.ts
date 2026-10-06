@@ -12,7 +12,7 @@ export class NestedNavigation {
   private readonly tree: HTMLUListElement;
   private readonly treeItems: NodeListOf<HTMLElement>;
   private currentFocus: HTMLLIElement | null;
-  private fileSelected: HTMLElement | null;
+  private fileSelected: HTMLElement | null = null;
   private readonly rememberExpanded: boolean = false;
 
   constructor(tree: HTMLUListElement) {

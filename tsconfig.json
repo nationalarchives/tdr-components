@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "package/dist",
+    "rootDir": "src/nationalarchives",
     "strictNullChecks": true
   },
   "include": ["src/**/*.ts"]
