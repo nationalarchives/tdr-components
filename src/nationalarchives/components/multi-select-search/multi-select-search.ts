@@ -87,20 +87,19 @@ export class MultiSelectSearch {
   ) => {
     const filterBy = this.cleanString(filterText);
     const visibleItems = this.getSelectedItems();
-    let i = 0;
-    for (i = 0; i < listItems.length; i++) {
+    for (let i = 0; i < listItems.length; i++) {
       // If found by filter.
       if (this.labels[i].search(filterBy) !== -1) {
         visibleItems.push(i);
       }
     }
     // Hide all
-    for (i = 0; i < listItems.length; i++) {
+    for (let i = 0; i < listItems.length; i++) {
       (this.list.children[i] as HTMLElement).classList.add("is-hidden");
     }
 
     // Show checked and found by filter
-    for (i = 0; i < visibleItems.length; i++) {
+    for (let i = 0; i < visibleItems.length; i++) {
       (this.list.children[visibleItems[i]] as HTMLElement).classList.remove(
         "is-hidden",
       );
@@ -178,7 +177,7 @@ export class MultiSelectSearch {
   };
 
   getInViewport: (list: HTMLCollection) => HTMLElement[] = (list) => {
-    return Array.from(list).filter(this.isInViewport) as HTMLElement[];
+    return (Array.from(list) as HTMLElement[]).filter(this.isInViewport);
   };
 
   getSelectedItems: () => number[] = () => {
