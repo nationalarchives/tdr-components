@@ -22,7 +22,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^8.0.1",
+    "@babel/core": "^8.0.1X",
     "@babel/preset-env": "^8.0.2",
     "@babel/preset-typescript": "^8.0.1",
     "@chromatic-com/storybook": "^5.2.1",
