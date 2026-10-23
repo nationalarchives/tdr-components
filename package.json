@@ -60,6 +60,10 @@
     "webpack-cli": "^7.1.0",
     "yaml-loader": "^0.9.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nationalarchives/tdr-components"
+  },
   "dependencies": {
     "govuk-frontend": "6.3.0"
   }

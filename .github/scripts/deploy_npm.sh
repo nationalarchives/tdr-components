@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-npm config set //registry.npmjs.org/:_authToken=$1
+npm config set registry https://registry.npmjs.org/
 npm ci
 npm run build
 cd package
