@@ -1,6 +1,6 @@
 {
   "name": "@nationalarchives/tdr-components",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "This library contains custom components based on the GovUK frontend",
   "main": "index.ts",
   "scripts": {
