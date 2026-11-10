@@ -65,6 +65,6 @@
     "url": "https://github.com/nationalarchives/tdr-components"
   },
   "dependencies": {
-    "govuk-frontend": "6.3.0"
+    "govuk-frontend": "6.4.0"
   }
 }
