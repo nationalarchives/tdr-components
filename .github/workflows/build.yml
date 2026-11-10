@@ -1,5 +1,6 @@
 name: Publish and deploy
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - closed
