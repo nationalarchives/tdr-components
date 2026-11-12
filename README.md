@@ -28,6 +28,21 @@ This contains three global files.
 - `govuk.scss` This imports only the govuk frontend sass, which is compiled for use within Storybooks `preview-head.html`
 - `index.ts` This imports all the js classes defined in the components directories.
 
+## Using the Sass in a consuming project
+
+The published package contains precompiled CSS in `dist/` and the Sass sources in `nationalarchives/`.
+
+`dist/all.css` is compiled with the GOV.UK Frontend default asset paths (`/assets/images/`, `/assets/fonts/`). If your project serves assets from a different location, import the Sass sources instead so that your own `$govuk-images-path` and `$govuk-fonts-path` are used:
+
+```scss
+$govuk-images-path: "../img/";
+
+@import "node_modules/govuk-frontend/dist/govuk/index";
+@import "node_modules/@nationalarchives/tdr-components/nationalarchives/components";
+```
+
+Component Sass must use `govuk-image-url()` / `govuk-font-url()` rather than hardcoded `/assets/...` URLs so that consumers can override the paths.
+
 ## The src/nationalarchives/components directory.
 
 This contains one directory per component and an `_all.scss` which imports the sass files from each component.
